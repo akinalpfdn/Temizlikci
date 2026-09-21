@@ -10,6 +10,11 @@ nonisolated struct ScanConfiguration: Sendable {
     /// Standardized paths of folders below the scan root that must not be opened (for example
     /// consent-prompting folders without Full Disk Access). They appear as `.inaccessible` nodes.
     var unreadFolders: Set<String> = []
+    /// Standardized paths of entries never visited nor shown. The defaults are the virtual folders at
+    /// the root of the file system: `/.nofollow` and `/.resolve` expose the whole volume again under
+    /// another path (scanning `/.nofollow` counted the disk twice), and `/.vol` is the legacy volfs view.
+    /// They look like ordinary folders: not volume roots, not symbolic links.
+    var skippedPaths: Set<String> = ["/.nofollow", "/.resolve", "/.vol"]
 
     static let standard = ScanConfiguration()
 

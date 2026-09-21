@@ -137,12 +137,26 @@ struct SunburstView: View {
             let angle = segment.midAngle - .pi / 2
             let point = CGPoint(x: center.x + labelRadius * cos(angle), y: center.y + labelRadius * sin(angle))
             let ink = labelInk(on: segment.fill)
-            let name = Text(model.title(for: segment)).font(Typography.chartCaption.weight(.semibold)).foregroundStyle(ink)
-            let size = Text(Formatting.bytes(segment.allocatedSize)).font(Typography.chartCaption).foregroundStyle(ink)
-            let width = labelRadius * segment.sweep * 0.8
-            context.draw(context.resolve(name), in: CGRect(x: point.x - width / 2, y: point.y - 14, width: width, height: 14))
-            context.draw(context.resolve(size), at: CGPoint(x: point.x, y: point.y + 7))
+            let ringThickness = (bounds.outer - bounds.inner) * radius
+            let maxWidth = min(labelRadius * segment.sweep * 0.8, ringThickness * 1.9)
+            let name = fittedLabel(model.title(for: segment), maxWidth: maxWidth, ink: ink, in: context)
+            let size = context.resolve(Text(Formatting.bytes(segment.allocatedSize)).font(Typography.chartCaption).foregroundStyle(ink))
+            guard let name, size.measure(in: CGSize(width: CGFloat.infinity, height: .infinity)).width <= maxWidth else { continue }
+            context.draw(name, at: CGPoint(x: point.x, y: point.y - 7), anchor: .center)
+            context.draw(size, at: CGPoint(x: point.x, y: point.y + 7), anchor: .center)
         }
+    }
+
+    /// The segment name, shortened with an ellipsis to fit `maxWidth`, or `nil` if even one character won't fit.
+    private func fittedLabel(_ title: String, maxWidth: CGFloat, ink: Color, in context: GraphicsContext) -> GraphicsContext.ResolvedText? {
+        var candidate = title
+        while !candidate.isEmpty {
+            let text = candidate == title ? candidate : candidate + "…"
+            let resolved = context.resolve(Text(text).font(Typography.chartCaption.weight(.semibold)).foregroundStyle(ink))
+            if resolved.measure(in: CGSize(width: CGFloat.infinity, height: .infinity)).width <= maxWidth { return resolved }
+            candidate.removeLast()
+        }
+        return nil
     }
 
     private func labelInk(on fill: SegmentFill) -> Color {

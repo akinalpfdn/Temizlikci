@@ -108,7 +108,7 @@ nonisolated enum L10n {
             LocalizedStringResource("node.smallerFiles", defaultValue: "Smaller Files (\(count))", comment: "Several files under 10 MB, shown as one item. The argument is how many.")
         }
         static let mergedItems = LocalizedStringResource("node.merged", defaultValue: "Smaller Items", comment: "Items too small to draw in the chart, shown together.")
-        static let unattributed = LocalizedStringResource("node.unattributed", defaultValue: "System, Snapshots & Purgeable", comment: "Used disk space that no folder accounts for.")
+        static let unattributed = LocalizedStringResource("node.unattributed", defaultValue: "Other Used Space", comment: "Used disk space that no scanned folder accounts for.")
         static let pending = LocalizedStringResource("node.pending", defaultValue: "Not Scanned Yet", comment: "Space not measured yet while a scan runs.")
         static let needsAccess = LocalizedStringResource("node.needsAccess", defaultValue: "Needs Access", comment: "Badge on a folder that can't be read without Full Disk Access.")
         static let folderKind = LocalizedStringResource("node.kind.folder", defaultValue: "Folder", comment: "Inspector subtitle for a folder.")
@@ -128,7 +128,7 @@ nonisolated enum L10n {
         static let path = LocalizedStringResource("details.path", defaultValue: "Path", comment: "Inspector label for the item's location.")
         static let revealInFinder = LocalizedStringResource("details.revealInFinder", defaultValue: "Reveal in Finder", comment: "Button that shows the item in Finder.")
         static let quickLook = LocalizedStringResource("details.quickLook", defaultValue: "Quick Look", comment: "Button that previews the item.")
-        static let unattributedExplanation = LocalizedStringResource("details.explain.unattributed", defaultValue: "Space macOS reports as used that no folder accounts for: the system volume, APFS snapshots, and purgeable files.", comment: "Inspector explanation for unattributed space.")
+        static let unattributedExplanation = LocalizedStringResource("details.explain.unattributed", defaultValue: "Space macOS reports as used that no scanned folder accounts for: folders Temizlikci can’t read without Full Disk Access, the system volume’s hidden parts, APFS snapshots, and purgeable files.", comment: "Inspector explanation for unattributed space.")
         static let inaccessibleExplanation = LocalizedStringResource("details.explain.inaccessible", defaultValue: "Temizlikci can’t read this folder without Full Disk Access, so its size isn’t included.", comment: "Inspector explanation for a protected folder.")
         static let smallerFilesExplanation = LocalizedStringResource("details.explain.smallerFiles", defaultValue: "Files under 10 MB in this folder, added together.", comment: "Inspector explanation for grouped small files.")
         static let pendingExplanation = LocalizedStringResource("details.explain.pending", defaultValue: "This part of the disk hasn’t been measured yet.", comment: "Inspector explanation for space not scanned yet.")

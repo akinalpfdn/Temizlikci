@@ -18,6 +18,7 @@ nonisolated protocol DiskScanning: Sendable {
 ///   (`/System/Volumes/Data`) out of the totals, so scanning `/` reads the Data volume only once,
 ///   through its firmlinks (`/Users`, `/Applications`, …).
 /// - Unreadable folders become `.inaccessible` nodes instead of failing the scan.
+/// - The file system's virtual root folders (`configuration.skippedPaths`) are never visited.
 /// - Folders in `configuration.unreadFolders` are never opened, so scanning without Full Disk Access
 ///   doesn't trigger one consent prompt per protected folder.
 nonisolated struct FileSystemScanner: DiskScanning {
@@ -158,7 +159,9 @@ nonisolated struct FileSystemScanner: DiskScanning {
             }
             if values.isDirectory == true && values.isSymbolicLink != true {
                 if values.isVolume == true || values.isMountTrigger == true { continue }
-                if configuration.unreadFolders.contains(ScanConfiguration.comparablePath(of: entry)) {
+                let comparable = ScanConfiguration.comparablePath(of: entry)
+                if configuration.skippedPaths.contains(comparable) { continue }
+                if configuration.unreadFolders.contains(comparable) {
                     context.recordInaccessible()
                     listing.fileNodes.append(.inaccessible(url: entry))
                     continue

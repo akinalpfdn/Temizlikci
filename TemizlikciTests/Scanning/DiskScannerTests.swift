@@ -132,6 +132,26 @@ struct DiskScannerTests {
         #expect(result.root.allocatedSize == FixtureTree.allocatedSize(of: work))
     }
 
+    @Test("should skip configured virtual folders entirely, so aliases of the volume aren't counted twice")
+    func skippedPathsIgnored() async throws {
+        let tree = try FixtureTree()
+        let real = try tree.file("data/file.bin", bytes: 1_400_000)
+        try tree.file(".nofollow/data/file.bin", bytes: 1_400_000)
+        var configuration = Self.smallThreshold
+        configuration.skippedPaths = [ScanConfiguration.comparablePath(of: tree.root.appending(path: ".nofollow", directoryHint: .isDirectory))]
+
+        let (result, _) = try await scan(tree.root, configuration: configuration)
+
+        #expect(child(".nofollow", of: result.root) == nil)
+        #expect(result.root.allocatedSize == FixtureTree.allocatedSize(of: real))
+        #expect(result.inaccessibleCount == 0)
+    }
+
+    @Test("should skip the file system's virtual root folders by default")
+    func defaultSkippedPaths() {
+        #expect(ScanConfiguration.standard.skippedPaths == ["/.nofollow", "/.resolve", "/.vol"])
+    }
+
     @Test("should publish progress that never exceeds the final totals, then finish")
     func progressThenFinish() async throws {
         let tree = try FixtureTree()

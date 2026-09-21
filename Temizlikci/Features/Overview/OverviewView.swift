@@ -93,14 +93,16 @@ struct BreadcrumbBar: View {
                         .foregroundStyle(.tertiary)
                         .accessibilityHidden(true)
                 }
-                let isCurrent = index == model.path.count - 1
-                Button { model.goToAncestor(at: index) } label: {
+                if index == model.path.count - 1 {
                     Text(model.title(for: folder))
-                        .fontWeight(isCurrent ? .semibold : .regular)
-                        .foregroundStyle(isCurrent ? .primary : .secondary)
+                        .fontWeight(.semibold)
+                } else {
+                    Button { model.goToAncestor(at: index) } label: {
+                        Text(model.title(for: folder)).foregroundStyle(.secondary)
+                    }
+                    .buttonStyle(.borderless)
+                    .disabled(!model.hasResult)
                 }
-                .buttonStyle(.borderless)
-                .disabled(isCurrent || !model.hasResult)
             }
         }
         .lineLimit(1)

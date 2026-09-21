@@ -176,7 +176,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Space macOS reports as used that no folder accounts for: the system volume, APFS snapshots, and purgeable files."
+            "value": "Space macOS reports as used that no scanned folder accounts for: folders Temizlikci can’t read without Full Disk Access, the system volume’s hidden parts, APFS snapshots, and purgeable files."
           }
         }
       }
@@ -614,13 +614,13 @@
       }
     },
     "node.unattributed": {
-      "comment": "Used disk space that no folder accounts for.",
+      "comment": "Used disk space that no scanned folder accounts for.",
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "System, Snapshots & Purgeable"
+            "value": "Other Used Space"
           }
         }
       }

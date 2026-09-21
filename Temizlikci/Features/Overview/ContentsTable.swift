@@ -19,7 +19,7 @@ struct ContentsTable: View {
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, alignment: .trailing)
             }
-            .width(min: 48, ideal: 56)
+            .width(min: 60, ideal: 68)
         }
         .contextMenu(forSelectionType: String.self) { ids in
             if let id = ids.first, let node = model.node(withID: id) {
