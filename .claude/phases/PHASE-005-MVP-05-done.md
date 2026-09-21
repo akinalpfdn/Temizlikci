@@ -1,5 +1,5 @@
 # Phase 005 (MVP-05) — Actions & access
-Status: ACTIVE
+Status: DONE
 
 ## Goal
 People can safely reclaim space and grant access when needed.
@@ -11,7 +11,7 @@ People can safely reclaim space and grant access when needed.
 - [x] `AccessService`: FDA probe (verify path on macOS 26), contextual onboarding, System Settings deep link, recheck on activation
 - [x] Explicit error states
 
-- [ ] Live test with the developer: Move to Trash + Undo on a real item of their choice; FDA banner + deep link opens the right pane
+- [x] Live test with the developer: Move to Trash (context menu) on a real item, chart updated, Undo and Put Back worked; FDA deep link not reported → verify in Phase 7
 
 ## Acceptance Criteria
 - Move to Trash + Undo work and are tested on fixtures
@@ -21,3 +21,4 @@ People can safely reclaim space and grant access when needed.
 ## Decisions Made This Phase
 - Tests never touch the real Trash (StubTrash); 63 tests pass (+1 opt-in benchmark skipped).
 - Decisions: see DECISIONS "Move to Trash…" and "Full Disk Access…" (2026-09-22).
+- 2026-09-22 — Live test passed for Trash/Undo/Put Back. Developer tried dragging onto the sidebar Trash (not supported) → Lore improvementIdea.
