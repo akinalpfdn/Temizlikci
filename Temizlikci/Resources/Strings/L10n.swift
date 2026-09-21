@@ -2,7 +2,8 @@ import Foundation
 
 /// Every user-facing string in the app. Keys and English values live in `Localizable.xcstrings`;
 /// views consume these resources and never render string literals.
-enum L10n {
+/// Nonisolated because resources are Sendable values that background services also need.
+nonisolated enum L10n {
     enum App {
         static let name = LocalizedStringResource("app.name", defaultValue: "Temizlikci", comment: "The app's name. Keep it untranslated.")
     }
@@ -49,5 +50,19 @@ enum L10n {
     enum Inspector {
         static let noSelectionTitle = LocalizedStringResource("inspector.empty.title", defaultValue: "No Selection", comment: "Inspector title when nothing is selected.")
         static let noSelectionMessage = LocalizedStringResource("inspector.empty.message", defaultValue: "Select a folder in the chart or the list to see its details.", comment: "Inspector message when nothing is selected.")
+    }
+
+    enum ScanErrors {
+        static func rootNotFound(_ name: String) -> LocalizedStringResource {
+            LocalizedStringResource("scanError.rootNotFound", defaultValue: "“\(name)” can’t be found.", comment: "Scan error. The argument is the folder name.")
+        }
+        static func rootNotFolder(_ name: String) -> LocalizedStringResource {
+            LocalizedStringResource("scanError.rootNotFolder", defaultValue: "“\(name)” isn’t a folder.", comment: "Scan error. The argument is the item name.")
+        }
+        static func rootUnreadable(_ name: String) -> LocalizedStringResource {
+            LocalizedStringResource("scanError.rootUnreadable", defaultValue: "Temizlikci can’t read “\(name)”.", comment: "Scan error. The argument is the folder name.")
+        }
+        static let chooseAnotherFolder = LocalizedStringResource("scanError.suggestion.chooseAnother", defaultValue: "Choose another folder to scan.", comment: "Recovery suggestion for a missing scan location.")
+        static let grantAccess = LocalizedStringResource("scanError.suggestion.grantAccess", defaultValue: "Give Temizlikci Full Disk Access in System Settings › Privacy & Security, then scan again.", comment: "Recovery suggestion when a folder can't be read.")
     }
 }

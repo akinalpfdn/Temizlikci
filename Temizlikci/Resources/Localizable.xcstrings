@@ -157,6 +157,66 @@
         }
       }
     },
+    "scanError.rootNotFolder": {
+      "comment": "Scan error. The argument is the item name.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” isn’t a folder."
+          }
+        }
+      }
+    },
+    "scanError.rootNotFound": {
+      "comment": "Scan error. The argument is the folder name.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” can’t be found."
+          }
+        }
+      }
+    },
+    "scanError.rootUnreadable": {
+      "comment": "Scan error. The argument is the folder name.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlikci can’t read “%@”."
+          }
+        }
+      }
+    },
+    "scanError.suggestion.chooseAnother": {
+      "comment": "Recovery suggestion for a missing scan location.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose another folder to scan."
+          }
+        }
+      }
+    },
+    "scanError.suggestion.grantAccess": {
+      "comment": "Recovery suggestion when a folder can't be read.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Give Temizlikci Full Disk Access in System Settings › Privacy & Security, then scan again."
+          }
+        }
+      }
+    },
     "sidebar.action.chooseFolder": {
       "comment": "Sidebar row that opens a panel to pick a folder to scan.",
       "extractionState": "manual",

@@ -1,6 +1,5 @@
 import SwiftUI
 
-@main
 struct TemizlikciApp: App {
     @State private var model = MainViewModel(
         volumeInfo: SystemVolumeInfo(),

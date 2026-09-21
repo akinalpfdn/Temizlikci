@@ -5,6 +5,9 @@ import Testing
 private struct StubVolumeInfo: VolumeInfoProviding {
     let name: String?
     func startupVolumeName() -> String? { name }
+    func usage(ofVolumeContaining url: URL) throws -> VolumeUsage {
+        VolumeUsage(totalCapacity: 0, availableCapacity: 0, availableForImportantUsage: nil)
+    }
 }
 
 private struct StubFolderPicker: FolderPicking {

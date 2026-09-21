@@ -27,7 +27,8 @@ struct StringCatalogTests {
         for file in try SourceTree.swiftFiles(under: ".") {
             let source = try String(contentsOf: file, encoding: .utf8)
             for match in source.matches(of: pattern) {
-                found[String(match.1)] = String(match.2)
+                // Interpolated arguments are stored in the catalog as %@ placeholders.
+                found[String(match.1)] = String(match.2).replacing(/\\\([^)]*\)/, with: "%@")
             }
         }
         return found

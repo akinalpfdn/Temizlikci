@@ -101,3 +101,39 @@ See `rules/common/decisions.md` for the logging format and rules. Append-only.
 **Why:** Tried first. AppKit does not resolve catalog high-contrast variants through those public names; the compiled catalog stores them under internal accessibility appearances (`NSAppearanceNameAccessibilitySystem`, `NSAppearanceNameAccessibilityDarkAqua`) chosen from the system setting. Testing them at runtime would need private API.
 **Trade-offs:** The runtime selection under Increase Contrast is verified by eye, not by a test.
 **Revisit if:** Apple exposes a public way to resolve increased-contrast variants.
+
+---
+
+## 2026-09-22 — Scan "/" and skip volume roots instead of mapping firmlinks
+**Chosen:** The startup disk is scanned from `/`. Below the root, directories that are volume roots or mount triggers (`isVolume`, `isMountTrigger`) are skipped and symlinks are never followed.
+**Alternatives:** Scan `/System/Volumes/Data` and map paths back to their firmlink names; or compare volume identifiers.
+**Why:** Verified on this Mac: `/System/Volumes/Data`, Preboot, and mounted simulator images report `isVolume = true`, while firmlinks (`/Users`, `/opt`, `/private`) are plain directories, and `/` and the Data volume share one volume identifier. So one rule gives familiar paths and counts nothing twice; a volume-identifier rule would have wrongly excluded `/Users`.
+**Trade-offs:** Data-volume folders that have no firmlink (e.g. `.Spotlight-V100`) aren't reached; they fall into the explained "unattributed" space.
+**Revisit if:** A future macOS changes firmlink or volume-group behavior.
+
+---
+
+## 2026-09-22 — Consent-prompting folders are left unread without Full Disk Access
+**Chosen:** `ScanConfiguration.forScan(access:)` probes Full Disk Access (reading the system `TCC.db`, which fails silently). Without it, `ProtectedLocations` (Desktop, Documents, Downloads, Music, Pictures, Movies, iCloud Drive, CloudStorage, Containers, Group Containers) are never opened and appear as "Needs access" nodes.
+**Alternatives:** Read everything and let macOS prompt.
+**Why:** A home-folder benchmark triggered one consent prompt per protected folder (Music observed) and alarmed the developer. That violates HIG Privacy (ask once, in context). The app will ask for Full Disk Access once, with an explanation (Phase 5).
+**Trade-offs:** The folder list is partly empirical: the documented set is Desktop, Documents, Downloads, iCloud Drive, and cloud storage; Music was observed; Pictures, Movies, and app data are included conservatively. An unlisted prompting folder would still prompt once.
+**Revisit if:** Any other folder prompts during a scan (add it), or Apple documents the full set.
+
+---
+
+## 2026-09-22 — Unit tests run in a windowless host
+**Chosen:** `AppEntry` (`@main`) runs a windowless `TestHostApp` with activation policy `.prohibited` when XCTest environment variables are present; otherwise it runs `TemizlikciApp`.
+**Alternatives:** Hostless test bundle (impossible for `@testable import` of an app target); accept windows opening during tests.
+**Why:** Each `xcodebuild test` launched a visible Temizlikci window, which the developer experienced as the machine being flooded.
+**Trade-offs:** A Dock icon may flash briefly at launch, before the policy applies.
+**Revisit if:** UI tests are added (they need the real app).
+
+---
+
+## 2026-09-22 — Scanner memory: autorelease pool per directory; large files come from the tree
+**Chosen:** Each directory read runs inside `autoreleasepool`. The Large Files view will be derived from file nodes above the threshold (10 MB) instead of a separate global top-N structure.
+**Alternatives:** Keep the planned global top-N heap.
+**Why:** Measured on `~/Documents/GitHub` (561k files, 93k folders): peak RSS fell from 336 MB to 219 MB with the pool, with totals still identical to `du -skx`. File nodes above the threshold already are the large files, so a heap would duplicate them.
+**Trade-offs:** The Large Files view traverses the tree (cheap compared to scanning).
+**Revisit if:** Home-folder memory is too high. The next step is storing names instead of URLs in nodes.
