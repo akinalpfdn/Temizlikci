@@ -12,10 +12,10 @@
 
   ],
   "sprintID" : "TEMIZLIK-SPRINT-1",
-  "status" : "sprint",
+  "status" : "inProgress",
   "title" : "Phase 004 (MVP-04): Sunburst, list & navigation",
   "type" : "task",
-  "updatedAt" : "2026-09-21T21:25:53Z"
+  "updatedAt" : "2026-09-21T21:56:31Z"
 }
 ---
 

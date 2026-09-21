@@ -3,18 +3,19 @@
   "codeAnchors" : [
 
   ],
+  "completionNotes" : "Fixed in d4796da. `ScanConfiguration.forScan(access:)` probes Full Disk Access by opening the system TCC.db (silent failure, no prompt). Without FDA, `ProtectedLocations` (Desktop, Documents, Downloads, Music, Pictures, Movies, Library/Mobile Documents, Library/CloudStorage, Library/Containers, Library/Group Containers) are never opened and become `.inaccessible` nodes. Tested on fixtures (`unreadFoldersNotOpened`, `ScanAccessTests`). The benchmark now uses the same configuration and skips `du` when protected folders are inside the root. The one-time, in-context FDA request UI is Phase 5.",
   "createdAt" : "2026-09-21T21:46:04Z",
   "createdBy" : "claude",
   "formatVersion" : 1,
-  "id" : "94",
+  "id" : "TEMIZLIK-0008",
   "priority" : "high",
   "relatedWorkItemIDs" : [
 
   ],
-  "status" : "inbox",
+  "status" : "done",
   "title" : "Scanner triggers a macOS permission prompt per protected folder",
   "type" : "knownIssue",
-  "updatedAt" : "2026-09-21T21:46:04Z"
+  "updatedAt" : "2026-09-21T21:52:07Z"
 }
 ---
 
