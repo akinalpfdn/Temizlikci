@@ -1,0 +1,626 @@
+<meta charset="utf-8">
+<title>Temizlikci Mockups</title>
+<style>
+:root{
+  --page:#eceef1; --ink:#15171a; --ink2:#59606a; --ink3:#8a9099; --rule:rgba(20,24,30,.12);
+  --card:#ffffff; --chip:#e3e6ea; --pagefocus:#0a64d8;
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --page:#101114; --ink:#eef0f3; --ink2:#a0a6ae; --ink3:#737a83; --rule:rgba(255,255,255,.12);
+    --card:#18191c; --chip:#25272b; --pagefocus:#4c9aff;
+  }
+}
+:root[data-theme="dark"]{
+  --page:#101114; --ink:#eef0f3; --ink2:#a0a6ae; --ink3:#737a83; --rule:rgba(255,255,255,.12);
+  --card:#18191c; --chip:#25272b; --pagefocus:#4c9aff;
+}
+*{box-sizing:border-box}
+body{background:var(--page);color:var(--ink);font:14px/1.5 var(--font);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1440px;margin:0 auto;padding-inline:24px;padding-block:40px 80px;display:grid;gap:56px}
+@media (max-width:600px){.wrap{padding-inline:16px}}
+h1,h2,h3{margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:34px;font-weight:700;letter-spacing:-.02em}
+h2{font-size:22px;font-weight:650}
+h3{font-size:15px;font-weight:600}
+p{margin:0;max-width:68ch}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
+.lede{font-size:17px;color:var(--ink2);max-width:62ch}
+header.top{display:grid;gap:14px}
+.direction{font-size:19px;line-height:1.45;max-width:60ch;color:var(--ink)}
+.direction b{font-weight:650}
+.note{font-size:12.5px;color:var(--ink3)}
+section{display:grid;gap:20px}
+.controls{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center}
+.seg{display:inline-flex;background:var(--chip);border-radius:9px;padding:2px;gap:2px;flex-wrap:wrap}
+.seg button{font:500 12.5px var(--font);color:var(--ink2);background:transparent;border:0;border-radius:7px;padding:5px 11px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.seg button:focus-visible,.decisions button:focus-visible{outline:2px solid var(--pagefocus);outline-offset:1px}
+.ctl-label{font-size:12px;color:var(--ink3);margin-right:6px}
+.stage-scroll{overflow-x:auto;border-radius:22px}
+.stage{min-width:1340px;padding:38px 40px 44px;border-radius:22px;position:relative;
+  background:
+   radial-gradient(1200px 520px at 12% 0%, #a9c7ec 0%, transparent 60%),
+   radial-gradient(900px 600px at 95% 100%, #b8e0cf 0%, transparent 55%),
+   linear-gradient(160deg,#d9e3ef,#e9eef2);}
+.stage.dark{background:
+   radial-gradient(1200px 520px at 12% 0%, #1e3a5f 0%, transparent 60%),
+   radial-gradient(900px 600px at 95% 100%, #173d33 0%, transparent 55%),
+   linear-gradient(160deg,#0f141b,#12161a);}
+.caption{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--ink2)}
+.decisions{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.decision{background:var(--card);border-radius:14px;padding:18px 18px 16px;display:grid;gap:8px;align-content:start;border:1px solid var(--rule)}
+.decision p{font-size:13.5px;color:var(--ink2)}
+.decision .tag{justify-self:start;font-size:11px;font-weight:600;color:var(--ink2);background:var(--chip);border-radius:6px;padding:2px 7px}
+.palette{display:grid;gap:22px}
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:12px}
+.sw{border-radius:12px;overflow:hidden;border:1px solid var(--rule);background:var(--card);font-size:12px}
+.sw .chips{display:grid;grid-template-columns:1fr 1fr;height:56px}
+.sw .chips span{display:flex;align-items:flex-end;padding:6px;color:#fff;font:500 10.5px var(--mono)}
+.sw .meta{padding:8px 10px;display:grid;gap:1px}
+.sw .meta b{font-weight:600}
+.sw .meta span{color:var(--ink3)}
+table.val{border-collapse:collapse;font-size:13px;width:100%;min-width:560px}
+table.val th,table.val td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+table.val th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);font-weight:600}
+table.val td.num{font-variant-numeric:tabular-nums}
+.pass{color:#1a8f3a;font-weight:600}.warn{color:#b67600;font-weight:600}.fail{color:#d03b3b;font-weight:600}
+:root[data-theme="dark"] .pass{color:#4cd07a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .pass{color:#4cd07a}}
+.tablebox{overflow-x:auto;background:var(--card);border-radius:14px;border:1px solid var(--rule);padding:6px 8px}
+.icons{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-end}
+.icons figure{margin:0;display:grid;gap:8px;justify-items:center;font-size:12px;color:var(--ink2)}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px;align-items:start}
+
+/* ================= macOS window ================= */
+.mac{
+  --w-bg:#ffffff; --w-label:rgba(0,0,0,.85); --w-2:rgba(0,0,0,.5); --w-3:rgba(0,0,0,.28); --w-sep:rgba(0,0,0,.1);
+  --w-fill:rgba(0,0,0,.045); --w-sel:rgba(0,0,0,.075); --w-row:rgba(0,0,0,.025);
+  --w-side:rgba(246,246,249,.68); --w-side-b:rgba(0,0,0,.07);
+  --w-glass:rgba(255,255,255,.72); --w-glass-b:rgba(0,0,0,.09);
+  --accent:#007aff; --accent-soft:rgba(0,122,255,.12);
+  --neutral:#c9c8c3; --dim:#e6e5e1; --hatch:#b9b8b2;
+  --good:#0ca30c; --good-ink:#006300; --warn:#fab219; --warn-ink:#8a5a00; --keep:#8e8e93;
+  --shadow:0 30px 80px rgba(20,30,50,.28),0 0 0 .5px rgba(0,0,0,.25);
+  color-scheme:light;
+  font-family:var(--font); color:var(--w-label);
+  width:1260px; height:720px; margin:0 auto; border-radius:26px; overflow:hidden; position:relative;
+  background:var(--w-bg); box-shadow:var(--shadow); display:grid; grid-template-columns:232px 1fr auto;
+  font-size:13px; line-height:1.35;
+}
+.mac.dark{
+  --w-bg:#1e1e1e; --w-label:rgba(255,255,255,.86); --w-2:rgba(255,255,255,.55); --w-3:rgba(255,255,255,.27); --w-sep:rgba(255,255,255,.1);
+  --w-fill:rgba(255,255,255,.06); --w-sel:rgba(255,255,255,.1); --w-row:rgba(255,255,255,.03);
+  --w-side:rgba(48,48,52,.62); --w-side-b:rgba(255,255,255,.08);
+  --w-glass:rgba(58,58,62,.72); --w-glass-b:rgba(255,255,255,.1);
+  --accent:#0a84ff; --accent-soft:rgba(10,132,255,.2);
+  --neutral:#4b4b48; --dim:#2f2f2d; --hatch:#5a5a56;
+  --good-ink:#35c35a; --warn-ink:#fab219; --keep:#98989d;
+  --shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 .5px rgba(255,255,255,.18);
+  color-scheme:dark;
+}
+.mac button{font-family:inherit;color:inherit}
+.mac :focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 55%,transparent);outline-offset:1px;border-radius:6px}
+/* sidebar: floating Liquid Glass panel (control layer) */
+.side{margin:8px 0 8px 8px;border-radius:18px;background:var(--w-side);border:.5px solid var(--w-side-b);
+  backdrop-filter:blur(30px) saturate(1.6);-webkit-backdrop-filter:blur(30px) saturate(1.6);
+  box-shadow:0 1px 0 rgba(255,255,255,.35) inset,0 6px 24px rgba(0,0,0,.08);padding:14px 10px;display:flex;flex-direction:column;gap:14px;z-index:2}
+.lights{display:flex;gap:8px;padding:2px 6px 6px}
+.lights i{width:12px;height:12px;border-radius:50%;display:block;box-shadow:0 0 0 .5px rgba(0,0,0,.18) inset}
+.lights i:nth-child(1){background:#ff5f57}.lights i:nth-child(2){background:#febc2e}.lights i:nth-child(3){background:#28c840}
+.sgroup{display:grid;gap:1px}
+.shead{font-size:11px;font-weight:600;color:var(--w-2);padding:0 8px 4px}
+.srow{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:8px;border:0;background:none;text-align:left;cursor:pointer;width:100%;font-size:13px}
+.srow svg{color:var(--accent);flex:none}
+.srow .tr{margin-left:auto;color:var(--w-2);font-size:12px;font-variant-numeric:tabular-nums}
+.srow[aria-current="true"]{background:var(--w-sel)}
+.srow:hover{background:var(--w-fill)}
+/* main column */
+.main{display:grid;grid-template-rows:52px 1fr;min-width:0;position:relative}
+.tb{display:flex;align-items:center;gap:10px;padding:0 12px 0 14px}
+.glass{background:var(--w-glass);border:.5px solid var(--w-glass-b);border-radius:999px;
+  backdrop-filter:blur(20px) saturate(1.5);-webkit-backdrop-filter:blur(20px) saturate(1.5);
+  box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 2px 10px rgba(0,0,0,.08);display:inline-flex;align-items:center;height:34px;padding:0 3px}
+.glass button{height:28px;min-width:32px;padding:0 8px;border-radius:999px;border:0;background:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;color:var(--w-label)}
+.glass button:hover{background:var(--w-fill)}
+.glass button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.glass button:disabled{color:var(--w-3);cursor:default;background:none}
+.ttl{display:grid;line-height:1.15;margin-left:4px;min-width:0}
+.ttl b{font-size:15px;font-weight:650;white-space:nowrap}
+.ttl span{font-size:11.5px;color:var(--w-2);white-space:nowrap}
+.spacer{flex:1}
+.search{display:inline-flex;align-items:center;gap:6px;padding:0 12px;width:190px;color:var(--w-2)}
+.search input{border:0;background:none;outline:none;font:13px var(--font);color:var(--w-label);width:100%}
+.search input::placeholder{color:var(--w-2)}
+.progress{display:inline-flex;align-items:center;gap:10px;padding:0 6px 0 14px;font-size:12px;color:var(--w-2)}
+.bar{width:150px;height:5px;border-radius:3px;background:var(--w-fill);overflow:hidden}
+.bar i{display:block;height:100%;width:59.5%;background:var(--accent);border-radius:3px}
+/* content */
+.content{min-height:0;display:grid;grid-template-rows:auto auto 1fr;padding:0 18px 14px 18px;gap:8px;position:relative}
+.crumbs{display:flex;align-items:center;gap:2px;font-size:12px;color:var(--w-2);flex-wrap:wrap;min-height:22px}
+.crumbs button{border:0;background:none;padding:2px 5px;border-radius:5px;cursor:pointer;color:var(--w-2);font-size:12px}
+.crumbs button:hover{background:var(--w-fill);color:var(--w-label)}
+.crumbs button[aria-current="page"]{color:var(--w-label);font-weight:600}
+.crumbs .chev{color:var(--w-3)}
+.banner{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:var(--w-fill);border:.5px solid var(--w-sep)}
+.banner svg{color:var(--accent);flex:none;margin-top:2px}
+.banner b{font-weight:600}
+.banner p{color:var(--w-2);font-size:12.5px}
+.banner .acts{margin-left:auto;display:flex;gap:8px;flex:none}
+.btn{height:24px;padding:0 12px;border-radius:999px;border:.5px solid var(--w-glass-b);background:var(--w-glass);font-size:12.5px;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.06);white-space:nowrap}
+.btn:hover{filter:brightness(.97)}
+.btn.primary{background:var(--accent);color:#fff;border-color:transparent}
+.btn.big{height:32px;padding:0 18px;font-size:13.5px}
+.split{display:grid;grid-template-columns:360px 1fr;gap:18px;min-height:0}
+.chartbox{display:grid;grid-template-rows:1fr auto;justify-items:center;min-height:0}
+.chartbox svg{width:360px;height:360px;display:block}
+.hint{font-size:11.5px;color:var(--w-2);text-align:center}
+svg .seg{cursor:pointer;transition:opacity .15s}
+svg.hovering .seg:not(.hot){opacity:.42}
+svg .seg.sel{stroke:var(--w-label)!important;stroke-width:2px}
+svg .pending{animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.45}}
+@media (prefers-reduced-motion: reduce){svg .pending{animation:none}svg .seg{transition:none}}
+.center-hit{cursor:pointer}
+/* list */
+.list{display:grid;grid-template-rows:auto 1fr;min-height:0;border-radius:12px;background:var(--w-bg);border:.5px solid var(--w-sep);overflow:hidden}
+.lhead,.lrow{display:grid;grid-template-columns:1fr 56px 64px 44px;align-items:center;gap:10px;padding:0 12px}
+.lhead{height:28px;font-size:11px;font-weight:600;color:var(--w-2);border-bottom:.5px solid var(--w-sep)}
+.lhead button{border:0;background:none;font:inherit;color:inherit;text-align:left;padding:0;cursor:pointer}
+.lhead .r{text-align:right}
+.lbody{overflow:auto}
+.lrow{min-height:30px;padding-block:3px;cursor:default;font-size:13px}
+.lrow:nth-child(even){background:var(--w-row)}
+.lrow.hot{background:var(--w-fill)}
+.lrow.sel{background:var(--accent);color:#fff}
+.lrow.sel .sub,.lrow.sel .r{color:rgba(255,255,255,.85)}
+.lrow .nm{display:flex;align-items:center;gap:8px;min-width:0}
+.lrow .nm span.t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dot{width:10px;height:10px;border-radius:3px;flex:none}
+.sub{color:var(--w-2);font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.r{text-align:right;font-variant-numeric:tabular-nums}
+.sizebar{height:6px;border-radius:3px;background:var(--w-fill);overflow:hidden}
+.sizebar i{display:block;height:100%;border-radius:3px}
+.badge{display:inline-flex;align-items:center;gap:3px;font-size:10.5px;font-weight:600;border-radius:5px;padding:1px 5px;white-space:nowrap;flex:none}
+.badge.safe{color:var(--good-ink);background:color-mix(in srgb,var(--good) 16%,transparent)}
+.badge.tool{color:var(--warn-ink);background:color-mix(in srgb,var(--warn) 22%,transparent)}
+.badge.keep{color:var(--w-2);background:var(--w-fill)}
+.lrow.sel .badge{color:#fff;background:rgba(255,255,255,.22)}
+.spin{width:11px;height:11px;border-radius:50%;border:2px solid var(--w-3);border-top-color:var(--accent);animation:sp 1s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.spin{animation:none}}
+.foot{font-size:11.5px;color:var(--w-2);display:flex;gap:14px;justify-content:space-between}
+/* inspector (control layer, trailing) */
+.insp{width:250px;border-left:.5px solid var(--w-sep);padding:16px 16px 14px;display:flex;flex-direction:column;gap:14px;overflow:auto;background:var(--w-bg)}
+.insp[hidden]{display:none!important}
+.ih{display:flex;gap:10px;align-items:center}
+.ih .icon{width:40px;height:40px;border-radius:9px;display:grid;place-items:center;color:#fff;flex:none}
+.ih b{display:block;font-size:14px;font-weight:650;word-break:break-word}
+.ih span{font-size:12px;color:var(--w-2)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:12px}
+.kv dt{color:var(--w-2)}
+.kv dd{margin:0;text-align:right;font-variant-numeric:tabular-nums;word-break:break-all}
+.card{border-radius:12px;padding:12px;display:grid;gap:8px;background:var(--w-fill);font-size:12.5px}
+.card .ct{display:flex;align-items:center;gap:6px;font-weight:650;font-size:13px}
+.card p{color:var(--w-2)}
+.card.safe .ct{color:var(--good-ink)}.card.tool .ct{color:var(--warn-ink)}.card.keep .ct{color:var(--w-label)}
+.acts-col{display:grid;gap:8px;margin-top:auto}
+.acts-col .btn{height:28px;width:100%}
+.sep{height:.5px;background:var(--w-sep)}
+/* empty state */
+.empty{display:grid;place-items:center;text-align:center;gap:14px;align-content:center;height:100%}
+.empty p{color:var(--w-2);max-width:40ch;margin:0 auto}
+.empty h2{font-size:22px}
+.empty .row{display:flex;gap:10px;justify-content:center}
+/* developer */
+.dev{overflow:auto;display:grid;gap:18px;align-content:start;padding-bottom:10px}
+.devsum{display:grid;gap:8px}
+.stack{display:flex;height:14px;border-radius:7px;overflow:hidden;gap:2px;background:var(--w-bg)}
+.stack i{display:block;height:100%}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--w-2)}
+.legend span{display:inline-flex;gap:6px;align-items:center}
+.legend b{color:var(--w-label);font-weight:600;font-variant-numeric:tabular-nums}
+.group{display:grid;gap:6px}
+.group h3{font-size:13px;display:flex;justify-content:space-between;color:var(--w-label)}
+.group h3 span{color:var(--w-2);font-weight:500;font-variant-numeric:tabular-nums}
+.inset{border-radius:12px;border:.5px solid var(--w-sep);overflow:hidden}
+.drow{display:grid;grid-template-columns:1fr auto 70px 150px;gap:12px;align-items:center;padding:8px 12px;border-top:.5px solid var(--w-sep)}
+.drow:first-child{border-top:0}
+.drow .nm b{display:block;font-weight:500}
+.drow .btn{justify-self:end}
+/* toast + alert */
+.toast{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:5;display:flex;gap:12px;align-items:center;padding:0 6px 0 16px;height:40px;font-size:12.5px;white-space:nowrap}
+.toast .btn{height:28px}
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.18);display:grid;place-items:center;z-index:10}
+.alert{width:300px;border-radius:24px;padding:22px 20px 16px;display:grid;gap:10px;justify-items:center;text-align:center;
+  background:var(--w-glass);border:.5px solid var(--w-glass-b);backdrop-filter:blur(40px) saturate(1.6);-webkit-backdrop-filter:blur(40px) saturate(1.6);
+  box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.alert b{font-size:13.5px;font-weight:700}
+.alert p{font-size:12px;color:var(--w-2)}
+.alert .row{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;margin-top:6px}
+.alert .btn{height:30px;width:100%;font-size:13px}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <span class="eyebrow">Phase 001 · Design direction · For approval</span>
+    <h1>Temizlikci</h1>
+    <p class="direction"><b>Visual direction:</b> a calm, instrument-grade Mac utility — native macOS 26 chrome, a quiet neutral canvas, and the sunburst as the only source of color on screen.</p>
+    <p class="note">Interactive prototype, not a screenshot. Example data is modeled on the scans of your Mac from 21 September 2026; item names and sizes are illustrative. Colors are the validated palette below; everything else uses macOS system colors read from your Mac.</p>
+  </header>
+
+  <section aria-labelledby="proto-h">
+    <h2 id="proto-h">Main window</h2>
+    <div class="controls">
+      <div><span class="ctl-label">State</span>
+        <div class="seg" role="group" aria-label="Window state" id="stateSeg">
+          <button data-v="overview" aria-pressed="true">Overview</button>
+          <button data-v="scanning" aria-pressed="false">Scanning</button>
+          <button data-v="empty" aria-pressed="false">First launch</button>
+          <button data-v="fda" aria-pressed="false">Needs Full Disk Access</button>
+          <button data-v="developer" aria-pressed="false">Developer</button>
+          <button data-v="alert" aria-pressed="false">Delete runtime alert</button>
+        </div>
+      </div>
+      <div><span class="ctl-label">Appearance</span>
+        <div class="seg" role="group" aria-label="Window appearance" id="appSeg">
+          <button data-v="auto" aria-pressed="true">Auto</button>
+          <button data-v="light" aria-pressed="false">Light</button>
+          <button data-v="dark" aria-pressed="false">Dark</button>
+        </div>
+      </div>
+    </div>
+    <div class="stage-scroll"><div class="stage" id="stage"><div class="mac" id="mac"></div></div></div>
+    <div class="caption">
+      <span>Try it: hover the rings, click to select, double-click to open a folder, click the center to go up. Toggle <b>Highlight Reclaimable</b> in the toolbar. Select <i>DerivedData</i> and move it to the Trash to see Undo.</span>
+      <span>1260 × 720 pt window</span>
+    </div>
+  </section>
+
+  <section aria-labelledby="dec-h">
+    <h2 id="dec-h">Decisions to approve</h2>
+    <div class="decisions">
+      <div class="decision"><span class="tag">Layout</span><h3>Sidebar · content · inspector</h3><p>The sidebar holds places (Locations) and views (Insights), never the folder tree: HIG caps sidebars at two levels. The hierarchy lives in the content area as a breadcrumb, the sunburst, and a list. The inspector shows the selected item and its actions (Option-Command-I).</p></div>
+      <div class="decision"><span class="tag">Color</span><h3>Color by top-level folder</h3><p>Each first-ring folder takes a palette slot in size order. Its descendants keep that hue and get lighter the deeper they sit, with 2 px separators between segments. The ninth folder onward joins a neutral “Smaller items” segment. The list shows the same swatches, so color never carries meaning on its own.</p></div>
+      <div class="decision"><span class="tag">Insight</span><h3>Highlight Reclaimable</h3><p>A toolbar toggle turns the same chart into a cleanup map. Items that are safe to remove turn green, items that need their own tool turn amber, and everything else fades to gray. Each state also has a label and a symbol, never color alone.</p></div>
+      <div class="decision"><span class="tag">Vocabulary</span><h3>Three safety levels</h3><p><b>Safe to Remove</b>: regenerates by itself. <b>Remove with Tool</b>: Xcode, simctl, or Android Studio removes it. <b>Keep</b>: your data, so no delete action is offered. Each level comes with a one-sentence reason in the inspector.</p></div>
+      <div class="decision"><span class="tag">Interaction</span><h3>Select, open, go up</h3><p>Click selects and updates the inspector. Double-click or Return opens the folder. Clicking the center or pressing Escape goes up. The selected item's name, size, and share are always written in the center, so nothing depends on hovering.</p></div>
+      <div class="decision"><span class="tag">Honesty</span><h3>Explain the gap</h3><p>“System, snapshots &amp; purgeable” and “Needs access” are hatched segments with an explanation. Moving to the Trash shows an Undo toast and a reminder that space is freed only when the Trash is emptied. No alert for undoable actions; an alert with a specific verb only for irreversible tool deletions.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="pal-h" class="palette">
+    <h2 id="pal-h">Chart palette</h2>
+    <p class="lede">macOS system colors are tuned for controls, not for adjacent chart segments. Validated against your Mac's real surfaces, they fail: yellow sits outside the lightness band in light mode, and in dark mode green and orange collapse for deuteranopia (ΔE 4.9). The chart therefore uses a custom palette in the same color families, with separate light and dark values. Every other color in the app stays a system color.</p>
+    <div class="swatches" id="swatches"></div>
+    <div class="tablebox">
+      <table class="val">
+        <thead><tr><th>Check</th><th>Light · on #ffffff</th><th>Dark · on #1e1e1e</th><th>System colors (rejected)</th></tr></thead>
+        <tbody>
+          <tr><td>Lightness band</td><td class="pass">Pass</td><td class="pass">Pass</td><td class="fail">Fail · yellow L 0.87 (light); 4 slots (dark)</td></tr>
+          <tr><td>Chroma floor</td><td class="pass">Pass</td><td class="pass">Pass</td><td class="pass">Pass</td></tr>
+          <tr><td>Colorblind separation (adjacent)</td><td class="pass num">Pass · worst ΔE 9.1</td><td class="pass num">Pass · worst ΔE 8.4</td><td class="fail num">Fail · green↔orange ΔE 4.9 (dark)</td></tr>
+          <tr><td>Normal-vision separation</td><td class="pass num">Pass · worst ΔE 19.6</td><td class="pass num">Pass · worst ΔE 19.3</td><td class="pass num">Pass · 26.4</td></tr>
+          <tr><td>Contrast vs surface</td><td class="warn">Warn · 3 slots below 3:1, relieved by the list and labels</td><td class="pass">Pass · all ≥ 3:1</td><td class="warn">Warn · 4 slots</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Increased Contrast variants are still to be derived and validated in Phase 2. The runtime check here could not read them from AppKit.</p>
+  </section>
+
+  <section aria-labelledby="icon-h">
+    <h2 id="icon-h">App icon concept</h2>
+    <div class="two">
+      <div class="icons" id="icons"></div>
+      <p class="lede">Three rings of a sunburst, with one outer segment swept loose and catching the light. It stands for the space you get back. Built as separate layers (background, rings, lifted segment) so Icon Composer can render it as Liquid Glass in the default, dark, clear, and tinted appearances.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+(()=>{
+const SLOTS={light:["#2a78d6","#eb6834","#1baf7a","#eda100","#e87ba4","#008300","#4a3aa7","#e34948"],
+             dark:["#3987e5","#d95926","#199e70","#c98500","#d55181","#008300","#9085e9","#e66767"]};
+const SLOTNAMES=["Blue","Orange","Aqua","Yellow","Magenta","Green","Violet","Red"];
+
+/* ---------- example data (GB) ---------- */
+const flutter="Flutter build output. Running flutter build recreates it.";
+const BASE=()=>({n:"Macintosh HD",s:420,c:[
+ {n:"Users",s:253,c:[{n:"akinalpfidan",s:252,c:[
+   {n:"Library",s:108,c:[
+     {n:"Developer",s:39,c:[
+       {n:"Xcode",s:36,c:[
+         {n:"DerivedData",s:15.0,k:"safe",eco:"Xcode",why:"Build products and indexes. Xcode regenerates them on the next build."},
+         {n:"iOS DeviceSupport",s:11.0,k:"safe",eco:"Xcode",why:"Debug symbols copied from your devices. Xcode copies them again the next time a device connects."},
+         {n:"Archives",s:10.2,k:"keep",eco:"Xcode",why:"Builds you submitted. Their dSYMs are needed to read crash reports for versions people still use."}]},
+       {n:"CoreSimulator",s:3.1,k:"tool",eco:"Xcode",tool:"Manage Simulators…",why:"Simulator devices. Remove them with Xcode so its device list stays consistent."}]},
+     {n:"Application Support",s:21,c:[{n:"Google",s:10.8,c:[{n:"Chrome",s:10.1,k:"keep",eco:"Apps & Caches",why:"Your Chrome profile: history, passwords, and extensions."}]},{n:"Code",s:2.5},{n:"Godot",s:1.9},{n:"mqvi-desktop",s:1.2}]},
+     {n:"Caches",s:16,c:[{n:"go-build",s:6.4,k:"safe",eco:"Go",why:"Go build cache. Go rebuilds it as needed."},{n:"Google",s:4.0,k:"safe",eco:"Apps & Caches",why:"Browser cache. Chrome refills it as you browse."},{n:"com.microsoft.VSCode.ShipIt",s:1.4,k:"safe",eco:"Apps & Caches",why:"Leftover Visual Studio Code update files."}]},
+     {n:"Group Containers",s:12,c:[{n:"group.net.whatsapp.WhatsApp.shared",s:11.9,k:"keep",eco:"Apps & Caches",why:"WhatsApp messages and media. Clear media inside WhatsApp › Settings › Storage."}]},
+     {n:"Android",s:10,c:[{n:"sdk",s:9.8,k:"tool",eco:"Android",tool:"Open SDK Manager",why:"Android SDK packages. Remove them with the SDK Manager in Android Studio."}]},
+     {n:"Containers",s:3.8}]},
+   {n:"Documents",s:73,c:[{n:"GitHub",s:71,c:[
+     {n:"SpaceCombatPOC",s:9.8},{n:"Edun",s:9.6},{n:"FeedOpti-docker",s:8.3},
+     {n:"purrpair",s:6.4,c:[{n:"build",s:2.4,k:"safe",eco:"Flutter",why:flutter}]},
+     {n:"typewall",s:5.9,c:[{n:"build",s:5.0,k:"safe",eco:"Flutter",why:flutter}]},
+     {n:"BeamOfLights",s:4.9},
+     {n:"Akira",s:4.8,c:[{n:".next",s:1.6,k:"safe",eco:"Node",why:"Next.js build cache. The next build recreates it."},{n:"node_modules",s:1.4,k:"safe",eco:"Node",why:"Installed npm packages. Run npm install to restore them."}]},
+     {n:"sabla",s:4.7,c:[{n:"build",s:3.4,k:"safe",eco:"Flutter",why:flutter}]},
+     {n:"calldif",s:4.4,c:[{n:"build",s:3.2,k:"safe",eco:"Flutter",why:flutter}]},
+     {n:"Spire",s:4.2}]}]},
+   {n:".gradle",s:12,c:[{n:"caches",s:10.6,k:"safe",eco:"Android",why:"Gradle dependency and build caches. Gradle downloads them again on the next build."}]},
+   {n:".android",s:11,c:[{n:"avd",s:10.9,k:"tool",eco:"Android",tool:"Open Device Manager",why:"Android emulators. Remove them from the Device Manager in Android Studio."}]},
+   {n:"Downloads",s:8.7},{n:".vscode",s:5.9},{n:"flutter",s:3.2}]}]},
+ {n:"Applications",s:30,c:[{n:"Unity",s:13},{n:"Xcode.app",s:4.6},{n:"Android Studio.app",s:3.0},{n:"Google Chrome.app",s:2.1},{n:"Visual Studio Code.app",s:1.5}]},
+ {n:"Library",s:35,c:[{n:"Developer",s:30,c:[
+   {n:"CoreSimulator",s:26,k:"tool",eco:"Xcode",tool:"Delete Runtime…",why:"The iOS 26.5 simulator runtime and its caches. Remove it with Xcode › Settings › Components."},
+   {n:"CommandLineTools",s:2.9,k:"keep",eco:"Xcode",why:"Needed by git, clang, and Homebrew."}]}]},
+ {n:"opt",s:13,c:[{n:"homebrew",s:13}]},
+ {n:"private",s:8.3},
+ {n:"System, snapshots & purgeable",s:80.7,sys:true,why:"Space macOS reports as used that no folder accounts for: the system volume, APFS snapshots, and purgeable files."}
+]});
+function fdaTree(){const t=BASE();const sys=t.c.find(x=>x.sys);sys.s=62;t.c.push({n:"Needs access",s:18.7,lock:true,why:"Folders Temizlikci can't read without Full Disk Access, such as Mail, Messages, and Safari."});return t;}
+function scanTree(){return {n:"Macintosh HD",s:420,scan:true,c:[
+  {n:"Users",s:212,partial:true,c:[{n:"akinalpfidan",s:211,partial:true,c:[{n:"Library",s:108,c:[{n:"Developer",s:39},{n:"Application Support",s:21},{n:"Caches",s:16},{n:"Group Containers",s:12},{n:"Android",s:10}]},{n:"Documents",s:73},{n:".gradle",s:12},{n:".android",s:11}]}]},
+  {n:"Applications",s:30,c:[{n:"Unity",s:13},{n:"Xcode.app",s:4.6},{n:"Android Studio.app",s:3.0}]},
+  {n:"Not scanned yet",s:178,pending:true}]};}
+
+function prep(node,parent){node.parent=parent||null;
+  if(node.c&&node.c.length){const sum=node.c.reduce((a,b)=>a+b.s,0);const rem=+(node.s-sum).toFixed(2);
+    if(rem>0.05&&!node.partial)node.c.push({n:"Other files",s:rem,other:true});
+    node.c.forEach(ch=>prep(ch,node));}
+  return node;}
+const pathOf=n=>{const p=[];while(n){p.unshift(n);n=n.parent;}return p;};
+const fmt=g=>g<1?Math.round(g*1000)+" MB":(g>=100?Math.round(g):g.toFixed(1))+" GB";
+const pct=(a,b)=>{const v=a/b*100;return (v<1?v.toFixed(1):Math.round(v))+"%";};
+
+/* ---------- color ---------- */
+function mix(h1,h2,t){const a=[1,3,5].map(i=>parseInt(h1.substr(i,2),16)),b=[1,3,5].map(i=>parseInt(h2.substr(i,2),16));
+  return "#"+a.map((v,i)=>Math.round(v+(b[i]-v)*t).toString(16).padStart(2,"0")).join("");}
+function lum(h){const c=[1,3,5].map(i=>parseInt(h.substr(i,2),16)/255).map(v=>v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4));return .2126*c[0]+.7152*c[1]+.0722*c[2];}
+
+/* ---------- state ---------- */
+const S={view:"overview",app:"auto",tree:null,root:null,sel:null,hover:null,hl:false,q:"",sort:"size",trash:0,toast:null,side:"disk"};
+const mac=document.getElementById("mac"),stage=document.getElementById("stage");
+function isDark(){if(S.app!=="auto")return S.app==="dark";const t=document.documentElement.getAttribute("data-theme");
+  if(t)return t==="dark";return matchMedia("(prefers-color-scheme: dark)").matches;}
+function css(v){return getComputedStyle(mac).getPropertyValue(v).trim();}
+
+function load(view){
+  S.view=view;S.hover=null;S.q="";S.toast=null;
+  S.tree=prep(view==="fda"?fdaTree():view==="scanning"?scanTree():BASE());
+  S.root=S.tree;S.sel=S.tree;S.side=view==="developer"?"dev":"disk";
+  if(view==="alert"){const lib=S.tree.c.find(x=>x.n==="Library");S.root=lib.c[0];S.sel=S.root.c.find(x=>x.k==="tool");}
+  render();
+}
+
+/* slot for a node = index of its ancestor among current root's ranked children */
+function rankMap(){const m=new Map();let i=0;
+  [...S.root.c||[]].sort((a,b)=>b.s-a.s).forEach(ch=>{if(ch.other||ch.sys||ch.lock||ch.pending)return;if(i<8)m.set(ch,i++);});return m;}
+function safetyOf(n){let x=n;while(x){if(x.k)return x.k;x=x.parent;}return null;}
+function colorFor(n,depth,rm){
+  const dark=isDark(),surf=dark?"#1e1e1e":"#ffffff";
+  if(n.pending)return "none";
+  if(n.sys)return "url(#hatchSys)";
+  if(n.lock)return "url(#hatchLock)";
+  if(S.hl){const k=safetyOf(n);if(k==="safe")return depth>1?mix("#0ca30c",surf,dark?.18:.22):"#0ca30c";
+    if(k==="tool")return depth>1?mix("#fab219",surf,dark?.18:.22):"#fab219";return css("--dim");}
+  if(n.other||n.small)return css("--neutral");
+  let top=n;while(top.parent&&top.parent!==S.root)top=top.parent;
+  const i=rm.get(top);if(i===undefined)return css("--neutral");
+  const base=SLOTS[dark?"dark":"light"][i];
+  return depth===1?base:mix(base,surf,dark?(depth===2?.22:.4):(depth===2?.3:.52));}
+
+/* ---------- sunburst ---------- */
+const R=[[92,146],[149,186],[189,213]],CX=215,CY=215,MIN=.02;
+function pt(r,a){return [CX+r*Math.sin(a),CY-r*Math.cos(a)];}
+function arcPath(r0,r1,a0,a1){
+  if(a1-a0>=Math.PI*2-1e-4){const m=a0+Math.PI;return arcPath(r0,r1,a0,m)+arcPath(r0,r1,m,a1);}
+  const L=a1-a0>Math.PI?1:0,[x1,y1]=pt(r1,a0),[x2,y2]=pt(r1,a1),[x3,y3]=pt(r0,a1),[x4,y4]=pt(r0,a0);
+  return `M${x1.toFixed(2)},${y1.toFixed(2)}A${r1},${r1} 0 ${L} 1 ${x2.toFixed(2)},${y2.toFixed(2)}L${x3.toFixed(2)},${y3.toFixed(2)}A${r0},${r0} 0 ${L} 0 ${x4.toFixed(2)},${y4.toFixed(2)}Z`;}
+function segs(){const out=[];
+  (function walk(node,a0,a1,d){if(d>3||!node.c)return;const kids=[...node.c].sort((a,b)=>b.s-a.s);let a=a0,small=0,sn=0;
+    for(const ch of kids){const span=(ch.s/node.s)*(a1-a0);
+      if(span<MIN&&!ch.sys&&!ch.lock&&!ch.pending){small+=span;sn++;continue;}
+      out.push({n:ch,a0:a,a1:a+span,d});walk(ch,a,a+span,d+1);a+=span;}
+    if(small>0){out.push({n:{n:`Smaller items (${sn})`,s:small/(a1-a0)*node.s,small:true,parent:node},a0:a,a1:a+small,d});}
+  })(S.root,0,Math.PI*2,1);return out;}
+function svgChart(){
+  const rm=rankMap(),surf=css("--w-bg"),list=segs(),focus=S.hover||S.sel;
+  let p=`<svg viewBox="0 0 430 430" role="img" aria-label="Sunburst chart of ${esc(S.root.n)}, ${fmt(S.root.s)}" class="${S.hover?"hovering":""}" id="sb">
+  <defs><pattern id="hatchSys" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="${css("--dim")}"/><line x1="0" y1="0" x2="0" y2="6" stroke="${css("--hatch")}" stroke-width="2"/></pattern>
+  <pattern id="hatchLock" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(135)"><rect width="6" height="6" fill="${css("--dim")}"/><line x1="0" y1="0" x2="0" y2="6" stroke="${isDark()?"#7a7a75":"#8f8e88"}" stroke-width="2"/></pattern></defs>`;
+  list.forEach((g,i)=>{const [r0,r1]=R[g.d-1];const fill=colorFor(g.n,g.d,rm);
+    const hot=S.hover&&(g.n===S.hover||pathOf(g.n).includes(S.hover));
+    const pend=g.n.pending||(g.n.partial);
+    p+=`<path class="seg ${hot?"hot":""} ${g.n===S.sel?"sel":""} ${pend?"pending":""}" data-i="${i}" d="${arcPath(r0,r1,g.a0,g.a1)}" fill="${fill}" stroke="${g.n.pending?css("--w-3"):surf}" stroke-width="${g.n.pending?1:2}" ${g.n.pending?'stroke-dasharray="4 4"':""} stroke-linejoin="round"><title>${esc(g.n.n)} — ${fmt(g.n.s)}</title></path>`;
+    if(g.d===1&&g.a1-g.a0>.42&&!g.n.pending){const am=(g.a0+g.a1)/2,[x,y]=pt((r0+r1)/2,am);
+      const f=fill.startsWith("#")?(lum(fill)>.35?"rgba(0,0,0,.82)":"#fff"):css("--w-label");
+      const label=g.n.n.length>14?g.n.n.slice(0,13)+"…":g.n.n;
+      p+=`<text x="${x.toFixed(1)}" y="${(y-3).toFixed(1)}" text-anchor="middle" font-size="11" font-weight="600" fill="${f}" pointer-events="none">${esc(label)}</text><text x="${x.toFixed(1)}" y="${(y+10).toFixed(1)}" text-anchor="middle" font-size="10.5" fill="${f}" opacity=".85" pointer-events="none">${fmt(g.n.s)}</text>`;}
+  });
+  const cn=focus||S.root,up=S.root.parent;
+  p+=`<g class="center-hit" id="center" role="button" aria-label="${up?"Go up to "+esc(up.n):esc(S.root.n)}"><circle cx="${CX}" cy="${CY}" r="88" fill="${surf}"/>
+   ${up?`<text x="${CX}" y="${CY-44}" text-anchor="middle" font-size="10.5" fill="${css("--w-2")}">↑ ${esc(up.n.length>18?up.n.slice(0,17)+"…":up.n)}</text>`:""}
+   <text x="${CX}" y="${CY-14}" text-anchor="middle" font-size="12.5" font-weight="600" fill="${css("--w-label")}">${esc(cn.n.length>22?cn.n.slice(0,21)+"…":cn.n)}</text>
+   <text x="${CX}" y="${CY+14}" text-anchor="middle" font-size="24" font-weight="650" fill="${css("--w-label")}" style="font-variant-numeric:tabular-nums">${S.root.scan&&cn===S.root?fmt(S.root.c.filter(x=>!x.pending).reduce((a,b)=>a+b.s,0)):fmt(cn.s)}</text>
+   <text x="${CX}" y="${CY+34}" text-anchor="middle" font-size="11" fill="${css("--w-2")}">${cn===S.root?(S.root.scan?"measured so far":S.root===S.tree?"used of 460 GB":pct(cn.s,S.tree.s)+" of used space"):pct(cn.s,S.root.s)+" of "+esc(S.root.n.length>14?S.root.n.slice(0,13)+"…":S.root.n)}</text></g></svg>`;
+  return {html:p,list};}
+
+/* ---------- icons ---------- */
+const I={
+ drive:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1.5" y="4" width="13" height="8" rx="2"/><circle cx="11.5" cy="8" r=".9" fill="currentColor" stroke="none"/></svg>',
+ home:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"><path d="M2 7.5 8 2.5l6 5M3.8 6.3V13.5h8.4V6.3"/><path d="M6.6 13.5V9.6h2.8v3.9"/></svg>',
+ plus:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="8" r="6.2"/><path d="M8 5v6M5 8h6"/></svg>',
+ hammer:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"><path d="M9 3.2 12.8 7 11.5 8.3 7.7 4.5z"/><path d="M8.6 5.4 2.6 11.4a1 1 0 0 0 0 1.4l.6.6a1 1 0 0 0 1.4 0l6-6"/><path d="M7.7 4.5 9.5 2.2l1.2-.2"/></svg>',
+ doc:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"><path d="M4 1.8h5.2L12.5 5v9.2H4z"/><path d="M9 1.8V5.2h3.5"/></svg>',
+ trash:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"><path d="M2.5 4.2h11M6.2 4.2V2.6h3.6v1.6M3.8 4.2l.7 9.6h7l.7-9.6"/></svg>',
+ back:'<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M8.8 2.5 4.3 7l4.5 4.5"/></svg>',
+ fwd:'<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M5.2 2.5 9.7 7l-4.5 4.5"/></svg>',
+ reload:'<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M13 8a5 5 0 1 1-1.5-3.6"/><path d="M11.8 1.8v2.8H9"/></svg>',
+ spark:'<svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5c.5 2.7 1.8 4 4.5 4.5-2.7.5-4 1.8-4.5 4.5-.5-2.7-1.8-4-4.5-4.5 2.7-.5 4-1.8 4.5-4.5z"/><path d="M12.6 10.3c.2 1.2.8 1.8 2 2-1.2.2-1.8.8-2 2-.2-1.2-.8-1.8-2-2 1.2-.2 1.8-.8 2-2z"/></svg>',
+ search:'<svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="4.3"/><path d="m9.2 9.2 3.3 3.3" stroke-linecap="round"/></svg>',
+ insp:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="1.5" y="2.5" width="13" height="11" rx="2.5"/><path d="M10 2.5v11"/></svg>',
+ lock:'<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="7" width="10" height="7" rx="1.6"/><path d="M5.2 7V5a2.8 2.8 0 0 1 5.6 0v2"/></svg>',
+ check:'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m2.5 6.2 2.3 2.3L9.5 3.6"/></svg>',
+ wrench:'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7.4 1.4a2.6 2.6 0 0 0-2.9 3.5L1.6 7.8a1 1 0 0 0 1.4 1.4l2.9-2.9a2.6 2.6 0 0 0 3.5-2.9L8 4.8 6.8 4.6 6.6 3.4z"/></svg>',
+ shield:'<svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M6 1.2 10 2.8v3c0 2.4-1.7 4.3-4 5-2.3-.7-4-2.6-4-5v-3z"/></svg>',
+ folder:'<svg width="22" height="22" viewBox="0 0 22 22" fill="currentColor"><path d="M2.5 5.5a2 2 0 0 1 2-2h4.2l2 2.2h6.8a2 2 0 0 1 2 2v8.8a2 2 0 0 1-2 2H4.5a2 2 0 0 1-2-2z"/></svg>'
+};
+const BADGE={safe:["Safe to Remove",I.check],tool:["Remove with Tool",I.wrench],keep:["Keep",I.shield]};
+const badge=k=>k?`<span class="badge ${k}">${BADGE[k][1]}${BADGE[k][0]}</span>`:"";
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ---------- pieces ---------- */
+function sidebar(){
+  const devTotal=devItems().reduce((a,b)=>a+(b.k!=="keep"?b.s:0),0);
+  const row=(id,icon,label,tr)=>`<button class="srow" data-side="${id}" aria-current="${S.side===id}">${icon}<span>${label}</span>${tr?`<span class="tr">${tr}</span>`:""}</button>`;
+  return `<nav class="side" aria-label="Sidebar"><div class="lights" aria-hidden="true"><i></i><i></i><i></i></div>
+   <div class="sgroup"><div class="shead">Locations</div>${row("disk",I.drive,"Macintosh HD","40 GB free")}${row("home",I.home,"Home","")}${row("choose",I.plus,"Choose Folder…","")}</div>
+   <div class="sgroup"><div class="shead">Insights</div>${row("dev",I.hammer,"Developer",S.view==="empty"?"":fmt(devTotal))}${row("large",I.doc,"Large Files","")}${row("trash",I.trash,"Trash",S.trash?fmt(S.trash):"Empty")}</div></nav>`;}
+function toolbar(){
+  const scanning=S.view==="scanning",empty=S.view==="empty",dev=S.view==="developer";
+  const title=dev?"Developer":empty?"Temizlikci":S.root.n;
+  const sub=scanning?"Scanning…":empty?"No scan yet":dev?"Reclaimable developer files":(S.root===S.tree?"420 GB used · 40 GB available":fmt(S.root.s));
+  return `<div class="tb">
+   <div class="glass" role="group" aria-label="Navigation"><button aria-label="Back" ${S.root.parent?"":"disabled"} data-act="up">${I.back}</button><button aria-label="Forward" disabled>${I.fwd}</button></div>
+   <div class="ttl"><b>${esc(title)}</b><span>${sub}</span></div><div class="spacer"></div>
+   ${scanning?`<div class="glass progress" role="status"><span>212 GB of 420 GB</span><span class="bar"><i></i></span><button class="btn" style="height:26px">Stop</button></div>`:
+   `<div class="glass" role="group" aria-label="Actions"><button aria-label="Rescan (Command-R)" title="Rescan" ${empty?"disabled":""}>${I.reload}</button><button aria-label="Highlight Reclaimable" title="Highlight Reclaimable" aria-pressed="${S.hl}" data-act="hl" ${empty||dev?"disabled":""}>${I.spark}</button></div>`}
+   <label class="glass search">${I.search}<input id="q" type="search" placeholder="Search" value="${esc(S.q)}" ${empty||dev?"disabled":""} aria-label="Search this folder"></label>
+   <div class="glass"><button aria-label="Hide Inspector (Option-Command-I)" title="Inspector" aria-pressed="${S.view!=="empty"&&S.view!=="developer"}">${I.insp}</button></div></div>`;}
+function crumbs(){const p=pathOf(S.root);
+  return `<nav class="crumbs" aria-label="Path">${p.map((n,i)=>`${i?'<span class="chev">›</span>':""}<button data-crumb="${i}" ${i===p.length-1?'aria-current="page"':""}>${esc(n.n)}</button>`).join("")}</nav>`;}
+function listRows(){
+  let rows;
+  if(S.q){const q=S.q.toLowerCase(),r=[];(function w(n){(n.c||[]).forEach(ch=>{if(ch.n.toLowerCase().includes(q))r.push(ch);w(ch);});})(S.root);rows=r.slice(0,60);}
+  else rows=[...(S.root.c||[])];
+  rows.sort(S.sort==="name"?(a,b)=>a.n.localeCompare(b.n):(a,b)=>b.s-a.s);
+  const max=Math.max(...rows.map(r=>r.s),1),rm=rankMap();
+  return rows.map(n=>{const col=n.pending?"transparent":colorFor(n,1,rm);const sw=col.startsWith("url")?(n.lock?"repeating-linear-gradient(135deg,var(--hatch) 0 2px,var(--dim) 2px 5px)":"repeating-linear-gradient(45deg,var(--hatch) 0 2px,var(--dim) 2px 5px)"):col;
+    const sub=S.q?pathOf(n.parent).slice(1).map(x=>x.n).join(" › "):"";
+    return `<div class="lrow ${n===S.sel?"sel":""} ${n===S.hover?"hot":""}" data-node="${idOf(n)}" role="row" aria-selected="${n===S.sel}">
+    <div class="nm">${n.partial?'<span class="spin" aria-label="Measuring"></span>':`<span class="dot" style="background:${sw};${n.pending?"border:1px dashed var(--w-3)":""}"></span>`}<span class="t">${esc(n.n)}${sub?`<div class="sub">${esc(sub)}</div>`:""}</span>${n.lock?I.lock:""}${badge(n.k)}</div>
+    <div class="sizebar"><i style="width:${(n.s/max*100).toFixed(1)}%;background:${n.pending?"transparent":sw}"></i></div>
+    <div class="r">${n.partial?"≥ ":""}${fmt(n.s)}</div><div class="r">${pct(n.s,S.root.s)}</div></div>`;}).join("")||`<div class="lrow"><span class="sub">No matches for “${esc(S.q)}”</span></div>`;}
+let IDS=new Map(),NODES=new Map();
+function idOf(n){if(!IDS.has(n)){const id="n"+IDS.size;IDS.set(n,id);NODES.set(id,n);}return IDS.get(n);}
+
+function inspector(){
+  const n=S.sel||S.root,rm=rankMap(),p=pathOf(n);
+  const col=colorFor(n,1,rm),bg=col.startsWith("#")?col:"var(--keep)";
+  const path=n===S.tree?"/":dispPath(n);
+  const k=n.k;let card="";
+  if(k)card=`<div class="card ${k}"><div class="ct">${BADGE[k][1]}${BADGE[k][0]}</div><p>${esc(n.why)}</p></div>`;
+  else if(n.sys)card=`<div class="card"><div class="ct">Not a folder</div><p>${esc(n.why)}</p></div>`;
+  else if(n.lock)card=`<div class="card"><div class="ct">${I.lock} Needs Full Disk Access</div><p>${esc(n.why)}</p></div>`;
+  let acts=`<button class="btn">Reveal in Finder</button><button class="btn">Quick Look</button>`;
+  if(n.lock)acts=`<button class="btn primary">Open Privacy Settings…</button>`;
+  else if(n.sys||n===S.tree||n.small||n.other)acts="";
+  else if(k==="safe")acts+=`<button class="btn primary" data-act="trash">Move to Trash</button>`;
+  else if(k==="tool")acts+=`<button class="btn" data-act="tool">${esc(n.tool)}</button>`;
+  else if(k!=="keep"&&!safetyOf(n))acts+=`<button class="btn" data-act="trash">Move to Trash</button>`;
+  return `<aside class="insp" aria-label="Inspector">
+   <div class="ih"><span class="icon" style="background:${bg}">${n.lock?I.lock:I.folder}</span><div><b>${esc(n.n)}</b><span>${n.sys?"Unattributed space":n.lock?"Protected folders":"Folder"}</span></div></div>
+   <dl class="kv"><dt>Size</dt><dd>${fmt(n.s)}</dd><dt>Share of disk</dt><dd>${pct(n.s,S.tree.s)} of used</dd>${n.parent?`<dt>In folder</dt><dd>${pct(n.s,n.parent.s)} of ${esc(n.parent.n)}</dd>`:""}${!n.sys&&!n.lock?`<dt>Path</dt><dd style="font:11px var(--mono)">${esc(path)}</dd>`:""}</dl>
+   ${card}<div class="sep"></div><div class="acts-col">${acts}</div></aside>`;}
+
+function dispPath(n){const p=pathOf(n);return p[1]&&p[1].n==="Users"?"~/"+p.slice(3).map(x=>x.n).join("/"):"/"+p.slice(1).map(x=>x.n).join("/");}
+function devItems(){const r=[];(function w(n){(n.c||[]).forEach(ch=>{if(ch.k)r.push(ch);else w(ch);});})(S.view==="empty"?prep(BASE()):S.tree);return r;}
+function developer(){
+  const items=devItems(),tot=k=>items.filter(i=>i.k===k).reduce((a,b)=>a+b.s,0);
+  const safe=tot("safe"),tool=tot("tool"),keep=tot("keep"),all=safe+tool+keep;
+  const groups=["Xcode","Android","Flutter","Node","Go","Apps & Caches"];
+  const act=i=>i.k==="safe"?`<button class="btn" data-act="trash" data-node="${idOf(i)}">Move to Trash</button>`:i.k==="tool"?`<button class="btn" data-act="tool" data-node="${idOf(i)}">${esc(i.tool)}</button>`:`<span class="sub" style="justify-self:end">No action</span>`;
+  return `<div class="dev"><div class="devsum"><div class="stack" role="img" aria-label="Safe to remove ${fmt(safe)}, remove with tool ${fmt(tool)}, keep ${fmt(keep)}">
+    <i style="width:${safe/all*100}%;background:var(--good)"></i><i style="width:${tool/all*100}%;background:var(--warn)"></i><i style="width:${keep/all*100}%;background:var(--neutral)"></i></div>
+    <div class="legend"><span>${badge("safe")}<b>${fmt(safe)}</b></span><span>${badge("tool")}<b>${fmt(tool)}</b></span><span>${badge("keep")}<b>${fmt(keep)}</b></span></div></div>
+   ${groups.map(g=>{const gi=items.filter(i=>i.eco===g).sort((a,b)=>b.s-a.s);if(!gi.length)return "";
+     const gs=gi.filter(i=>i.k!=="keep").reduce((a,b)=>a+b.s,0);
+     return `<div class="group"><h3>${g}<span>${fmt(gs)} reclaimable</span></h3><div class="inset">${gi.map(i=>`<div class="drow"><div class="nm"><b>${esc(i.n)}</b><div class="sub">${esc(dispPath(i))}</div></div>${badge(i.k)}<div class="r">${fmt(i.s)}</div>${act(i)}</div>`).join("")}</div></div>`;}).join("")}</div>`;}
+
+function render(){
+  IDS=new Map();NODES=new Map();
+  mac.classList.toggle("dark",isDark());stage.classList.toggle("dark",isDark());
+  const v=S.view;let content="",showInsp=true;
+  if(v==="empty"){showInsp=false;content=`<div class="empty"><svg width="72" height="72" viewBox="0 0 72 72" aria-hidden="true">${iconGlyph(72,true)}</svg><h2>See What’s Using Your Disk</h2><p>Temizlikci measures every folder and shows the result as rings you can open. Nothing is changed or deleted while it scans.</p><div class="row"><button class="btn primary big" data-view="scanning">Scan Macintosh HD</button><button class="btn big">Choose Folder…</button></div></div>`;}
+  else if(v==="developer"){content=`${developer()}`;showInsp=false;}
+  else{const {html}=svgChart();
+    const banner=v==="fda"?`<div class="banner" role="note">${I.lock}<div><b>Some folders need Full Disk Access</b><p>Temizlikci can’t measure 23 protected folders, such as Mail and Messages. Their 18.7 GB is shown as “Needs access”.</p></div><div class="acts"><button class="btn">Not Now</button><button class="btn primary">Open Privacy Settings…</button></div></div>`:"";
+    content=`${crumbs()}${banner||'<div></div>'}<div class="split"><div class="chartbox">${html}<div class="hint">Click to select · Double-click to open · Click the center to go up</div></div>
+    <div class="list" role="grid" aria-label="Contents of ${esc(S.root.n)}"><div class="lhead" role="row"><button data-sort="name">Name${S.sort==="name"?" ▾":""}</button><span></span><button class="r" data-sort="size">${S.sort==="size"?"▾ ":""}Size</button><span class="r">Share</span></div><div class="lbody">${listRows()}</div></div></div>`;
+    if(v!=="scanning")content+=`<div class="foot"><span>Scanned today at 22:14 in 41 seconds</span><span>Sizes are space on disk. APFS clones may be counted more than once.</span></div>`;}
+  mac.innerHTML=`${sidebar()}<div class="main">${toolbar()}<div class="content" style="${v==="empty"||v==="developer"?"grid-template-rows:1fr":""}">${content}</div>
+   ${S.toast?`<div class="glass toast" role="status"><span>${S.toast}</span><button class="btn" data-act="undo">Undo</button></div>`:""}</div>
+   ${showInsp?inspector():""}
+   ${v==="alert"?`<div class="scrim"><div class="alert" role="alertdialog" aria-labelledby="al-t"><svg width="56" height="56" viewBox="0 0 72 72" aria-hidden="true">${iconGlyph(72,true)}</svg><b id="al-t">Delete the iOS 26.5 simulator runtime?</b><p>This frees 26 GB and removes the 3 simulators that use it. You can download the runtime again in Xcode › Settings › Components.</p><div class="row"><button class="btn" data-view="overview">Cancel</button><button class="btn" data-view="overview">Delete Runtime</button></div></div></div>`:""}`;
+  const q=document.getElementById("q");if(q&&S.qFocus){q.focus();q.setSelectionRange(q.value.length,q.value.length);}
+}
+
+/* ---------- events ---------- */
+let lastSegs=[];
+mac.addEventListener("mouseover",e=>{const s=e.target.closest(".seg");if(!s)return;const n=segs()[+s.dataset.i]?.n;if(!n||n.pending)return;if(n===S.hover||(n.small&&S.hover&&S.hover.small&&n.n===S.hover.n&&n.parent===S.hover.parent))return;S.hover=n;render();});
+mac.addEventListener("mouseout",e=>{if(e.target.closest(".seg")&&!e.relatedTarget?.closest?.(".seg")){S.hover=null;render();}});
+mac.addEventListener("click",e=>{
+  const t=e.target;
+  const seg=t.closest(".seg");if(seg){const n=segs()[+seg.dataset.i]?.n;if(n&&!n.small&&!n.pending){S.sel=n;render();}return;}
+  if(t.closest("#center")){if(S.root.parent){S.sel=S.root;S.root=S.root.parent;S.hover=null;render();}return;}
+  const cr=t.closest("[data-crumb]");if(cr){S.root=pathOf(S.root)[+cr.dataset.crumb];S.sel=S.root;render();return;}
+  const vw=t.closest("[data-view]");if(vw){setView(vw.dataset.view);return;}
+  const so=t.closest("[data-sort]");if(so){S.sort=so.dataset.sort;render();return;}
+  const sd=t.closest("[data-side]");if(sd){const id=sd.dataset.side;if(id==="dev")setView("developer");else if(id==="disk")setView(S.view==="developer"?"overview":S.view);
+    else if(id==="home"&&S.tree.c){if(S.view==="developer")setView("overview");const u=S.tree.c.find(x=>x.n==="Users");if(u&&u.c){S.root=u.c[0];S.sel=S.root;S.side="home";render();}}return;}
+  const act=t.closest("[data-act]");if(act){const a=act.dataset.act;
+    if(a==="hl"){S.hl=!S.hl;render();}
+    else if(a==="up"&&S.root.parent){S.sel=S.root;S.root=S.root.parent;render();}
+    else if(a==="tool"){setView("alert");}
+    else if(a==="trash"){const n=act.dataset.node?NODES.get(act.dataset.node):S.sel;trashNode(n);}
+    else if(a==="undo"&&S.undo){const {n,parent,idx}=S.undo;parent.c.splice(idx,0,n);let x=parent;while(x){x.s=+(x.s+n.s).toFixed(2);x=x.parent;}S.trash=+(S.trash-n.s).toFixed(2);S.undo=null;S.toast=null;S.sel=n;render();}
+    return;}
+  const row=t.closest(".lrow[data-node]");if(row){S.sel=NODES.get(row.dataset.node);render();}
+});
+mac.addEventListener("dblclick",e=>{const seg=e.target.closest(".seg");let n=null;
+  if(seg)n=segs()[+seg.dataset.i]?.n;else{const row=e.target.closest(".lrow[data-node]");if(row)n=NODES.get(row.dataset.node);}
+  if(n&&n.c&&n.c.length&&!n.small){S.root=n;S.sel=n;S.hover=null;S.q="";render();}});
+mac.addEventListener("input",e=>{if(e.target.id==="q"){S.q=e.target.value;S.qFocus=true;render();S.qFocus=false;}});
+function trashNode(n){if(!n||!n.parent)return;const parent=n.parent,idx=parent.c.indexOf(n);parent.c.splice(idx,1);
+  let x=parent;while(x){x.s=+(x.s-n.s).toFixed(2);x=x.parent;}S.trash=+(S.trash+n.s).toFixed(2);S.undo={n,parent,idx};
+  S.toast=`Moved “${esc(n.n)}” to the Trash. Its ${fmt(n.s)} is freed when you empty the Trash.`;S.sel=parent;render();}
+function setView(v){document.querySelectorAll("#stateSeg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===v));load(v);}
+document.getElementById("stateSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(b)setView(b.dataset.v);});
+document.getElementById("appSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;S.app=b.dataset.v;
+  document.querySelectorAll("#appSeg button").forEach(x=>x.setAttribute("aria-pressed",x===b));render();});
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",()=>render());
+new MutationObserver(()=>render()).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+
+/* ---------- icon ---------- */
+function iconGlyph(sz,glyphOnly,gid){
+  const s=sz/1024,c=512,seg=(r0,r1,a0,a1)=>{const P=(r,a)=>[c+r*Math.sin(a),c-r*Math.cos(a)];const L=a1-a0>Math.PI?1:0,[x1,y1]=P(r1,a0),[x2,y2]=P(r1,a1),[x3,y3]=P(r0,a1),[x4,y4]=P(r0,a0);
+    return `M${x1},${y1}A${r1},${r1} 0 ${L} 1 ${x2},${y2}L${x3},${y3}A${r0},${r0} 0 ${L} 0 ${x4},${y4}Z`;};
+  const d=Math.PI/180;const rings=[
+    [150,240,[[0,120,"#3987e5"],[123,215,"#eb6834"],[218,300,"#1baf7a"],[303,357,"#eda100"]]],
+    [252,322,[[0,70,"#6da7ec"],[73,118,"#86b6ef"],[123,180,"#f29a74"],[218,262,"#5fcaa2"],[265,297,"#6fd3ae"],[303,340,"#f3c25a"]]]];
+  let g=`<g transform="scale(${s})">`;
+  if(!glyphOnly)g+=`<rect x="0" y="0" width="1024" height="1024" rx="228" fill="url(#${gid})"/>`;
+  rings.forEach(([r0,r1,arr])=>arr.forEach(([a0,a1,col])=>{g+=`<path d="${seg(r0,r1,a0*d,a1*d)}" fill="${col}"/>`;}));
+  g+=`<g transform="translate(64,-64) rotate(8 512 512)"><path d="${seg(334,398,24*d,86*d)}" style="fill:${glyphOnly?"var(--accent)":"#ffffff"}" opacity=".96"/></g>`;
+  g+=`<circle cx="512" cy="512" r="138" style="fill:${glyphOnly?"var(--w-bg)":`url(#${gid})`}"/>`;
+  g+=`<path transform="translate(760 206) scale(3.4)" d="M8 1.5c.5 2.7 1.8 4 4.5 4.5-2.7.5-4 1.8-4.5 4.5-.5-2.7-1.8-4-4.5-4.5 2.7-.5 4-1.8 4.5-4.5z" style="fill:${glyphOnly?"var(--accent)":"#ffffff"}"/></g>`;
+  return g;}
+let GID=0;function iconSVG(size,bg,label){const gid="ibg"+(GID++);return `<figure><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" role="img" aria-label="App icon, ${label}"><defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1">${bg}</linearGradient></defs>${iconGlyph(size,false,gid)}</svg><figcaption>${label}</figcaption></figure>`;}
+document.getElementById("icons").innerHTML=
+  iconSVG(160,'<stop offset="0" stop-color="#1d2b44"/><stop offset="1" stop-color="#0c1320"/>',"Default")+
+  iconSVG(112,'<stop offset="0" stop-color="#f4f6f9"/><stop offset="1" stop-color="#dfe4ea"/>',"Light")+
+  iconSVG(64,'<stop offset="0" stop-color="#1d2b44"/><stop offset="1" stop-color="#0c1320"/>',"64 pt")+
+  iconSVG(32,'<stop offset="0" stop-color="#1d2b44"/><stop offset="1" stop-color="#0c1320"/>',"32 pt");
+
+/* ---------- swatches ---------- */
+document.getElementById("swatches").innerHTML=SLOTS.light.map((l,i)=>`<div class="sw"><div class="chips"><span style="background:${l};color:${lum(l)>.3?"#1a1a1a":"#fff"}">${l}</span><span style="background:${SLOTS.dark[i]};color:${lum(SLOTS.dark[i])>.3?"#1a1a1a":"#fff"}">${SLOTS.dark[i]}</span></div><div class="meta"><b>Slot ${i+1} · ${SLOTNAMES[i]}</b><span>Light · Dark</span></div></div>`).join("")+
+ `<div class="sw"><div class="chips"><span style="background:#0ca30c">#0ca30c</span><span style="background:#fab219;color:#3a2a00">#fab219</span></div><div class="meta"><b>Safe · With Tool</b><span>Status, with symbol + label</span></div></div>`+
+ `<div class="sw"><div class="chips"><span style="background:#c9c8c3;color:#222">#c9c8c3</span><span style="background:#4b4b48">#4b4b48</span></div><div class="meta"><b>Smaller items</b><span>Neutral · Light · Dark</span></div></div>`;
+
+load("overview");
+})();
+</script>
