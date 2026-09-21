@@ -24,13 +24,15 @@ nonisolated struct SystemFullDiskAccessChecker: FullDiskAccessChecking {
 ///
 /// Documented prompting locations: Desktop, Documents, Downloads, iCloud Drive, third-party cloud
 /// storage (Eclectic Light, "Explainer: Permissions, privacy and TCC", 2025). Music was observed
-/// prompting on macOS 26; Pictures, Movies, and other apps' data are included on the same grounds.
+/// prompting on macOS 26; Pictures, Movies, other apps' data, and the Contacts, Calendars, and
+/// Reminders stores are included on the same grounds (their data is personal and consent-protected).
 /// Removable and network volumes are mount points, which the scanner skips anyway.
 nonisolated enum ProtectedLocations {
     static let homeRelativePaths = [
         "Desktop", "Documents", "Downloads", "Music", "Pictures", "Movies",
         "Library/Mobile Documents", "Library/CloudStorage",
         "Library/Containers", "Library/Group Containers",
+        "Library/Application Support/AddressBook", "Library/Calendars", "Library/Reminders",
     ]
 
     static func folders(inHome home: URL) -> [URL] {

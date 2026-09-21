@@ -12,21 +12,10 @@ struct DetailView: View {
         case .trash:
             InsightEmptyView(systemImage: "trash", message: L10n.Insights.trashMessage)
         case .startupDisk, .home, .chosenFolder, nil:
-            OverviewEmptyView(onChooseFolder: { Task { await model.chooseFolder() } })
-        }
-    }
-}
-
-struct OverviewEmptyView: View {
-    let onChooseFolder: () -> Void
-
-    var body: some View {
-        ContentUnavailableView {
-            Label { Text(L10n.Overview.emptyTitle) } icon: { Image(systemName: "chart.pie") }
-        } description: {
-            Text(L10n.Overview.emptyMessage)
-        } actions: {
-            Button(action: onChooseFolder) { Text(L10n.Sidebar.chooseFolder) }
+            if let scan = model.currentScan {
+                OverviewView(model: scan, onChooseFolder: { Task { await model.chooseFolder() } })
+                    .id(scan.location.url)
+            }
         }
     }
 }

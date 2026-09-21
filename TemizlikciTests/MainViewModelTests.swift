@@ -59,10 +59,16 @@ struct MainViewModelTests {
         #expect(model.locationDestinations == [.startupDisk, .home])
     }
 
-    @Test("should keep Highlight Reclaimable unavailable before any scan")
-    func highlightNeedsResults() {
-        let model = makeModel()
+    @Test("should give each location its own scan, with the startup disk scanned as a whole volume")
+    func locationScans() async {
+        let folder = URL(filePath: "/Users/Shared", directoryHint: .isDirectory)
+        let model = makeModel(pickedFolder: folder)
 
-        #expect(model.canHighlightReclaimable == false)
+        #expect(model.currentScan?.location.isWholeVolume == true)
+        #expect(model.scanModel(for: .home)?.location.isWholeVolume == false)
+        #expect(model.scanModel(for: .developer) == nil)
+
+        await model.chooseFolder()
+        #expect(model.currentScan?.location.url == folder)
     }
 }

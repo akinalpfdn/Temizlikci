@@ -1,5 +1,5 @@
 # Phase 003 (MVP-03) — Scan engine
-Status: ACTIVE
+Status: DONE
 
 ## Goal
 A fast, correct, cancellable scanner with tests, independent of UI.
@@ -12,7 +12,7 @@ A fast, correct, cancellable scanner with tests, independent of UI.
 - [x] Progress `AsyncStream`, cancellation
 - [x] Fixture tests: nested dirs, hard links, symlink loops, unreadable folders
 - [x] Benchmark vs `du -skx` on a real folder (numbers below)
-- [ ] Peak memory for a full Home scan — needs the developer's go-ahead (reads the real home folder)
+- [ ] Peak memory for a full Home scan — deferred to Phase 4 (in-app, with the developer watching)
 - [x] Consent-prompt fix: without Full Disk Access, prompting folders are never opened (Lore knownIssue 94)
 - [x] Tests no longer open app windows (windowless test host)
 
@@ -28,3 +28,4 @@ A fast, correct, cancellable scanner with tests, independent of UI.
   - after autorelease pool: scanner 79,332,085,760 B in 7.10 s; du 79,332,085,760 B in 12.66 s; diff 0.000%; peak RSS 219 MB (includes test-host baseline)
 - 2026-09-22 — A home-folder benchmark triggered TCC prompts (Music) and repeated test runs opened app windows; developer stopped it. Fixed both (see DECISIONS).
 - 2026-09-22 — This file was accidentally emptied during the Phase 2→3 transition (opened for writing before reading) and restored from commit f15d403.
+- 2026-09-22 — Developer chose to continue; home-folder memory measurement moved to Phase 4.

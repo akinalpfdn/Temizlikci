@@ -20,3 +20,10 @@ enum WindowMetrics {
     static let sidebarWidth = (minimum: CGFloat(200), ideal: CGFloat(232), maximum: CGFloat(300))
     static let inspectorWidth = (minimum: CGFloat(240), ideal: CGFloat(260), maximum: CGFloat(340))
 }
+
+enum ChartMetrics {
+    static let minimumSide: CGFloat = 300
+    static let maximumSide: CGFloat = 520
+    /// Ring-1 segments at least this wide (radians) get a text label.
+    static let labelMinimumSweep = 0.42
+}

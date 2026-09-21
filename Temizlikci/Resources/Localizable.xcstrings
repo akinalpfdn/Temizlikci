@@ -13,6 +13,270 @@
         }
       }
     },
+    "chart.accessibility.label": {
+      "comment": "Accessibility label of the sunburst chart. The argument is the folder name.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Disk usage of %@"
+          }
+        }
+      }
+    },
+    "chart.accessibility.summary": {
+      "comment": "Audio Graphs summary. Arguments: folder, its size, largest item.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ uses %@. The largest item is %@."
+          }
+        }
+      }
+    },
+    "chart.action.open": {
+      "comment": "Action that shows a folder's contents in the chart.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open"
+          }
+        }
+      }
+    },
+    "chart.announcement.opened": {
+      "comment": "VoiceOver announcement after opening a folder.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opened %@"
+          }
+        }
+      }
+    },
+    "chart.axis.items": {
+      "comment": "Audio Graphs axis listing the items in the folder.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Items"
+          }
+        }
+      }
+    },
+    "chart.axis.size": {
+      "comment": "Audio Graphs axis for space on disk.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Size"
+          }
+        }
+      }
+    },
+    "chart.center.goUp": {
+      "comment": "Accessibility label of the chart center, which opens the enclosing folder.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Go up to %@"
+          }
+        }
+      }
+    },
+    "chart.center.measuredSoFar": {
+      "comment": "Chart center caption while a scan is running.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "measured so far"
+          }
+        }
+      }
+    },
+    "chart.center.shareOf": {
+      "comment": "Chart center caption. Arguments: a percentage, the containing folder.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ of %@"
+          }
+        }
+      }
+    },
+    "chart.center.usedOfVolume": {
+      "comment": "Chart center caption under the used size of a disk. The argument is the disk capacity.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "used of %@"
+          }
+        }
+      }
+    },
+    "details.explain.inaccessible": {
+      "comment": "Inspector explanation for a protected folder.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlikci can’t read this folder without Full Disk Access, so its size isn’t included."
+          }
+        }
+      }
+    },
+    "details.explain.pending": {
+      "comment": "Inspector explanation for space not scanned yet.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This part of the disk hasn’t been measured yet."
+          }
+        }
+      }
+    },
+    "details.explain.smallerFiles": {
+      "comment": "Inspector explanation for grouped small files.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Files under 10 MB in this folder, added together."
+          }
+        }
+      }
+    },
+    "details.explain.unattributed": {
+      "comment": "Inspector explanation for unattributed space.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Space macOS reports as used that no folder accounts for: the system volume, APFS snapshots, and purgeable files."
+          }
+        }
+      }
+    },
+    "details.files": {
+      "comment": "Inspector label for the number of files.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Files"
+          }
+        }
+      }
+    },
+    "details.modified": {
+      "comment": "Inspector label for the last modification date.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modified"
+          }
+        }
+      }
+    },
+    "details.path": {
+      "comment": "Inspector label for the item's location.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Path"
+          }
+        }
+      }
+    },
+    "details.quickLook": {
+      "comment": "Button that previews the item.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quick Look"
+          }
+        }
+      }
+    },
+    "details.revealInFinder": {
+      "comment": "Button that shows the item in Finder.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reveal in Finder"
+          }
+        }
+      }
+    },
+    "details.shareOfFolder": {
+      "comment": "Inspector label for the share of the containing folder.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share of Folder"
+          }
+        }
+      }
+    },
+    "details.shareOfScan": {
+      "comment": "Inspector label for the share of everything scanned.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share of Scan"
+          }
+        }
+      }
+    },
+    "details.size": {
+      "comment": "Inspector label for space on disk.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Size"
+          }
+        }
+      }
+    },
     "folderPicker.message": {
       "comment": "Explanation shown in the folder selection panel.",
       "extractionState": "manual",
@@ -121,14 +385,242 @@
         }
       }
     },
-    "menu.view.highlightReclaimable": {
-      "comment": "View menu toggle that colors the chart by cleanup safety.",
+    "navigation.back": {
+      "comment": "Toolbar and menu command that returns to the previous folder.",
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Highlight Reclaimable"
+            "value": "Back"
+          }
+        }
+      }
+    },
+    "navigation.enclosingFolder": {
+      "comment": "Menu command that opens the folder containing the current one.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enclosing Folder"
+          }
+        }
+      }
+    },
+    "navigation.forward": {
+      "comment": "Toolbar and menu command that goes forward in folder history.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forward"
+          }
+        }
+      }
+    },
+    "navigation.menu.go": {
+      "comment": "Title of the menu with navigation commands.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Go"
+          }
+        }
+      }
+    },
+    "navigation.rescan": {
+      "comment": "Command that scans the current location again.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rescan"
+          }
+        }
+      }
+    },
+    "navigation.searchPrompt": {
+      "comment": "Placeholder of the search field.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Search This Folder"
+          }
+        }
+      }
+    },
+    "navigation.stop": {
+      "comment": "Command that cancels the running scan.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop Scanning"
+          }
+        }
+      }
+    },
+    "navigation.subtitle.scanning": {
+      "comment": "Window subtitle during a scan. The argument is the size measured so far.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning… %@ so far"
+          }
+        }
+      }
+    },
+    "navigation.subtitle.volume": {
+      "comment": "Window subtitle for a scanned disk.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ used · %@ available"
+          }
+        }
+      }
+    },
+    "node.kind.file": {
+      "comment": "Inspector subtitle for a file.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "File"
+          }
+        }
+      }
+    },
+    "node.kind.folder": {
+      "comment": "Inspector subtitle for a folder.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folder"
+          }
+        }
+      }
+    },
+    "node.kind.pending": {
+      "comment": "Inspector subtitle for space not measured yet.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Still Scanning"
+          }
+        }
+      }
+    },
+    "node.kind.protected": {
+      "comment": "Inspector subtitle for a folder that needs Full Disk Access.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Protected Folder"
+          }
+        }
+      }
+    },
+    "node.kind.smallerFiles": {
+      "comment": "Inspector subtitle for grouped small files.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Files Under 10 MB"
+          }
+        }
+      }
+    },
+    "node.kind.unattributed": {
+      "comment": "Inspector subtitle for space no folder accounts for.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unattributed Space"
+          }
+        }
+      }
+    },
+    "node.merged": {
+      "comment": "Items too small to draw in the chart, shown together.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smaller Items"
+          }
+        }
+      }
+    },
+    "node.needsAccess": {
+      "comment": "Badge on a folder that can't be read without Full Disk Access.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Needs Access"
+          }
+        }
+      }
+    },
+    "node.pending": {
+      "comment": "Space not measured yet while a scan runs.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not Scanned Yet"
+          }
+        }
+      }
+    },
+    "node.smallerFiles": {
+      "comment": "Several files under 10 MB, shown as one item. The argument is how many.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smaller Files (%@)"
+          }
+        }
+      }
+    },
+    "node.unattributed": {
+      "comment": "Used disk space that no folder accounts for.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "System, Snapshots & Purgeable"
           }
         }
       }
@@ -153,6 +645,90 @@
           "stringUnit": {
             "state": "translated",
             "value": "See What’s Using Your Disk"
+          }
+        }
+      }
+    },
+    "scan.action.scanLocation": {
+      "comment": "Button that starts scanning a location. The argument is its name.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan %@"
+          }
+        }
+      }
+    },
+    "scan.chart.hint": {
+      "comment": "Hint under the chart explaining how to use it.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Click to select · Double-click to open · Click the center to go up"
+          }
+        }
+      }
+    },
+    "scan.failed.title": {
+      "comment": "Title shown when a scan fails.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Scan Didn’t Finish"
+          }
+        }
+      }
+    },
+    "scan.failed.tryAgain": {
+      "comment": "Button that restarts a failed scan.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try Again"
+          }
+        }
+      }
+    },
+    "scan.footer.scanned": {
+      "comment": "Footer after a scan. Arguments: when it finished, how long it took.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanned %@ in %@"
+          }
+        }
+      }
+    },
+    "scan.footer.sizes": {
+      "comment": "Footer note explaining how sizes are measured.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sizes are space on disk. APFS clones may be counted more than once."
+          }
+        }
+      }
+    },
+    "scan.search.noMatches": {
+      "comment": "Shown in the list when a search finds nothing.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Results"
           }
         }
       }
@@ -313,14 +889,38 @@
         }
       }
     },
-    "toolbar.highlightReclaimable": {
-      "comment": "Toolbar toggle that colors the chart by cleanup safety.",
+    "table.column.name": {
+      "comment": "List column with item names.",
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Highlight Reclaimable"
+            "value": "Name"
+          }
+        }
+      }
+    },
+    "table.column.share": {
+      "comment": "List column with each item's share of the folder.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share"
+          }
+        }
+      }
+    },
+    "table.column.size": {
+      "comment": "List column with space on disk.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Size"
           }
         }
       }

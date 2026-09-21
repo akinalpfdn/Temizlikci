@@ -14,11 +14,11 @@ struct MainView: View {
         } detail: {
             DetailView(model: model)
                 .navigationTitle(model.windowTitle)
-                .navigationSubtitle(Text(L10n.Toolbar.noScanSubtitle))
-                .toolbar { MainToolbar(model: model) }
+                .navigationSubtitle(subtitle)
+                .toolbar { MainToolbar(model: model, scan: model.currentScan) }
         }
         .inspector(isPresented: $model.isInspectorPresented) {
-            InspectorView()
+            InspectorView(scan: model.currentScan)
                 .inspectorColumnWidth(
                     min: WindowMetrics.inspectorWidth.minimum,
                     ideal: WindowMetrics.inspectorWidth.ideal,
@@ -27,19 +27,56 @@ struct MainView: View {
         }
         .frame(minWidth: WindowMetrics.minimumSize.width, minHeight: WindowMetrics.minimumSize.height)
     }
+
+    private var subtitle: Text {
+        guard let scan = model.currentScan else { return Text(verbatim: "") }
+        switch scan.phase {
+        case .scanning:
+            return Text(L10n.Navigation.scanningSubtitle(Formatting.bytes(scan.progress.allocatedSize)))
+        case .finished:
+            if let usage = scan.usage, scan.currentFolder?.id == scan.tree?.id {
+                return Text(L10n.Navigation.volumeSubtitle(
+                    used: Formatting.bytes(usage.usedCapacity),
+                    available: Formatting.bytes(usage.availableCapacity)
+                ))
+            }
+            return Text(Formatting.bytes(scan.currentFolder?.allocatedSize ?? 0))
+        case .idle, .failed:
+            return Text(L10n.Toolbar.noScanSubtitle)
+        }
+    }
 }
 
 private struct MainToolbar: ToolbarContent {
-    @Bindable var model: MainViewModel
+    let model: MainViewModel
+    let scan: LocationScanModel?
 
     var body: some ToolbarContent {
-        ToolbarItem {
-            Toggle(isOn: $model.isHighlightingReclaimable) {
-                Label { Text(L10n.Toolbar.highlightReclaimable) } icon: { Image(systemName: "sparkles") }
+        ToolbarItemGroup(placement: .navigation) {
+            Button { scan?.goBack() } label: {
+                Label { Text(L10n.Navigation.back) } icon: { Image(systemName: "chevron.backward") }
             }
-            .toggleStyle(.button)
-            .disabled(!model.canHighlightReclaimable)
-            .help(Text(L10n.Toolbar.highlightReclaimable))
+            .help(Text(L10n.Navigation.back))
+            .disabled(!(scan?.canGoBack ?? false))
+            Button { scan?.goForward() } label: {
+                Label { Text(L10n.Navigation.forward) } icon: { Image(systemName: "chevron.forward") }
+            }
+            .help(Text(L10n.Navigation.forward))
+            .disabled(!(scan?.canGoForward ?? false))
+        }
+        ToolbarItem {
+            if let scan, scan.isScanning {
+                Button { scan.stopScan() } label: {
+                    Label { Text(L10n.Navigation.stop) } icon: { Image(systemName: "stop.circle") }
+                }
+                .help(Text(L10n.Navigation.stop))
+            } else {
+                Button { scan?.startScan() } label: {
+                    Label { Text(L10n.Navigation.rescan) } icon: { Image(systemName: "arrow.clockwise") }
+                }
+                .help(Text(L10n.Navigation.rescan))
+                .disabled(scan == nil)
+            }
         }
         ToolbarItem {
             Button {

@@ -137,3 +137,30 @@ See `rules/common/decisions.md` for the logging format and rules. Append-only.
 **Why:** Measured on `~/Documents/GitHub` (561k files, 93k folders): peak RSS fell from 336 MB to 219 MB with the pool, with totals still identical to `du -skx`. File nodes above the threshold already are the large files, so a heap would duplicate them.
 **Trade-offs:** The Large Files view traverses the tree (cheap compared to scanning).
 **Revisit if:** Home-folder memory is too high. The next step is storing names instead of URLs in nodes.
+
+---
+
+## 2026-09-22 — Highlight Reclaimable returns with the cleanup rules (Phase 6)
+**Chosen:** The toggle and its menu item were removed in Phase 4 and come back in Phase 6.
+**Alternatives:** Keep a permanently disabled toggle until then.
+**Why:** Results now exist, so "disabled until results" no longer holds. Without cleanup rules the toggle would paint everything gray, and a control that can't do anything is a broken promise.
+**Trade-offs:** The toolbar changes again in Phase 6.
+**Revisit if:** Never. It ships with the rules.
+
+---
+
+## 2026-09-22 — Chart interaction model
+**Chosen:** Click selects; double-click or Return opens a folder; clicking the center or pressing Escape goes up. Left/Right move between siblings (wrapping); Up moves to the parent ring and Down to the largest child ring. Space or Command-Y opens Quick Look; Option-Command-R reveals in Finder. Command-R rescans and Command-Period stops (HIG: "Cancel an operation"). Back, Forward, and Enclosing Folder use Command-[, Command-], and Command-Up Arrow (Finder precedent; the app has no text editing, so the HIG alignment meanings don't apply).
+**Alternatives:** Single click opens (common in sunburst tools).
+**Why:** The approved design and HIG: selection must be possible without navigating, so the inspector can show details and actions for any segment.
+**Trade-offs:** Opening takes a double-click, which is also available as Return and as the list's primary action.
+**Revisit if:** People expect single-click drill-down in testing.
+
+---
+
+## 2026-09-22 — Navigation keeps value snapshots of the tree
+**Chosen:** `LocationScanModel` stores the navigation path, back/forward stacks, and selection as `FileNode` values, plus a per-folder map from node ID to its chain of ancestors (only for nodes reachable through the three drawn rings or search).
+**Alternatives:** Parent pointers in a class-based tree; an index of every node.
+**Why:** `FileNode` stays an immutable Sendable value produced off the main actor; chains cover exactly what can be selected, without indexing millions of nodes.
+**Trade-offs:** After Move to Trash (Phase 5) the path must be rebuilt from the updated tree.
+**Revisit if:** Tree edits become frequent enough that rebuilding paths shows up in profiles.

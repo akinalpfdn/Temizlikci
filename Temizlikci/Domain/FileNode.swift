@@ -11,6 +11,11 @@ nonisolated struct FileNode: Sendable, Identifiable {
         case smallerFiles(count: Int)
         /// A folder the scanner could not read, typically because it needs Full Disk Access.
         case inaccessible
+        /// Used space on the volume that no scanned folder accounts for (system volume, snapshots,
+        /// purgeable files). Only added to whole-volume results.
+        case unattributed
+        /// Space not measured yet while a scan is running.
+        case pending
     }
 
     let id: String
@@ -66,6 +71,37 @@ extension FileNode {
             modificationDate: nil,
             children: []
         )
+    }
+
+    nonisolated static func unattributed(on volume: URL, allocatedSize: Int64) -> FileNode {
+        FileNode(
+            id: volume.path(percentEncoded: false) + "\u{0}unattributed",
+            url: volume,
+            name: "",
+            kind: .unattributed,
+            allocatedSize: allocatedSize,
+            fileCount: 0,
+            modificationDate: nil,
+            children: []
+        )
+    }
+
+    nonisolated static func pending(in root: URL, allocatedSize: Int64) -> FileNode {
+        FileNode(
+            id: root.path(percentEncoded: false) + "\u{0}pending",
+            url: root,
+            name: "",
+            kind: .pending,
+            allocatedSize: allocatedSize,
+            fileCount: 0,
+            modificationDate: nil,
+            children: []
+        )
+    }
+
+    /// A copy of this directory with one more child, re-sorted and re-totalled.
+    nonisolated func adding(_ child: FileNode) -> FileNode {
+        .directory(url: url, modificationDate: modificationDate, children: children + [child])
     }
 
     nonisolated static func directory(url: URL, modificationDate: Date?, children: [FileNode]) -> FileNode {

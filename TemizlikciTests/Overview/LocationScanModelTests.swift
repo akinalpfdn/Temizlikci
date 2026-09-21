@@ -1,0 +1,227 @@
+import Foundation
+import Testing
+@testable import Temizlikci
+
+nonisolated private struct StubScanner: DiskScanning {
+    let events: [ScanEvent]
+    var failure: ScanError?
+
+    func scan(_ root: URL) -> AsyncThrowingStream<ScanEvent, Error> {
+        AsyncThrowingStream { continuation in
+            for event in events { continuation.yield(event) }
+            if let failure { continuation.finish(throwing: failure) } else { continuation.finish() }
+        }
+    }
+}
+
+nonisolated private struct GrantedAccess: FullDiskAccessChecking {
+    func hasFullDiskAccess() -> Bool { true }
+}
+
+private struct FixedVolume: VolumeInfoProviding {
+    let usage: VolumeUsage
+    func startupVolumeName() -> String? { "Macintosh HD" }
+    func usage(ofVolumeContaining url: URL) throws -> VolumeUsage { usage }
+}
+
+private final class RecordingRevealer: FileRevealing {
+    private(set) var revealed: [URL] = []
+    func reveal(_ url: URL) { revealed.append(url) }
+}
+
+@MainActor
+struct LocationScanModelTests {
+    private let revealer = RecordingRevealer()
+
+    private func makeModel(
+        wholeVolume: Bool = false,
+        events: [ScanEvent] = [.finished(ScanResult(root: TreeBuilder.sample(), duration: .seconds(1), fileCount: 5, directoryCount: 3, inaccessibleCount: 0))],
+        failure: ScanError? = nil,
+        usage: VolumeUsage = VolumeUsage(totalCapacity: 2_000, availableCapacity: 800, availableForImportantUsage: nil)
+    ) -> LocationScanModel {
+        LocationScanModel(
+            location: ScanLocation(url: TreeBuilder.root, displayName: "Scan Place", isWholeVolume: wholeVolume),
+            volumeInfo: FixedVolume(usage: usage),
+            access: GrantedAccess(),
+            revealer: revealer,
+            makeScanner: { _ in StubScanner(events: events, failure: failure) }
+        )
+    }
+
+    private func scanned(_ model: LocationScanModel) async -> LocationScanModel {
+        model.startScan()
+        await model.scanTask?.value
+        return model
+    }
+
+    private func child(_ name: String, of node: FileNode?) -> FileNode? {
+        node?.children.first { $0.name == name }
+    }
+
+    @Test("should show the scan result with the location's name at the root")
+    func finishedScan() async {
+        let model = await scanned(makeModel())
+
+        #expect(model.phase == .finished)
+        #expect(model.tree?.allocatedSize == 1_000)
+        #expect(model.title(for: model.tree!) == "Scan Place")
+        #expect(model.rows.map(\.name) == ["Apps", "Docs", "movie.mov"])
+        #expect(!model.segments.isEmpty)
+    }
+
+    @Test("should add the volume's unattributed space to a whole-volume scan")
+    func unattributedSpace() async {
+        let model = await scanned(makeModel(wholeVolume: true))
+
+        #expect(model.tree?.allocatedSize == 1_200)
+        #expect(model.tree?.children.contains { $0.kind == .unattributed && $0.allocatedSize == 200 } == true)
+    }
+
+    @Test("should show measured folders and the unmeasured remainder while scanning")
+    func progressiveTree() async {
+        var progress = ScanProgress()
+        progress.allocatedSize = 600
+        progress.completedTopLevel = [TreeBuilder.folder("Apps", [TreeBuilder.file("Apps/Big.app", 600)])]
+        let model = await scanned(makeModel(wholeVolume: true, events: [.progress(progress)]))
+
+        #expect(model.phase == .scanning)
+        #expect(model.tree?.allocatedSize == 1_200)
+        #expect(model.tree?.children.contains { $0.kind == .pending && $0.allocatedSize == 600 } == true)
+        #expect(model.canGoBack == false)
+    }
+
+    @Test("should explain a failed scan with the error's message and next step")
+    func failedScan() async {
+        let model = await scanned(makeModel(events: [], failure: .rootNotFound(TreeBuilder.root)))
+
+        guard case .failed(let message, let suggestion) = model.phase else {
+            Issue.record("Expected a failed phase")
+            return
+        }
+        #expect(message.contains("Scan"))
+        #expect(suggestion?.isEmpty == false)
+        #expect(model.tree == nil)
+    }
+
+    @Test("should clear results when the scan is stopped")
+    func stopScan() async {
+        let model = await scanned(makeModel())
+
+        model.stopScan()
+
+        #expect(model.phase == .idle)
+        #expect(model.tree == nil)
+        #expect(model.rows.isEmpty)
+    }
+
+    @Test("should open folders, go up, and move back and forward through history")
+    func navigation() async throws {
+        let model = await scanned(makeModel())
+        let docs = try #require(child("Docs", of: model.currentFolder))
+
+        model.open(docs)
+        #expect(model.currentFolder?.name == "Docs")
+        #expect(model.canGoBack && model.canGoUp && !model.canGoForward)
+
+        model.goBack()
+        #expect(model.currentFolder?.id == model.tree?.id)
+        #expect(model.canGoForward)
+
+        model.goForward()
+        #expect(model.currentFolder?.name == "Docs")
+
+        model.goUp()
+        #expect(model.currentFolder?.id == model.tree?.id)
+        #expect(model.selection?.name == "Docs")
+        #expect(!model.canGoForward)
+    }
+
+    @Test("should open a folder two rings deep in one step, keeping the path")
+    func openDeepFolder() async throws {
+        let model = await scanned(makeModel())
+        let reports = try #require(model.node(withID: TreeBuilder.root.appending(path: "Docs/Reports", directoryHint: .isDirectory).path(percentEncoded: false)))
+
+        model.open(reports)
+
+        #expect(model.path.map(\.name) == ["Scan", "Docs", "Reports"])
+        model.goToAncestor(at: 0)
+        #expect(model.path.count == 1)
+    }
+
+    @Test("should not open files or empty folders")
+    func openIgnoresFiles() async throws {
+        let model = await scanned(makeModel())
+        let movie = try #require(child("movie.mov", of: model.currentFolder))
+
+        model.open(movie)
+
+        #expect(model.path.count == 1)
+    }
+
+    @Test("should move the selection between siblings with wrap-around, and between rings")
+    func keyboardSelection() async {
+        let model = await scanned(makeModel())
+
+        model.selectSibling(offset: 1)
+        #expect(model.selection?.name == "Apps")
+        model.selectSibling(offset: -1)
+        #expect(model.selection?.name == "movie.mov")
+        model.selectSibling(offset: -1)
+        #expect(model.selection?.name == "Docs")
+
+        model.selectChildRing()
+        #expect(model.selection?.name == "Reports")
+        model.selectParentRing()
+        #expect(model.selection?.name == "Docs")
+
+        model.openSelection()
+        #expect(model.currentFolder?.name == "Docs")
+    }
+
+    @Test("should search below the current folder and open a result's folder")
+    func search() async throws {
+        let model = await scanned(makeModel())
+
+        model.searchText = "q1"
+        #expect(model.rows.map(\.name) == ["q1.pdf"])
+
+        model.searchText = "zzz"
+        #expect(model.rows.isEmpty)
+
+        model.searchText = "reports"
+        let reports = try #require(model.rows.first)
+        model.open(reports)
+        #expect(model.path.map(\.name) == ["Scan", "Docs", "Reports"])
+        #expect(model.searchText.isEmpty)
+    }
+
+    @Test("should sort rows by the chosen column")
+    func sorting() async {
+        let model = await scanned(makeModel())
+
+        model.sortOrder = [KeyPathComparator(\FileNode.name)]
+
+        #expect(model.rows.map(\.name) == ["Apps", "Docs", "movie.mov"].sorted())
+    }
+
+    @Test("should reveal the selection in Finder, or the current folder when nothing is selected")
+    func reveal() async throws {
+        let model = await scanned(makeModel())
+
+        model.revealInFinder()
+        let apps = try #require(child("Apps", of: model.currentFolder))
+        model.select(apps)
+        model.revealInFinder()
+
+        #expect(revealer.revealed == [TreeBuilder.root, apps.url])
+    }
+
+    @Test("should match each row's color to its chart segment")
+    func rowFills() async throws {
+        let model = await scanned(makeModel())
+        let apps = try #require(child("Apps", of: model.currentFolder))
+
+        #expect(model.fill(for: apps) == .slot(index: 0, depth: 1))
+        #expect(model.fill(for: apps) == model.segments.first { $0.nodeID == apps.id }?.fill)
+    }
+}

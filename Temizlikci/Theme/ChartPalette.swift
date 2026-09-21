@@ -15,6 +15,36 @@ enum ChartPalette {
     static let dimmed = Color.chartDimmed
     /// Stripes for space no folder accounts for, and for folders that need access.
     static let hatch = Color.chartHatch
+    /// The chart's background; also paints the 2 pt gaps between segments.
+    static let surface = Color(nsColor: .textBackgroundColor)
+    /// Label ink on light and dark segment fills.
+    static let labelOnLight = Color.black.opacity(0.82)
+    static let labelOnDark = Color.white
+
+    static let segmentGap: CGFloat = 2
+    static let hatchSpacing: CGFloat = 6
+
+    /// Deeper rings mix the slot color toward the surface (approved design: ~30% / ~52% in light mode).
+    static func tint(slot index: Int, depth: Int, colorScheme: ColorScheme) -> Color {
+        let base = slots[index % slots.count]
+        let amount: Double = switch (depth, colorScheme) {
+        case (1, _): 0
+        case (2, .dark): 0.22
+        case (2, _): 0.30
+        case (_, .dark): 0.40
+        default: 0.52
+        }
+        return amount == 0 ? base : base.mix(with: surface, by: amount)
+    }
+
+    /// The solid color for a fill role, or `nil` for roles drawn as hatching or outlines.
+    static func color(for fill: SegmentFill, colorScheme: ColorScheme) -> Color? {
+        switch fill {
+        case .slot(let index, let depth): tint(slot: index, depth: depth, colorScheme: colorScheme)
+        case .neutral: neutral
+        case .unattributedHatch, .inaccessibleHatch, .pending: nil
+        }
+    }
 }
 
 /// Cleanup-safety colors. Always paired with a symbol and a label, never used alone.
