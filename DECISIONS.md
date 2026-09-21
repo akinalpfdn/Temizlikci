@@ -173,3 +173,21 @@ See `rules/common/decisions.md` for the logging format and rules. Append-only.
 **Why:** The first in-app startup-disk scan reported 731 GB on a 494 GB disk: `/.nofollow` (419 GB) exposes the whole volume again. On this Mac these entries are ordinary-looking directories (not volume roots, not symlinks) with their own inode numbers, so neither the mount rule nor an inode check can catch them.
 **Trade-offs:** An explicit list. A future macOS could add another virtual folder.
 **Revisit if:** A scan's total exceeds the volume's used capacity again. That is the tell-tale sign; consider asserting it in the app and surfacing it.
+
+---
+
+## 2026-09-22 — Move to Trash: no confirmation, system Undo, tree edited in place
+**Chosen:** Move to Trash (inspector, list context menu, Edit menu Command-Delete) runs without an alert, registers with the window's `UndoManager` (Edit › Undo), and shows a transient confirmation with Undo. The tree is edited in place (`removingDescendant` / `insertingDescendant`). For whole-volume scans, trashed space moves into Other Used Space, because it isn't freed until the Trash is emptied. A session ledger lists trashed items with Put Back.
+**Alternatives:** A confirmation alert; rescanning after each action; emptying the Trash from the app.
+**Why:** HIG Alerts: don't alert for common undoable destructive actions. Rescanning a disk takes minutes. Emptying the Trash through Finder scripting would need Automation permission, and emptying the Trash is Finder's job; the app tells people the space is freed then.
+**Trade-offs:** Put Back fails if something now occupies the original path; the error explains how to recover in Finder. The real `FileManager.trashItem` call isn't exercised by tests on purpose, so tests never touch the developer's Trash; it gets verified in the live test.
+**Revisit if:** People want to empty the Trash without leaving the app.
+
+---
+
+## 2026-09-22 — Full Disk Access: banner after the scan, settings deep link, recheck on activation
+**Chosen:** After a scan that skipped protected folders and without Full Disk Access, a banner explains what was skipped and offers "Open Privacy Settings…" (legacy `x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles` URL) or "Not Now". Access is re-probed whenever the app becomes active, and the banner tells people to quit and reopen after turning access on.
+**Alternatives:** Ask at launch; a modal sheet before the first scan.
+**Why:** HIG Privacy: request only when needed, in context, with a clear reason. The first scan itself shows why access matters.
+**Trade-offs:** The URL form must be verified on each macOS release.
+**Revisit if:** The deep link stops opening the right pane.

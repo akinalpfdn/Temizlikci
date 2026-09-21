@@ -1,6 +1,78 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "access.banner.message": {
+      "comment": "Banner message. The argument is how many folders were skipped.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlikci didn’t open %@ protected folders, such as Documents and Mail, so their space is counted in Other Used Space."
+          }
+        }
+      }
+    },
+    "access.banner.notNow": {
+      "comment": "Button that hides the access banner.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not Now"
+          }
+        }
+      }
+    },
+    "access.banner.openSettings": {
+      "comment": "Button that opens Full Disk Access in System Settings.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Privacy Settings…"
+          }
+        }
+      }
+    },
+    "access.banner.relaunch": {
+      "comment": "Hint in the access banner.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "After turning on access for Temizlikci, quit and reopen it, then scan again."
+          }
+        }
+      }
+    },
+    "access.banner.title": {
+      "comment": "Title of the banner shown when protected folders were skipped.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Some Folders Need Full Disk Access"
+          }
+        }
+      }
+    },
+    "alert.ok": {
+      "comment": "Button that dismisses an informational alert.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        }
+      }
+    },
     "app.name": {
       "comment": "The app's name. Keep it untranslated.",
       "extractionState": "manual",
@@ -176,7 +248,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Space macOS reports as used that no scanned folder accounts for: folders Temizlikci can’t read without Full Disk Access, the system volume’s hidden parts, APFS snapshots, and purgeable files."
+            "value": "Space macOS reports as used that no scanned folder accounts for: folders Temizlikci can’t read without Full Disk Access, items in the Trash, the system volume’s hidden parts, APFS snapshots, and purgeable files."
           }
         }
       }
@@ -945,6 +1017,186 @@
           "stringUnit": {
             "state": "translated",
             "value": "No scan yet"
+          }
+        }
+      }
+    },
+    "trash.action.move": {
+      "comment": "Command and button that moves the selected item to the Trash.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move to Trash"
+          }
+        }
+      }
+    },
+    "trash.action.putBack": {
+      "comment": "Button that returns an item from the Trash to where it was.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Put Back"
+          }
+        }
+      }
+    },
+    "trash.action.showInFinder": {
+      "comment": "Button that opens the Trash in Finder.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show Trash in Finder"
+          }
+        }
+      }
+    },
+    "trash.action.undo": {
+      "comment": "Button in the confirmation that returns the item from the Trash.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Undo"
+          }
+        }
+      }
+    },
+    "trash.error.failed": {
+      "comment": "Generic error when moving an item to the Trash fails.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” couldn’t be moved to the Trash."
+          }
+        }
+      }
+    },
+    "trash.error.missing": {
+      "comment": "Error when the item was removed since the scan.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” no longer exists."
+          }
+        }
+      }
+    },
+    "trash.error.noPermission": {
+      "comment": "Error when the item can't be moved to the Trash.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You don’t have permission to move “%@” to the Trash."
+          }
+        }
+      }
+    },
+    "trash.error.putBackFailed": {
+      "comment": "Error when returning an item from the Trash fails.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "“%@” couldn’t be put back."
+          }
+        }
+      }
+    },
+    "trash.error.suggestion.permission": {
+      "comment": "Recovery suggestion when permission is missing.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use Finder to move it; it can ask for an administrator password."
+          }
+        }
+      }
+    },
+    "trash.error.suggestion.putBack": {
+      "comment": "Recovery suggestion when putting back fails.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open the Trash in Finder and drag the item back."
+          }
+        }
+      }
+    },
+    "trash.error.suggestion.rescan": {
+      "comment": "Recovery suggestion after a Trash error.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rescan to see the folder as it is now."
+          }
+        }
+      }
+    },
+    "trash.row.from": {
+      "comment": "Where a trashed item came from. The argument is a folder path.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "From %@"
+          }
+        }
+      }
+    },
+    "trash.summary.note": {
+      "comment": "Explanation in the Trash view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This space is freed when you empty the Trash in Finder."
+          }
+        }
+      }
+    },
+    "trash.summary.total": {
+      "comment": "Header of the Trash view. The argument is a size.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ moved to the Trash from Temizlikci"
+          }
+        }
+      }
+    },
+    "trash.toast.moved": {
+      "comment": "Confirmation after moving an item to the Trash. Arguments: item name, its size.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moved “%@” to the Trash. Its %@ is freed when you empty the Trash."
           }
         }
       }

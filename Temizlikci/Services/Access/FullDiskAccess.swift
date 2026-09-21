@@ -1,4 +1,4 @@
-import Foundation
+import AppKit
 
 nonisolated protocol FullDiskAccessChecking: Sendable {
     func hasFullDiskAccess() -> Bool
@@ -49,5 +49,20 @@ extension ScanConfiguration {
             configuration.unreadFolders = Set(ProtectedLocations.folders(inHome: home).map(ScanConfiguration.comparablePath(of:)))
         }
         return configuration
+    }
+}
+
+/// Opens System Settings at Full Disk Access. The app can't grant access itself; the person turns it on.
+protocol PrivacySettingsOpening {
+    func openFullDiskAccessSettings()
+}
+
+struct SystemPrivacySettings: PrivacySettingsOpening {
+    /// The Privacy pane keeps its legacy settings URL on macOS 26 (MacMost, "Mac System Settings Links").
+    static let fullDiskAccessAddress = "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles"
+
+    func openFullDiskAccessSettings() {
+        guard let url = URL(string: Self.fullDiskAccessAddress) else { return }
+        NSWorkspace.shared.open(url)
     }
 }

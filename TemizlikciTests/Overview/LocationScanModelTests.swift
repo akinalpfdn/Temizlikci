@@ -32,6 +32,12 @@ private final class RecordingRevealer: FileRevealing {
 @MainActor
 struct LocationScanModelTests {
     private let revealer = RecordingRevealer()
+    private let trash = StubTrash()
+    private let ledger: TrashLedger
+
+    init() {
+        ledger = TrashLedger(trash: trash)
+    }
 
     private func makeModel(
         wholeVolume: Bool = false,
@@ -44,6 +50,8 @@ struct LocationScanModelTests {
             volumeInfo: FixedVolume(usage: usage),
             access: GrantedAccess(),
             revealer: revealer,
+            trash: trash,
+            ledger: ledger,
             makeScanner: { _ in StubScanner(events: events, failure: failure) }
         )
     }
@@ -224,4 +232,84 @@ struct LocationScanModelTests {
         #expect(model.fill(for: apps) == .slot(index: 0, depth: 1))
         #expect(model.fill(for: apps) == model.segments.first { $0.nodeID == apps.id }?.fill)
     }
+
+    // MARK: - Trash
+
+    @Test("should move an item to the Trash, update the tree without rescanning, and record it")
+    func moveToTrash() async throws {
+        let model = await scanned(makeModel())
+        let apps = try #require(child("Apps", of: model.currentFolder))
+
+        model.moveToTrash(apps, undoManager: nil)
+
+        #expect(trash.trashed == [apps.url])
+        #expect(model.tree?.allocatedSize == 400)
+        #expect(model.rows.map(\.name) == ["Docs", "movie.mov"])
+        #expect(ledger.records.map(\.node.name) == ["Apps"])
+        #expect(ledger.totalSize == 600)
+        #expect(model.lastTrashed?.node.name == "Apps")
+    }
+
+    @Test("should undo Move to Trash through the undo manager")
+    func undoMoveToTrash() async throws {
+        let model = await scanned(makeModel())
+        let undoManager = UndoManager()
+        let reports = try #require(model.node(withID: TreeBuilder.root.appending(path: "Docs/Reports", directoryHint: .isDirectory).path(percentEncoded: false)))
+
+        model.moveToTrash(reports, undoManager: undoManager)
+        #expect(model.tree?.allocatedSize == 800)
+        undoManager.undo()
+
+        #expect(trash.putBack == [reports.url])
+        #expect(model.tree?.allocatedSize == 1_000)
+        #expect(ledger.records.isEmpty)
+        #expect(model.lastTrashed == nil)
+    }
+
+    @Test("should keep used space unchanged on a whole volume, moving trashed space into Other Used Space")
+    func trashOnWholeVolume() async throws {
+        let model = await scanned(makeModel(wholeVolume: true))
+        let apps = try #require(child("Apps", of: model.currentFolder))
+
+        model.moveToTrash(apps, undoManager: nil)
+
+        #expect(model.tree?.allocatedSize == 1_200)
+        #expect(model.tree?.children.first { $0.kind == .unattributed }?.allocatedSize == 800)
+    }
+
+    @Test("should go to the enclosing folder when the open folder is moved to the Trash")
+    func trashCurrentFolder() async throws {
+        let model = await scanned(makeModel())
+        model.open(try #require(child("Docs", of: model.currentFolder)))
+
+        model.moveToTrash(model.currentFolder, undoManager: nil)
+
+        #expect(model.path.count == 1)
+        #expect(model.rows.map(\.name) == ["Apps", "movie.mov"])
+    }
+
+    @Test("should report a failed move and leave the tree unchanged")
+    func failedMove() async throws {
+        let model = await scanned(makeModel())
+        let apps = try #require(child("Apps", of: model.currentFolder))
+        // The real service converts Cocoa errors into TrashError before throwing.
+        trash.failure = TrashError(movingToTrash: apps.url, underlying: CocoaError(.fileWriteNoPermission))
+
+        model.moveToTrash(apps, undoManager: nil)
+
+        #expect(model.actionError?.message.contains("Apps") == true)
+        #expect(model.tree?.allocatedSize == 1_000)
+        #expect(ledger.records.isEmpty)
+    }
+
+    @Test("should only offer Move to Trash for real files and folders below the scanned location")
+    func trashEligibility() async throws {
+        let model = await scanned(makeModel(wholeVolume: true))
+        let other = try #require(model.tree?.children.first { $0.kind == .unattributed })
+
+        #expect(!model.canMoveToTrash(model.tree))
+        #expect(!model.canMoveToTrash(other))
+        #expect(model.canMoveToTrash(child("movie.mov", of: model.currentFolder)))
+    }
 }
+

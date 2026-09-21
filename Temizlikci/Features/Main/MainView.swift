@@ -1,7 +1,9 @@
+import AppKit
 import SwiftUI
 
 struct MainView: View {
     @Bindable var model: MainViewModel
+    @Environment(\.undoManager) private var undoManager
 
     var body: some View {
         NavigationSplitView {
@@ -26,6 +28,10 @@ struct MainView: View {
                 )
         }
         .frame(minWidth: WindowMetrics.minimumSize.width, minHeight: WindowMetrics.minimumSize.height)
+        .onAppear { model.undoManager = undoManager }
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+            model.refreshAccess()
+        }
     }
 
     private var subtitle: Text {

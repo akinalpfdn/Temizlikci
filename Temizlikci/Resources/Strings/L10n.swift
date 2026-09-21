@@ -128,7 +128,7 @@ nonisolated enum L10n {
         static let path = LocalizedStringResource("details.path", defaultValue: "Path", comment: "Inspector label for the item's location.")
         static let revealInFinder = LocalizedStringResource("details.revealInFinder", defaultValue: "Reveal in Finder", comment: "Button that shows the item in Finder.")
         static let quickLook = LocalizedStringResource("details.quickLook", defaultValue: "Quick Look", comment: "Button that previews the item.")
-        static let unattributedExplanation = LocalizedStringResource("details.explain.unattributed", defaultValue: "Space macOS reports as used that no scanned folder accounts for: folders Temizlikci can’t read without Full Disk Access, the system volume’s hidden parts, APFS snapshots, and purgeable files.", comment: "Inspector explanation for unattributed space.")
+        static let unattributedExplanation = LocalizedStringResource("details.explain.unattributed", defaultValue: "Space macOS reports as used that no scanned folder accounts for: folders Temizlikci can’t read without Full Disk Access, items in the Trash, the system volume’s hidden parts, APFS snapshots, and purgeable files.", comment: "Inspector explanation for unattributed space.")
         static let inaccessibleExplanation = LocalizedStringResource("details.explain.inaccessible", defaultValue: "Temizlikci can’t read this folder without Full Disk Access, so its size isn’t included.", comment: "Inspector explanation for a protected folder.")
         static let smallerFilesExplanation = LocalizedStringResource("details.explain.smallerFiles", defaultValue: "Files under 10 MB in this folder, added together.", comment: "Inspector explanation for grouped small files.")
         static let pendingExplanation = LocalizedStringResource("details.explain.pending", defaultValue: "This part of the disk hasn’t been measured yet.", comment: "Inspector explanation for space not scanned yet.")
@@ -154,5 +154,51 @@ nonisolated enum L10n {
         static func volumeSubtitle(used: String, available: String) -> LocalizedStringResource {
             LocalizedStringResource("navigation.subtitle.volume", defaultValue: "\(used) used · \(available) available", comment: "Window subtitle for a scanned disk.")
         }
+    }
+
+    enum Trash {
+        static let moveToTrash = LocalizedStringResource("trash.action.move", defaultValue: "Move to Trash", comment: "Command and button that moves the selected item to the Trash.")
+        static let putBack = LocalizedStringResource("trash.action.putBack", defaultValue: "Put Back", comment: "Button that returns an item from the Trash to where it was.")
+        static let undo = LocalizedStringResource("trash.action.undo", defaultValue: "Undo", comment: "Button in the confirmation that returns the item from the Trash.")
+        static let showInFinder = LocalizedStringResource("trash.action.showInFinder", defaultValue: "Show Trash in Finder", comment: "Button that opens the Trash in Finder.")
+        static func moved(name: String, size: String) -> LocalizedStringResource {
+            LocalizedStringResource("trash.toast.moved", defaultValue: "Moved “\(name)” to the Trash. Its \(size) is freed when you empty the Trash.", comment: "Confirmation after moving an item to the Trash. Arguments: item name, its size.")
+        }
+        static func total(_ size: String) -> LocalizedStringResource {
+            LocalizedStringResource("trash.summary.total", defaultValue: "\(size) moved to the Trash from Temizlikci", comment: "Header of the Trash view. The argument is a size.")
+        }
+        static let emptyNote = LocalizedStringResource("trash.summary.note", defaultValue: "This space is freed when you empty the Trash in Finder.", comment: "Explanation in the Trash view.")
+        static func movedFrom(_ folder: String) -> LocalizedStringResource {
+            LocalizedStringResource("trash.row.from", defaultValue: "From \(folder)", comment: "Where a trashed item came from. The argument is a folder path.")
+        }
+        static func noPermission(_ name: String) -> LocalizedStringResource {
+            LocalizedStringResource("trash.error.noPermission", defaultValue: "You don’t have permission to move “\(name)” to the Trash.", comment: "Error when the item can't be moved to the Trash.")
+        }
+        static func missing(_ name: String) -> LocalizedStringResource {
+            LocalizedStringResource("trash.error.missing", defaultValue: "“\(name)” no longer exists.", comment: "Error when the item was removed since the scan.")
+        }
+        static func failed(_ name: String) -> LocalizedStringResource {
+            LocalizedStringResource("trash.error.failed", defaultValue: "“\(name)” couldn’t be moved to the Trash.", comment: "Generic error when moving an item to the Trash fails.")
+        }
+        static func putBackFailed(_ name: String) -> LocalizedStringResource {
+            LocalizedStringResource("trash.error.putBackFailed", defaultValue: "“\(name)” couldn’t be put back.", comment: "Error when returning an item from the Trash fails.")
+        }
+        static let rescanSuggestion = LocalizedStringResource("trash.error.suggestion.rescan", defaultValue: "Rescan to see the folder as it is now.", comment: "Recovery suggestion after a Trash error.")
+        static let putBackSuggestion = LocalizedStringResource("trash.error.suggestion.putBack", defaultValue: "Open the Trash in Finder and drag the item back.", comment: "Recovery suggestion when putting back fails.")
+        static let permissionSuggestion = LocalizedStringResource("trash.error.suggestion.permission", defaultValue: "Use Finder to move it; it can ask for an administrator password.", comment: "Recovery suggestion when permission is missing.")
+    }
+
+    enum Access {
+        static let bannerTitle = LocalizedStringResource("access.banner.title", defaultValue: "Some Folders Need Full Disk Access", comment: "Title of the banner shown when protected folders were skipped.")
+        static func bannerMessage(_ count: String) -> LocalizedStringResource {
+            LocalizedStringResource("access.banner.message", defaultValue: "Temizlikci didn’t open \(count) protected folders, such as Documents and Mail, so their space is counted in Other Used Space.", comment: "Banner message. The argument is how many folders were skipped.")
+        }
+        static let relaunchHint = LocalizedStringResource("access.banner.relaunch", defaultValue: "After turning on access for Temizlikci, quit and reopen it, then scan again.", comment: "Hint in the access banner.")
+        static let openSettings = LocalizedStringResource("access.banner.openSettings", defaultValue: "Open Privacy Settings…", comment: "Button that opens Full Disk Access in System Settings.")
+        static let notNow = LocalizedStringResource("access.banner.notNow", defaultValue: "Not Now", comment: "Button that hides the access banner.")
+    }
+
+    enum Alerts {
+        static let ok = LocalizedStringResource("alert.ok", defaultValue: "OK", comment: "Button that dismisses an informational alert.")
     }
 }

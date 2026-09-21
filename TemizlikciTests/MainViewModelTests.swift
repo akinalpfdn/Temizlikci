@@ -10,6 +10,16 @@ private struct StubVolumeInfo: VolumeInfoProviding {
     }
 }
 
+nonisolated private struct StubAccess: FullDiskAccessChecking {
+    let granted: Bool
+    func hasFullDiskAccess() -> Bool { granted }
+}
+
+private final class RecordingSettings: PrivacySettingsOpening {
+    private(set) var opened = 0
+    func openFullDiskAccessSettings() { opened += 1 }
+}
+
 private struct StubFolderPicker: FolderPicking {
     let result: URL?
     func pickFolder() async -> URL? { result }
@@ -17,8 +27,17 @@ private struct StubFolderPicker: FolderPicking {
 
 @MainActor
 struct MainViewModelTests {
-    private func makeModel(volumeName: String? = "Macintosh HD", pickedFolder: URL? = nil) -> MainViewModel {
-        MainViewModel(volumeInfo: StubVolumeInfo(name: volumeName), folderPicker: StubFolderPicker(result: pickedFolder))
+    private let settings = RecordingSettings()
+
+    private func makeModel(volumeName: String? = "Macintosh HD", pickedFolder: URL? = nil, accessGranted: Bool = true) -> MainViewModel {
+        MainViewModel(
+            volumeInfo: StubVolumeInfo(name: volumeName),
+            folderPicker: StubFolderPicker(result: pickedFolder),
+            access: StubAccess(granted: accessGranted),
+            revealer: FinderRevealer(),
+            trash: StubTrash(),
+            settings: settings
+        )
     }
 
     @Test("should select the startup disk and show the inspector when launched")
@@ -71,4 +90,28 @@ struct MainViewModelTests {
         await model.chooseFolder()
         #expect(model.currentScan?.location.url == folder)
     }
+
+    @Test("should open Full Disk Access settings when asked")
+    func openSettings() {
+        let model = makeModel(accessGranted: false)
+
+        model.openPrivacySettings()
+
+        #expect(settings.opened == 1)
+        #expect(model.hasFullDiskAccess == false)
+    }
+
+    @Test("should not show the access banner before any scan, with access, or after Not Now")
+    func accessBannerRules() throws {
+        let withoutAccess = makeModel(accessGranted: false)
+        let scan = try #require(withoutAccess.currentScan)
+        #expect(!withoutAccess.shouldShowAccessBanner(for: scan))
+
+        let withAccess = makeModel(accessGranted: true)
+        #expect(!withAccess.shouldShowAccessBanner(for: try #require(withAccess.currentScan)))
+
+        withoutAccess.isAccessBannerDismissed = true
+        #expect(!withoutAccess.shouldShowAccessBanner(for: scan))
+    }
 }
+

@@ -10,10 +10,14 @@ struct DetailView: View {
         case .largeFiles:
             InsightEmptyView(systemImage: "doc", message: L10n.Insights.largeFilesMessage)
         case .trash:
-            InsightEmptyView(systemImage: "trash", message: L10n.Insights.trashMessage)
+            if model.trashLedger.records.isEmpty {
+                InsightEmptyView(systemImage: "trash", message: L10n.Insights.trashMessage)
+            } else {
+                TrashListView(main: model)
+            }
         case .startupDisk, .home, .chosenFolder, nil:
             if let scan = model.currentScan {
-                OverviewView(model: scan, onChooseFolder: { Task { await model.chooseFolder() } })
+                OverviewView(model: scan, main: model)
                     .id(scan.location.url)
             }
         }

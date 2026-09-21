@@ -6,6 +6,12 @@ import Observation
 final class MainViewModel {
     var selection: SidebarDestination? = .startupDisk
     var isInspectorPresented = true
+    /// The window's undo manager, so menu commands can register Undo for Move to Trash.
+    weak var undoManager: UndoManager?
+
+    private(set) var hasFullDiskAccess: Bool
+    var isAccessBannerDismissed = false
+    let trashLedger: TrashLedger
 
     private(set) var chosenFolder: URL?
     let startupVolumeName: String
@@ -17,6 +23,8 @@ final class MainViewModel {
     private let folderPicker: FolderPicking
     private let access: FullDiskAccessChecking
     private let revealer: FileRevealing
+    private let trash: Trashing
+    private let settings: PrivacySettingsOpening
     private let makeScanner: (ScanConfiguration) -> DiskScanning
 
     init(
@@ -24,6 +32,8 @@ final class MainViewModel {
         folderPicker: FolderPicking,
         access: FullDiskAccessChecking = SystemFullDiskAccessChecker(),
         revealer: FileRevealing = FinderRevealer(),
+        trash: Trashing = FileManagerTrash(),
+        settings: PrivacySettingsOpening = SystemPrivacySettings(),
         homeFolder: URL = URL.homeDirectory,
         makeScanner: @escaping (ScanConfiguration) -> DiskScanning = { FileSystemScanner(configuration: $0) }
     ) {
@@ -32,7 +42,11 @@ final class MainViewModel {
         self.folderPicker = folderPicker
         self.access = access
         self.revealer = revealer
+        self.trash = trash
+        self.settings = settings
         self.makeScanner = makeScanner
+        trashLedger = TrashLedger(trash: trash)
+        hasFullDiskAccess = access.hasFullDiskAccess()
         scanModels[.startupDisk] = makeScanModel(ScanLocation(url: URL(filePath: "/", directoryHint: .isDirectory), displayName: startupVolumeName, isWholeVolume: true))
         scanModels[.home] = makeScanModel(ScanLocation(url: homeFolder, displayName: String(localized: L10n.Sidebar.home), isWholeVolume: false))
     }
@@ -79,7 +93,43 @@ final class MainViewModel {
     }
 
     private func makeScanModel(_ location: ScanLocation) -> LocationScanModel {
-        LocationScanModel(location: location, volumeInfo: volumeInfo, access: access, revealer: revealer, makeScanner: makeScanner)
+        LocationScanModel(
+            location: location, volumeInfo: volumeInfo, access: access, revealer: revealer,
+            trash: trash, ledger: trashLedger, makeScanner: makeScanner
+        )
+    }
+
+    // MARK: - Trash
+
+    func moveSelectionToTrash() {
+        guard let scan = currentScan else { return }
+        scan.moveToTrash(scan.selection ?? scan.currentFolder, undoManager: undoManager)
+    }
+
+    var canMoveSelectionToTrash: Bool {
+        guard let scan = currentScan else { return false }
+        return scan.canMoveToTrash(scan.selection ?? scan.currentFolder)
+    }
+
+    /// Puts an item back through the location it came from, so that location's tree updates too.
+    func putBack(_ record: TrashRecord) {
+        let owner = scanModels.values.first { $0.location.url == record.locationURL }
+        (owner ?? scanModels[.startupDisk])?.putBack(record)
+    }
+
+    // MARK: - Full Disk Access
+
+    /// Re-reads access, for example when the app becomes active after the person visited System Settings.
+    func refreshAccess() {
+        hasFullDiskAccess = access.hasFullDiskAccess()
+    }
+
+    func openPrivacySettings() {
+        settings.openFullDiskAccessSettings()
+    }
+
+    func shouldShowAccessBanner(for scan: LocationScanModel) -> Bool {
+        !hasFullDiskAccess && !isAccessBannerDismissed && (scan.result?.inaccessibleCount ?? 0) > 0
     }
 
     private static func displayName(of folder: URL) -> String {

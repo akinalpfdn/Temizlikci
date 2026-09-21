@@ -20,6 +20,7 @@ struct InspectorView: View {
 private struct NodeDetailsView: View {
     let scan: LocationScanModel
     let node: FileNode
+    @Environment(\.undoManager) private var undoManager
 
     var body: some View {
         ScrollView {
@@ -38,6 +39,11 @@ private struct NodeDetailsView: View {
                     VStack(spacing: Spacing.small) {
                         Button { scan.revealInFinder() } label: { Text(L10n.Details.revealInFinder).frame(maxWidth: .infinity) }
                         Button { scan.quickLook() } label: { Text(L10n.Details.quickLook).frame(maxWidth: .infinity) }
+                        if scan.canMoveToTrash(node) {
+                            Button { scan.moveToTrash(node, undoManager: undoManager) } label: {
+                                Text(L10n.Trash.moveToTrash).frame(maxWidth: .infinity)
+                            }
+                        }
                     }
                     .controlSize(.large)
                 }

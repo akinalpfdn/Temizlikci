@@ -3,6 +3,7 @@ import SwiftUI
 /// The sortable, searchable list that mirrors the chart (HIG: pair a novel chart with a conventional list).
 struct ContentsTable: View {
     @Bindable var model: LocationScanModel
+    @Environment(\.undoManager) private var undoManager
 
     var body: some View {
         Table(model.rows, selection: selection, sortOrder: $model.sortOrder) {
@@ -29,6 +30,10 @@ struct ContentsTable: View {
                 if model.actionableURL(for: node) != nil {
                     Button { model.select(node); model.revealInFinder() } label: { Text(L10n.Details.revealInFinder) }
                     Button { model.select(node); model.quickLook() } label: { Text(L10n.Details.quickLook) }
+                }
+                if model.canMoveToTrash(node) {
+                    Divider()
+                    Button { model.moveToTrash(node, undoManager: undoManager) } label: { Text(L10n.Trash.moveToTrash) }
                 }
             }
         } primaryAction: { ids in

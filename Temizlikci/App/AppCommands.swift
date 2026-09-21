@@ -26,6 +26,13 @@ struct AppCommands: Commands {
                 .disabled(scan?.hasResult != true)
         }
 
+        CommandGroup(after: .pasteboard) {
+            Divider()
+            Button { model.moveSelectionToTrash() } label: { Text(L10n.Trash.moveToTrash) }
+                .keyboardShortcut(.delete)
+                .disabled(!model.canMoveSelectionToTrash)
+        }
+
         CommandMenu(String(localized: L10n.Navigation.goMenu)) {
             Button { scan?.goBack() } label: { Text(L10n.Navigation.back) }
                 .keyboardShortcut("[")

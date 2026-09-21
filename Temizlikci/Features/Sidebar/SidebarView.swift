@@ -28,6 +28,12 @@ struct SidebarView: View {
 
     private func row(for destination: SidebarDestination) -> some View {
         Label { Text(model.title(for: destination)) } icon: { Image(systemName: destination.systemImage) }
+            .badge(badge(for: destination))
             .tag(destination)
+    }
+
+    private func badge(for destination: SidebarDestination) -> Text? {
+        guard destination == .trash, model.trashLedger.totalSize > 0 else { return nil }
+        return Text(Formatting.bytes(model.trashLedger.totalSize))
     }
 }
