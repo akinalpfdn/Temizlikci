@@ -164,3 +164,12 @@ See `rules/common/decisions.md` for the logging format and rules. Append-only.
 **Why:** `FileNode` stays an immutable Sendable value produced off the main actor; chains cover exactly what can be selected, without indexing millions of nodes.
 **Trade-offs:** After Move to Trash (Phase 5) the path must be rebuilt from the updated tree.
 **Revisit if:** Tree edits become frequent enough that rebuilding paths shows up in profiles.
+
+---
+
+## 2026-09-22 — Skip the virtual root folders `/.nofollow`, `/.resolve`, `/.vol`
+**Chosen:** `ScanConfiguration.skippedPaths` defaults to these three paths; they are never visited or shown.
+**Alternatives:** Detect aliasing generically (inode or identifier comparison).
+**Why:** The first in-app startup-disk scan reported 731 GB on a 494 GB disk: `/.nofollow` (419 GB) exposes the whole volume again. On this Mac these entries are ordinary-looking directories (not volume roots, not symlinks) with their own inode numbers, so neither the mount rule nor an inode check can catch them.
+**Trade-offs:** An explicit list. A future macOS could add another virtual folder.
+**Revisit if:** A scan's total exceeds the volume's used capacity again. That is the tell-tale sign; consider asserting it in the app and surfacing it.

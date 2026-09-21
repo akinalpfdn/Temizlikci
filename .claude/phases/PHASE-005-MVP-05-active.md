@@ -1,5 +1,5 @@
 # Phase 005 (MVP-05) — Actions & access
-Status: PENDING
+Status: ACTIVE
 
 ## Goal
 People can safely reclaim space and grant access when needed.
