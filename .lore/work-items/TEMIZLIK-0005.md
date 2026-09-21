@@ -12,10 +12,10 @@
 
   ],
   "sprintID" : "TEMIZLIK-SPRINT-1",
-  "status" : "sprint",
+  "status" : "inProgress",
   "title" : "Phase 005 (MVP-05): Actions & access",
   "type" : "task",
-  "updatedAt" : "2026-09-21T21:25:53Z"
+  "updatedAt" : "2026-09-21T23:27:49Z"
 }
 ---
 
