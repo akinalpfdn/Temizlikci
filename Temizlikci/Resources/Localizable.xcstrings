@@ -1,0 +1,294 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "app.name": {
+      "comment": "The app's name. Keep it untranslated.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlikci"
+          }
+        }
+      }
+    },
+    "folderPicker.message": {
+      "comment": "Explanation shown in the folder selection panel.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose a folder to measure."
+          }
+        }
+      }
+    },
+    "folderPicker.prompt": {
+      "comment": "Default button of the folder selection panel.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose"
+          }
+        }
+      }
+    },
+    "insights.empty.developer": {
+      "comment": "Empty state message of the Developer view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan a location to find build caches, simulators, and other developer files you can remove."
+          }
+        }
+      }
+    },
+    "insights.empty.largeFiles": {
+      "comment": "Empty state message of the Large Files view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan a location to list its largest files."
+          }
+        }
+      }
+    },
+    "insights.empty.title": {
+      "comment": "Title shown in insight views before any scan has run.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing Scanned Yet"
+          }
+        }
+      }
+    },
+    "insights.empty.trash": {
+      "comment": "Empty state message of the Trash view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Items you move to the Trash from Temizlikci appear here until you empty it."
+          }
+        }
+      }
+    },
+    "inspector.empty.message": {
+      "comment": "Inspector message when nothing is selected.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select a folder in the chart or the list to see its details."
+          }
+        }
+      }
+    },
+    "inspector.empty.title": {
+      "comment": "Inspector title when nothing is selected.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Selection"
+          }
+        }
+      }
+    },
+    "menu.file.chooseFolder": {
+      "comment": "File menu command that opens a panel to pick a folder to scan.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose Folder…"
+          }
+        }
+      }
+    },
+    "menu.view.highlightReclaimable": {
+      "comment": "View menu toggle that colors the chart by cleanup safety.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Highlight Reclaimable"
+          }
+        }
+      }
+    },
+    "overview.empty.message": {
+      "comment": "Explanation in the empty state before the first scan.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlikci measures every folder and shows the result as rings you can open. Nothing is changed or deleted while it scans."
+          }
+        }
+      }
+    },
+    "overview.empty.title": {
+      "comment": "Title of the empty state before the first scan.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See What’s Using Your Disk"
+          }
+        }
+      }
+    },
+    "sidebar.action.chooseFolder": {
+      "comment": "Sidebar row that opens a panel to pick a folder to scan.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose Folder…"
+          }
+        }
+      }
+    },
+    "sidebar.item.developer": {
+      "comment": "Sidebar item for reclaimable developer files.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Developer"
+          }
+        }
+      }
+    },
+    "sidebar.item.home": {
+      "comment": "Sidebar item for the user's home folder.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Home"
+          }
+        }
+      }
+    },
+    "sidebar.item.largeFiles": {
+      "comment": "Sidebar item listing the largest files.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Large Files"
+          }
+        }
+      }
+    },
+    "sidebar.item.startupDisk": {
+      "comment": "Sidebar item for the startup volume, used when the volume name can't be read.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Startup Disk"
+          }
+        }
+      }
+    },
+    "sidebar.item.trash": {
+      "comment": "Sidebar item for items moved to the Trash.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trash"
+          }
+        }
+      }
+    },
+    "sidebar.section.insights": {
+      "comment": "Sidebar section listing analysis views.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Insights"
+          }
+        }
+      }
+    },
+    "sidebar.section.locations": {
+      "comment": "Sidebar section listing places that can be scanned.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Locations"
+          }
+        }
+      }
+    },
+    "toolbar.highlightReclaimable": {
+      "comment": "Toolbar toggle that colors the chart by cleanup safety.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Highlight Reclaimable"
+          }
+        }
+      }
+    },
+    "toolbar.inspector": {
+      "comment": "Toolbar button that shows or hides the inspector.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inspector"
+          }
+        }
+      }
+    },
+    "toolbar.subtitle.noScan": {
+      "comment": "Window subtitle before any scan has run.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No scan yet"
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
