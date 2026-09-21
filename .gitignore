@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+# Xcode
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+*.xcresult
+# Swift Package Manager
+.build/
+.swiftpm/
+# Secrets / env
+.env
+.env.*
+# Release artifacts
+*.dmg
+*.xcarchive
+# Claude local settings
+.claude/settings.local.json
