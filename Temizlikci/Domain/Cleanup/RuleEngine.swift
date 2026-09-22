@@ -52,18 +52,25 @@ nonisolated struct RuleEngine: Sendable {
         var found: [CleanupMatch] = []
         func visit(_ node: FileNode, idPath: [String], parentPath: String?) {
             guard node.kind == .directory || node.kind == .inaccessible else { return }
-            let path = Self.trimmedPath(of: node.url)
-            let rule = byPath[path]
-                ?? parentPath.flatMap { parent in
-                    childRules.first { $0.parent == parent && node.name.hasPrefix($0.prefix) && node.name.contains($0.containing) }?.rule
-                }
-                ?? projectRules.first { $0.name == node.name && markers.folder(node.url.deletingLastPathComponent(), contains: $0.marker) }?.rule
+            // Path and name lookups create autoreleased Foundation objects; without a pool per folder they
+            // pile up until the whole pass ends (~220 bytes per folder, measured; Lore knownIssue 101).
+            let (path, rule) = autoreleasepool { () -> (String, CleanupRule?) in
+                let path = Self.trimmedPath(of: node.url)
+                let name = node.name
+                let rule = byPath[path]
+                    ?? parentPath.flatMap { parent in
+                        childRules.first { $0.parent == parent && name.hasPrefix($0.prefix) && name.contains($0.containing) }?.rule
+                    }
+                    ?? projectRules.first { $0.name == name && markers.folder(node.url.deletingLastPathComponent(), contains: $0.marker) }?.rule
+                return (path, rule)
+            }
             if let rule {
                 found.append(CleanupMatch(rule: rule, node: node, idPath: idPath))
                 return
             }
             for child in node.children where child.kind == .directory || child.kind == .inaccessible {
-                visit(child, idPath: idPath + [child.id], parentPath: path)
+                let childID = autoreleasepool { child.id }
+                visit(child, idPath: idPath + [childID], parentPath: path)
             }
         }
         visit(root, idPath: [root.id], parentPath: nil)

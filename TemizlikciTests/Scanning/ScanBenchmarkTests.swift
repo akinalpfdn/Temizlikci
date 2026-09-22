@@ -17,7 +17,8 @@ struct ScanBenchmarkTests {
         let root = URL(filePath: try #require(Self.benchPath), directoryHint: .isDirectory)
         let configuration = ScanConfiguration.forScan(access: SystemFullDiskAccessChecker())
         let rootPath = ScanConfiguration.comparablePath(of: root)
-        let protectedInside = configuration.unreadFolders.contains { $0.hasPrefix(rootPath + "/") }
+        let rootPrefix = rootPath == "/" ? "/" : rootPath + "/"
+        let protectedInside = configuration.unreadFolders.contains { $0.hasPrefix(rootPrefix) }
         let clock = ContinuousClock()
         let heapBefore = Self.heapInUse()
 
@@ -31,11 +32,20 @@ struct ScanBenchmarkTests {
         let peakMemory = Self.peakResidentBytes()
         let retainedHeap = Self.heapInUse() - heapBefore
 
+        // The app matches cleanup rules right after a scan; measure that pass too (Lore knownIssue 101).
+        let rulesStart = clock.now
+        let heapBeforeRules = Self.heapInUse()
+        let matches = RuleEngine().matches(in: scanned.root)
+        let rulesDuration = rulesStart.duration(to: clock.now)
+        let rulesHeap = Self.heapInUse() - heapBeforeRules
+        let peakAfterRules = Self.peakResidentBytes()
+
         var report = """
         BENCHMARK \(root.path(percentEncoded: false))
           scanner: \(scanned.root.allocatedSize) bytes, \(scanned.fileCount) files, \(scanned.directoryCount) folders, \(scanned.inaccessibleCount) inaccessible, \(scanDuration)
           peak resident memory (process, after scan): \(peakMemory / 1_048_576) MB
           heap retained by the result: \(retainedHeap / 1_048_576) MB (\(retainedHeap / Int64(max(scanned.directoryCount, 1))) bytes per folder)
+          rules: \(matches.count) matches in \(rulesDuration); heap still held after the pass: \(rulesHeap / 1_048_576) MB; peak after rules: \(peakAfterRules / 1_048_576) MB
         """
         if protectedInside {
             report += "\n  du -skx: skipped (consent-prompting folders inside the root)"
