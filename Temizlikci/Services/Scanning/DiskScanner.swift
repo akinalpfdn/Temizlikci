@@ -49,15 +49,19 @@ nonisolated struct FileSystemScanner: DiskScanning {
         let context = ScanContext()
 
         let ticker = Task {
-            while !Task.isCancelled {
-                // Sleep only fails on cancellation, which also ends the loop.
-                try? await Task.sleep(for: configuration.progressInterval)
+            while true {
+                // Sleep only fails on cancellation. Stop there: sending one more update after the
+                // scan has finished could replace the finished result on screen.
+                do { try await Task.sleep(for: configuration.progressInterval) } catch { return }
                 continuation.yield(.progress(context.snapshot()))
             }
         }
         defer { ticker.cancel() }
 
         let node = try await scanDirectory(root, modificationDate: rootValues.contentModificationDate, depth: 0, topLevel: nil, context: context)
+        // Wait for the ticker to stop before the result is sent, so no update can follow it.
+        ticker.cancel()
+        await ticker.value
         let tally = context.snapshot()
         return ScanResult(
             root: node,

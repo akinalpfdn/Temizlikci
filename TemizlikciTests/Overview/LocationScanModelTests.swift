@@ -583,4 +583,16 @@ struct LocationScanModelTests {
         #expect(model.measuringIDs.count == 1)
         #expect(model.tree?.children.contains { $0.kind == .pending && $0.allocatedSize == 400 } == true)
     }
+
+    @Test("should ignore a progress update that arrives after the scan finished")
+    func lateProgressIsIgnored() async {
+        var late = ScanProgress()
+        late.completedTopLevel = TreeBuilder.sample().children
+        let finished = ScanResult(root: TreeBuilder.sample(), duration: .seconds(1), fileCount: 5, directoryCount: 3, inaccessibleCount: 0)
+        let model = await scanned(makeModel(wholeVolume: true, events: [.finished(finished), .progress(late)]))
+
+        #expect(model.phase == .finished)
+        #expect(model.tree?.children.contains { $0.kind == .pending } == false)
+        #expect(model.tree?.children.contains { $0.kind == .unattributed } == true)
+    }
 }

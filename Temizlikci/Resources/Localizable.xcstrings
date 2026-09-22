@@ -61,6 +61,30 @@
         }
       }
     },
+    "accessibility.collapsed": {
+      "comment": "Spoken state of a closed section.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Collapsed"
+          }
+        }
+      }
+    },
+    "accessibility.expanded": {
+      "comment": "Spoken state of an open section.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expanded"
+          }
+        }
+      }
+    },
     "alert.cancel": {
       "comment": "Button that cancels an alert's action.",
       "extractionState": "manual",

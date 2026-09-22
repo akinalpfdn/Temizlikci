@@ -113,6 +113,7 @@ private struct DeveloperResults: View {
             }
             .contentShape(.rect)
         }
+        .disclosureGroupStyle(HeaderDisclosureStyle())
     }
 
     private func binding(for id: String) -> Binding<Bool> {

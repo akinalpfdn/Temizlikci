@@ -104,6 +104,8 @@ final class LocationScanModel {
     private let identifier = FolderIdentifier()
     private let snapshots: SnapshotStoring
     private(set) var scanTask: Task<Void, Never>?
+    /// Incremented for every scan started or stopped, so a cancelled scan's leftovers are ignored.
+    private var scanGeneration = 0
 
     /// Search stops after this many matches so typing stays responsive on large trees.
     static let searchResultLimit = 500
@@ -161,6 +163,8 @@ final class LocationScanModel {
     ///   the open folder stay as they are until the new scan finishes.
     func startScan(refreshing: Bool = false) {
         scanTask?.cancel()
+        scanGeneration += 1
+        let generation = scanGeneration
         let scanner = makeScanner(ScanConfiguration.forScan(access: access))
         // Capacity only adds the unmeasured and unattributed segments; without it the scan is still correct.
         usage = location.isWholeVolume ? try? volumeInfo.usage(ofVolumeContaining: location.url) : nil
@@ -180,7 +184,8 @@ final class LocationScanModel {
         scanTask = Task { [weak self] in
             do {
                 for try await event in events {
-                    guard let self else { return }
+                    // Events a cancelled scan still had buffered must not reach the screen.
+                    guard let self, self.scanGeneration == generation else { return }
                     switch event {
                     // A refresh leaves the previous tree on screen, so partial results are ignored.
                     case .progress(let snapshot): if !self.isRefreshing { self.apply(snapshot) }
@@ -197,12 +202,16 @@ final class LocationScanModel {
 
     func stopScan() {
         scanTask?.cancel()
+        scanGeneration += 1
         scanTask = nil
         phase = .idle
         show(nil)
     }
 
     private func apply(_ snapshot: ScanProgress) {
+        // A late update must never replace a finished result: it would turn Other Used Space back
+        // into "Not Scanned Yet" on a scan that is already done.
+        guard phase == .scanning else { return }
         progress = snapshot
         var children = snapshot.completedTopLevel
         // Folders still being read appear with what has been measured so far and grow on every

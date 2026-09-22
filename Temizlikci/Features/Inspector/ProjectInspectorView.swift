@@ -167,10 +167,10 @@ private struct GitDetails: View {
             if !state.unpushedBranches.isEmpty {
                 Text(L10n.Git.branchesOnlyHere).foregroundStyle(.secondary).padding(.top, Spacing.xxSmall)
                 ForEach(state.unpushedBranches, id: \.name) { branch in
-                    LabeledContent {
-                        Text(Formatting.count(branch.commits))
-                    } label: {
+                    HStack(spacing: Spacing.small) {
                         Text(verbatim: branch.name).lineLimit(1).truncationMode(.middle)
+                        Spacer(minLength: Spacing.xSmall)
+                        Text(Formatting.count(branch.commits)).monospacedDigit().fixedSize()
                     }
                     .font(Typography.chartCaption)
                 }
@@ -178,11 +178,16 @@ private struct GitDetails: View {
         }
     }
 
+    /// The label may wrap in the narrow inspector; the number never does.
     private func row(_ title: LocalizedStringResource, value: Int?) -> some View {
-        LabeledContent {
-            if let value { Text(Formatting.count(value)) }
-        } label: {
-            Text(title)
+        HStack(alignment: .firstTextBaseline, spacing: Spacing.small) {
+            Text(title).fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: Spacing.xSmall)
+            if let value {
+                Text(Formatting.count(value))
+                    .monospacedDigit()
+                    .fixedSize()
+            }
         }
     }
 }

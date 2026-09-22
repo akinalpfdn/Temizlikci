@@ -48,6 +48,7 @@ See `.claude/phases/` — always check the active phase file before starting wor
 - Build/test from the CLI: see README. DerivedData goes to `build/DerivedData` (gitignored).
 - Adding a user-facing string: add it to `Resources/Strings/L10n.swift` AND `Resources/Localizable.xcstrings` (StringCatalogTests enforces both).
 - Adding a chart/status color: colorset with light, dark, and both high-contrast variants, validated with the dataviz validator, plus an entry in ChartPaletteTests.
+- Running one Swift Testing test: `-only-testing:TemizlikciTests/Suite/testName()` — the `()` is required. Without it nothing runs and xcodebuild still prints TEST SUCCEEDED. Confirm with a "passed on" line before trusting a result.
 - Default actor isolation is MainActor. Off-main services (scanner, tool runner) must be explicitly `nonisolated` or actors.
 - Toolchain is Xcode 26.6 on macOS 26.6.2 (developer's Mac). When the developer upgrades to macOS 27, Xcode 27 becomes mandatory — plan a migration session (Swift 6.4, `@State` macro change).
 - Lore: project 17 "Temizlikci", sprint TEMIZLIK-SPRINT-1 (MVP). Phases are work items TEMIZLIK-0001…0007.

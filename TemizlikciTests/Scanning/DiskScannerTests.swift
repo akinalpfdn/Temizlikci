@@ -240,6 +240,23 @@ struct DiskScannerTests {
             }
         }
     }
+
+    @Test("should send nothing after the finished result, so a late progress update can't replace it")
+    func finishedIsLast() async throws {
+        let tree = try FixtureTree()
+        for index in 0..<30 { _ = try tree.file("f\(index % 3)/x\(index).bin", bytes: 20_000) }
+
+        for _ in 0..<25 {
+            var events: [ScanEvent] = []
+            for try await event in FileSystemScanner(configuration: Self.smallThreshold).scan(tree.root) {
+                events.append(event)
+            }
+            guard case .finished = events.last else {
+                Issue.record("a progress update arrived after the result")
+                return
+            }
+        }
+    }
 }
 
 struct VolumeUsageTests {

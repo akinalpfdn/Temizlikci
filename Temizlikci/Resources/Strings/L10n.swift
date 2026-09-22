@@ -523,4 +523,9 @@ nonisolated enum L10n {
         static let stashes = LocalizedStringResource("git.stashes", defaultValue: "Stashes", comment: "Label for stashed changes.")
         static let branchesOnlyHere = LocalizedStringResource("git.branchesOnlyHere", defaultValue: "Branches with commits only here", comment: "Header over local branches with unpushed commits.")
     }
+
+    enum Accessibility {
+        static let expanded = LocalizedStringResource("accessibility.expanded", defaultValue: "Expanded", comment: "Spoken state of an open section.")
+        static let collapsed = LocalizedStringResource("accessibility.collapsed", defaultValue: "Collapsed", comment: "Spoken state of a closed section.")
+    }
 }
