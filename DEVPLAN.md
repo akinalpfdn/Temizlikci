@@ -87,13 +87,14 @@ Theme (tokens) and Strings (String Catalog) are shared by all layers above Servi
 - Developer insights: rule catalog for Xcode (DerivedData, iOS DeviceSupport, Archives, Previews, DocumentationCache), simulator runtimes and devices, Gradle, Android AVDs and system images, `node_modules`, Flutter `build/` and `.dart_tool/`, Go build cache, Homebrew cache, npm cache. Each rule has a safety level: **Safe to remove** (regenerates), **Remove with tool** (runs the owning tool), or **Keep** (user data, e.g. messaging app containers, Application Support).
 - Tool actions for simulators (delete unavailable devices, delete a runtime) with a confirmation alert.
 
-### Post-MVP
-- **Growth since last scan:** persist lightweight snapshots and show which folders grew. This directly targets the "where did 100 GB go this month" problem.
-- Menu bar extra showing free space, with a low-space notification.
-- Additional rules: Docker, Unity caches, CocoaPods, SwiftPM caches, Rust `target/`, JetBrains caches.
-- Auto-update via Sparkle.
-- Turkish localization.
-- Scheduled scans.
+### Post-MVP (user-approved 2026-09-22)
+- **What Grew:** keep a lightweight snapshot of every scan and show what grew or shrank since the previous one (per folder and per developer artifact).
+- **Stale Projects:** find projects nobody has touched for a while and show how much build output they hold (per-item actions only; no bulk clean).
+- **Other Used Space breakdown:** split the unattributed segment into purgeable space, local Time Machine snapshots, folders not read without Full Disk Access, the Trash, and the remainder.
+- **More developer rules:** Docker, CocoaPods, SwiftPM, Rust, Unity, Gradle project builds, Maven, JetBrains, Yarn/pnpm/Bun caches, Python caches; drag items onto the sidebar Trash.
+- **What is this folder?:** deterministic identification first, then an optional, labeled on-device explanation (Foundation Models). Informational only.
+- Declined: one-click "Clean All Safe", menu bar extra (see DECISIONS 2026-09-22).
+- Later: Turkish localization, Sparkle updates.
 
 ## Phases
 Phase files live in `.claude/phases/`. Each phase is one Claude Code session. Only one phase is active; the next starts only with the developer's approval.

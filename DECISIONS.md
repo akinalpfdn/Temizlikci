@@ -218,3 +218,21 @@ See `rules/common/decisions.md` for the logging format and rules. Append-only.
 **Why:** SwiftUI alerts don't offer "no default button". HIG treats a deliberately chosen destructive action like Empty Trash as fine to confirm with Return, without destructive styling. The alert text states "This can't be undone" and the size.
 **Trade-offs:** A quick Return confirms.
 **Revisit if:** Moving the alert to AppKit (`NSAlert`) becomes worthwhile for control over the default button.
+
+---
+
+## 2026-09-22 — Post-MVP scope (user decision)
+**Chosen:** Build "What Grew" (scan history and growth between scans), Stale Projects (build output in projects untouched for a while), an Other Used Space breakdown, more developer rules (plus drag to the sidebar Trash), and a "What is this folder?" explanation. AI is limited to that explanation.
+**Alternatives:** One-click "Clean All Safe"; a menu bar extra with low-space alerts; an AI cleanup planner.
+**Why:** User decision. Bulk clean was rejected: "safe to remove doesn't mean I want to remove it", so every deletion stays a deliberate, per-item action. Menu bar extra: not needed. AI planning was rejected because hallucinated advice in a deletion tool can cause data loss; the folder explanation is informational only.
+**Trade-offs:** Cleaning many items takes more clicks.
+**Revisit if:** The user asks for batch actions with an explicit, reviewable selection.
+
+---
+
+## 2026-09-22 — "What is this folder?" never changes safety or triggers actions
+**Chosen:** The explanation first tries deterministic sources (installed apps by bundle identifier, known system folders, the rule catalog); only unknown folders get an on-device Foundation Models explanation. That explanation is labeled as generated, is optional, needs Apple Intelligence, and never alters a safety label or offers a delete action.
+**Alternatives:** Always ask the model; use a cloud model.
+**Why:** Accuracy and privacy: folder paths stay on the Mac, and deterministic answers are right more often than a small model.
+**Trade-offs:** Unavailable on Macs without Apple Intelligence.
+**Revisit if:** Moving to Xcode 27 (the macOS 27 model is better at reasoning and tool calling).
