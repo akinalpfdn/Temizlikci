@@ -3169,6 +3169,18 @@
         }
       }
     },
+    "scan.loadingSaved": {
+      "comment": "Shown while the saved scan of a location is read at launch.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opening the last scan…"
+          }
+        }
+      }
+    },
     "scan.measuring": {
       "comment": "Spoken for a folder whose size is still growing during a scan.",
       "extractionState": "manual",

@@ -29,6 +29,7 @@ private struct StubFolderPicker: FolderPicking {
 struct MainViewModelTests {
     private let settings = RecordingSettings()
     private let apps = RecordingApps()
+    private let scanCache = InMemoryScanCache()
 
     private func makeModel(volumeName: String? = "Macintosh HD", pickedFolder: URL? = nil, accessGranted: Bool = true) -> MainViewModel {
         MainViewModel(
@@ -40,7 +41,7 @@ struct MainViewModelTests {
             settings: settings,
             apps: apps,
             snapshots: InMemorySnapshots(),
-            scanCache: InMemoryScanCache()
+            scanCache: scanCache
         )
     }
 
@@ -161,6 +162,24 @@ struct MainViewModelTests {
 
         #expect(apps.opened.first?.folder == workspace)
         #expect(apps.opened.first?.bundleIdentifier == WorkspaceAppOpener.xcode)
+    }
+
+    @Test("should show the saved startup-disk scan at launch without anyone pressing Scan")
+    func opensSavedScanAtLaunch() async throws {
+        let root = URL(filePath: "/", directoryHint: .isDirectory)
+        let saved = FileNode.directory(url: root, modificationDate: nil, children: [
+            .directory(url: root.appending(path: "Users", directoryHint: .isDirectory), modificationDate: nil, children: [
+                .file(url: root.appending(path: "Users/big.bin"), allocatedSize: 500, modificationDate: nil),
+            ]),
+        ])
+        try scanCache.save(root: saved, scannedAt: Date(), locationPath: "/")
+
+        let model = makeModel()
+        let startup = try #require(model.scanModel(for: .startupDisk))
+        await startup.cacheTask?.value
+
+        #expect(startup.hasResult)
+        #expect(startup.rows.contains { $0.name == "Users" })
     }
 }
 

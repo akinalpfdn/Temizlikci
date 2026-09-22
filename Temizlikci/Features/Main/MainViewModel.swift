@@ -130,12 +130,15 @@ final class MainViewModel {
         selection = .chosenFolder
     }
 
+    /// Every location opens its saved scan straight away, so the chart is there before anyone asks.
     private func makeScanModel(_ location: ScanLocation) -> LocationScanModel {
-        LocationScanModel(
+        let model = LocationScanModel(
             location: location, volumeInfo: volumeInfo, access: access, revealer: revealer,
             trash: trash, ledger: trashLedger, ruleEngine: ruleEngine, projectFinder: projectFinder,
             scanCache: scanCache, snapshots: snapshots, makeScanner: makeScanner
         )
+        model.loadCachedScan()
+        return model
     }
 
     /// Handles a drop on the sidebar's Trash: the items come from the visible scan.

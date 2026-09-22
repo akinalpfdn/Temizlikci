@@ -10,14 +10,25 @@ struct OverviewView: View {
     @AppStorage("refreshPeriod") private var refreshPeriod = RefreshPeriod.threeDays.rawValue
 
     var body: some View {
+        content
+            // Attached to the view itself, not to the results: at launch nothing is on screen yet,
+            // and loading the saved scan is what puts it there.
+            .task(id: model.location.url) { await loadSavedOrScan() }
+    }
+
+    @ViewBuilder
+    private var content: some View {
         switch model.phase {
         case .idle:
-            emptyState
+            if model.cacheTask != nil {
+                loadingSavedScan
+            } else {
+                emptyState
+            }
         case .failed(let message, let suggestion):
             failure(message: message, suggestion: suggestion)
         case .scanning, .finished:
             results
-                .task { await loadSavedOrScan() }
                 .searchable(text: $model.searchText, placement: .toolbar, prompt: Text(L10n.Navigation.searchPrompt))
                 .searchFocused($isSearchFocused)
                 .onChange(of: main.searchFocusRequest) { isSearchFocused = true }
@@ -35,6 +46,14 @@ struct OverviewView: View {
         if model.needsRefresh(after: RefreshPeriod(rawValue: refreshPeriod) ?? .threeDays) {
             model.startScan(refreshing: true)
         }
+    }
+
+    private var loadingSavedScan: some View {
+        VStack(spacing: Spacing.small) {
+            ProgressView()
+            Text(L10n.Scan.loadingSaved).foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private var emptyState: some View {
