@@ -328,7 +328,10 @@ final class LocationScanModel {
     }
 
     func growth(for node: FileNode) -> GrowthChange? {
-        growth?.change(forPath: node.path)
+        // Only real items have a history: "Not Scanned Yet" and "Other Used Space" share the root's
+        // path, so without this they would show the whole location's change as their own.
+        guard node.kind == .directory || node.kind == .file else { return nil }
+        return growth?.change(forPath: node.path)
     }
 
     /// Saves this scan's snapshot and compares it with the previous one, off the main actor.

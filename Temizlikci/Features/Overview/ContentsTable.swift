@@ -6,13 +6,9 @@ struct ContentsTable: View {
     @Environment(\.undoManager) private var undoManager
 
     var body: some View {
-        Table(model.rows, selection: selection, sortOrder: $model.sortOrder) {
+        Table(of: FileNode.self, selection: selection, sortOrder: $model.sortOrder) {
             TableColumn(String(localized: L10n.Table.name), value: \.name) { node in
-                if node.kind == .directory || node.kind == .file {
-                    NameCell(model: model, node: node).draggable(node.url)
-                } else {
-                    NameCell(model: model, node: node)
-                }
+                NameCell(model: model, node: node)
             }
             .width(min: 120)
             TableColumn(String(localized: L10n.Table.size), value: \.allocatedSize) { node in
@@ -33,6 +29,15 @@ struct ContentsTable: View {
                     .frame(maxWidth: .infinity, alignment: .trailing)
             }
             .width(min: 52, ideal: 56, max: 72)
+        } rows: {
+            ForEach(model.rows) { node in
+                // Dragging a row onto the sidebar's Trash removes it, with the same Undo.
+                if node.kind == .directory || node.kind == .file {
+                    TableRow(node).draggable(node.url)
+                } else {
+                    TableRow(node)
+                }
+            }
         }
         .contextMenu(forSelectionType: String.self) { ids in
             if let id = ids.first, let node = model.node(withID: id) {

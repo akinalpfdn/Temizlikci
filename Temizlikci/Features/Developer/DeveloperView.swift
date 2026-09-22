@@ -28,24 +28,32 @@ private struct DeveloperResults: View {
     @Environment(\.colorScheme) private var colorScheme
     @State private var runtimeToDelete: SimulatorRuntime?
     @State private var isConfirmingUnavailable = false
+    /// Which sections are open. Everything starts closed except the largest group, so the whole
+    /// screen is visible at once (HIG: progressive disclosure).
+    @State private var opened: Set<String> = []
+    @State private var hasChosenFirstSection = false
 
     private static let simulatorsAnchor = "simulators"
 
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView {
-                VStack(alignment: .leading, spacing: Spacing.xLarge) {
+                VStack(alignment: .leading, spacing: Spacing.medium) {
                     summary
-                    StaleProjectsSection(scan: scan)
+                        .padding(.bottom, Spacing.small)
+                    section(id: "projects", title: Text(L10n.Projects.title), detail: nil) {
+                        StaleProjectsSection(scan: scan)
+                    }
                     ForEach(Ecosystem.allCases, id: \.self) { ecosystem in
                         let matches = scan.cleanupMatches.filter { $0.rule.ecosystem == ecosystem }
                         if !matches.isEmpty {
-                            group(ecosystem, matches: matches) { proxy.scrollTo(Self.simulatorsAnchor, anchor: .top) }
+                            group(ecosystem, matches: matches) { open(Self.simulatorsAnchor, scrollingWith: proxy) }
                         }
                     }
                     simulatorSection.id(Self.simulatorsAnchor)
                 }
                 .padding(Spacing.large)
+                .onChange(of: scan.cleanupMatches.count, initial: true) { _, _ in openLargestGroup(in: scan) }
             }
         }
         .overlay(alignment: .bottom) { TrashConfirmation(model: scan) }
@@ -89,18 +97,54 @@ private struct DeveloperResults: View {
         }
     }
 
-    // MARK: Groups
+    // MARK: Sections
+
+    /// One collapsible section: its title and size stay visible, its contents appear on demand.
+    private func section<Content: View>(id: String, title: Text, detail: Text?, @ViewBuilder content: @escaping () -> Content) -> some View {
+        DisclosureGroup(isExpanded: binding(for: id)) {
+            content().padding(.top, Spacing.small)
+        } label: {
+            HStack {
+                title.font(.headline)
+                Spacer()
+                detail?.foregroundStyle(.secondary)
+            }
+            .contentShape(.rect)
+        }
+    }
+
+    private func binding(for id: String) -> Binding<Bool> {
+        Binding(
+            get: { opened.contains(id) },
+            set: { isOpen in
+                if isOpen { opened.insert(id) } else { opened.remove(id) }
+            }
+        )
+    }
+
+    /// Opens the section holding the most reclaimable space, once per scan, so the screen isn't empty.
+    private func openLargestGroup(in scan: LocationScanModel) {
+        guard !hasChosenFirstSection, !scan.cleanupMatches.isEmpty else { return }
+        hasChosenFirstSection = true
+        let totals = Dictionary(grouping: scan.cleanupMatches, by: \.rule.ecosystem)
+            .mapValues { $0.filter { $0.rule.safety == .safe }.reduce(Int64(0)) { $0 + $1.node.allocatedSize } }
+        if let largest = totals.max(by: { $0.value < $1.value })?.key {
+            opened.insert(largest.rawValue)
+        }
+    }
+
+    private func open(_ id: String, scrollingWith proxy: ScrollViewProxy) {
+        opened.insert(id)
+        proxy.scrollTo(id, anchor: .top)
+    }
 
     private func group(_ ecosystem: Ecosystem, matches: [CleanupMatch], showSimulators: @escaping () -> Void) -> some View {
         let reclaimable = matches.filter { $0.rule.safety != .keep }.reduce(Int64(0)) { $0 + $1.node.allocatedSize }
-        return VStack(alignment: .leading, spacing: Spacing.small) {
-            HStack {
-                Text(ecosystem.title).font(.headline)
-                Spacer()
-                if reclaimable > 0 {
-                    Text(L10n.Cleanup.reclaimable(Formatting.bytes(reclaimable))).foregroundStyle(.secondary)
-                }
-            }
+        return section(
+            id: ecosystem.rawValue,
+            title: Text(ecosystem.title),
+            detail: reclaimable > 0 ? Text(L10n.Cleanup.reclaimable(Formatting.bytes(reclaimable))) : nil
+        ) {
             VStack(spacing: 0) {
                 ForEach(Array(matches.enumerated()), id: \.element.id) { index, match in
                     if index > 0 { Divider() }
@@ -155,19 +199,23 @@ private struct DeveloperResults: View {
 
     private var simulatorSection: some View {
         let simulators = main.simulators
-        return VStack(alignment: .leading, spacing: Spacing.small) {
-            HStack {
-                Text(L10n.Cleanup.ecosystemSimulators).font(.headline)
+        let total = simulators.runtimes.reduce(Int64(0)) { $0 + $1.sizeBytes } + simulators.unavailable.dataSize
+        return section(
+            id: Self.simulatorsAnchor,
+            title: Text(L10n.Cleanup.ecosystemSimulators),
+            detail: total > 0 ? Text(Formatting.bytes(total)) : nil
+        ) {
+            VStack(alignment: .leading, spacing: Spacing.small) {
                 if simulators.isWorking {
-                    ProgressView().controlSize(.small)
-                    Text(L10n.Simulators.working).foregroundStyle(.secondary)
+                    HStack(spacing: Spacing.xSmall) {
+                        ProgressView().controlSize(.small)
+                        Text(L10n.Simulators.working).foregroundStyle(.secondary)
+                    }
                 }
-                Spacer()
                 if simulators.didChangeDisk {
                     Text(L10n.Simulators.rescanHint).foregroundStyle(.secondary)
                 }
-            }
-            VStack(spacing: 0) {
+                VStack(spacing: 0) {
                 HStack {
                     VStack(alignment: .leading, spacing: Spacing.xxSmall) {
                         Text(L10n.Simulators.unavailableTitle)
@@ -199,7 +247,8 @@ private struct DeveloperResults: View {
                     .padding(Spacing.medium)
                 }
             }
-            .background(.background.secondary, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+                .background(.background.secondary, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+            }
         }
         .alert(Text(L10n.Simulators.deleteUnavailableTitle), isPresented: $isConfirmingUnavailable) {
             Button(role: .cancel) {} label: { Text(L10n.Alerts.cancel) }

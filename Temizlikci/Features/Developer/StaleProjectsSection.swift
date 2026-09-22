@@ -40,7 +40,6 @@ struct StaleProjectsSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.small) {
             HStack {
-                Text(L10n.Projects.title).font(.headline)
                 Spacer()
                 Picker(selection: $periodDays) {
                     ForEach(StalePeriod.allCases) { option in

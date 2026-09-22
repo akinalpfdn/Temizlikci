@@ -511,4 +511,13 @@ struct LocationScanModelTests {
         #expect(!moved)
         #expect(trash.trashed.isEmpty)
     }
+
+    @Test("should not show a size change for rows that stand for the location itself")
+    func noGrowthForSyntheticRows() async throws {
+        let model = await scanned(makeModel(wholeVolume: true))
+        await model.cleanupTask?.value
+        let other = try #require(model.rows.first { $0.kind == .unattributed })
+
+        #expect(model.growth(for: other) == nil)
+    }
 }
