@@ -125,9 +125,19 @@ final class MainViewModel {
 
     /// Opens a changed item in its location's chart.
     func show(_ change: GrowthChange, in scan: LocationScanModel) {
+        show(path: change.path, in: scan)
+    }
+
+    /// Switches to the scan's location and opens the item at `path` in the chart.
+    func show(path: String, in scan: LocationScanModel) {
         guard let destination = scanModels.first(where: { $0.value === scan })?.key else { return }
         selection = destination
-        scan.showItem(atPath: change.path)
+        scan.showItem(atPath: path)
+    }
+
+    /// The scan the Large Files view lists: the startup disk if it has results, otherwise Home or the chosen folder.
+    var largeFilesScan: LocationScanModel? {
+        locationDestinations.compactMap { scanModels[$0] }.first { $0.hasResult }
     }
 
     // MARK: - Developer insights

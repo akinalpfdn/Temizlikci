@@ -337,4 +337,14 @@ nonisolated enum L10n {
             LocalizedStringResource("growth.inspector.label", defaultValue: "Change since \(date)", comment: "Inspector label for the size change.")
         }
     }
+
+    enum LargeFiles {
+        static func title(_ name: String) -> LocalizedStringResource {
+            LocalizedStringResource("largeFiles.title", defaultValue: "Largest Files in \(name)", comment: "Title of the Large Files view. The argument is the scanned location.")
+        }
+        static let modified = LocalizedStringResource("largeFiles.column.modified", defaultValue: "Modified", comment: "Large Files column with the modification date.")
+        static let hint = LocalizedStringResource("largeFiles.hint", defaultValue: "Double-click a file to show it in the chart. Control-click for more actions.", comment: "Hint under the Large Files title.")
+        static let noneTitle = LocalizedStringResource("largeFiles.none.title", defaultValue: "No Files Over 10 MB", comment: "Title when a scan found no large files.")
+        static let noneMessage = LocalizedStringResource("largeFiles.none.message", defaultValue: "Temizlikci lists files of 10 MB or more here after a scan.", comment: "Message when a scan found no large files.")
+    }
 }

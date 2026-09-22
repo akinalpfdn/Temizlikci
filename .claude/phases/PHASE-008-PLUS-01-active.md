@@ -10,11 +10,14 @@ People see what grew or shrank since their previous scan of the same location.
 - [x] UI: growth column/badges in the list (e.g. +15 GB since Sep 21), a "What Grew" view listing the biggest changes, chart hover shows the delta
 - [x] Handle first scan (no history), deleted/renamed folders, and scans of different locations
 - [x] Tests: snapshot encode/decode, diff logic on fixture trees
+- [x] Large Files (added 2026-09-22, user decision): the sidebar item listed nothing since Phase 2; now lists the 200 largest files of the scan with change, Show in Chart, Reveal, Quick Look, and Move to Trash (never for items inside a Keep/Tool match)
 
 ## Acceptance Criteria
 - After two scans, the biggest growth appears with its size and date range
 - Snapshots stay small (measured and recorded) and old ones are pruned
 - Works without Full Disk Access (unread folders marked, not reported as shrinking)
+- Large Files lists files of 10 MB or more after a scan, without a second scan
 
 ## Decisions Made This Phase
-- Tests: 87 (86 pass, 1 opt-in). Snapshot size on the startup disk and the two-scan flow still to be checked live.
+- Large Files reuses the scan tree: the scanner already keeps every file of 10 MB or more as its own node, so no extra disk pass is needed.
+- Tests: 91 (90 pass, 1 opt-in). Snapshot size on the startup disk and the two-scan flow still to be checked live.

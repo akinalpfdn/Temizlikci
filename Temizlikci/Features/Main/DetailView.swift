@@ -10,7 +10,11 @@ struct DetailView: View {
         case .whatGrew:
             WhatGrewView(main: model)
         case .largeFiles:
-            InsightEmptyView(systemImage: "doc", message: L10n.Insights.largeFilesMessage)
+            if let scan = model.largeFilesScan {
+                LargeFilesView(main: model, scan: scan)
+            } else {
+                InsightEmptyView(systemImage: "doc", message: L10n.Insights.largeFilesMessage)
+            }
         case .trash:
             if model.trashLedger.records.isEmpty {
                 InsightEmptyView(systemImage: "trash", message: L10n.Insights.trashMessage)

@@ -1273,6 +1273,66 @@
         }
       }
     },
+    "largeFiles.column.modified": {
+      "comment": "Large Files column with the modification date.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modified"
+          }
+        }
+      }
+    },
+    "largeFiles.hint": {
+      "comment": "Hint under the Large Files title.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Double-click a file to show it in the chart. Control-click for more actions."
+          }
+        }
+      }
+    },
+    "largeFiles.none.message": {
+      "comment": "Message when a scan found no large files.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlikci lists files of 10 MB or more here after a scan."
+          }
+        }
+      }
+    },
+    "largeFiles.none.title": {
+      "comment": "Title when a scan found no large files.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Files Over 10 MB"
+          }
+        }
+      }
+    },
+    "largeFiles.title": {
+      "comment": "Title of the Large Files view. The argument is the scanned location.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Largest Files in %@"
+          }
+        }
+      }
+    },
     "menu.file.chooseFolder": {
       "comment": "File menu command that opens a panel to pick a folder to scan.",
       "extractionState": "manual",

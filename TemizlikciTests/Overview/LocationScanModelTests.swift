@@ -432,5 +432,31 @@ struct LocationScanModelTests {
         #expect(model.currentFolder?.name == "Docs")
         #expect(model.selection?.name == "notes.txt")
     }
-}
 
+    @Test("should list the largest files after a scan and move one to the Trash from that list")
+    func largeFiles() async throws {
+        let model = await scanned(makeModel())
+        await model.cleanupTask?.value
+        #expect(model.largeFiles.first?.node.name == "Big.app")
+        let q1 = try #require(model.largeFiles.first { $0.node.name == "q1.pdf" })
+
+        model.moveToTrash(q1, undoManager: nil)
+
+        #expect(trash.trashed == [q1.node.url])
+        #expect(!model.largeFiles.contains { $0.id == q1.id })
+        #expect(model.tree?.allocatedSize == 800)
+    }
+
+    @Test("should not offer Move to Trash for a large file inside a folder to keep")
+    func largeFileInKeptFolder() async throws {
+        let model = await scanned(modelWithDerivedData())
+        await model.cleanupTask?.value
+        let archived = try #require(model.largeFiles.first { $0.node.name == "A" })
+        let cache = try #require(model.largeFiles.first { $0.node.name == "App" })
+
+        #expect(!model.canMoveToTrash(archived))
+        #expect(model.canMoveToTrash(cache))
+        model.moveToTrash(archived, undoManager: nil)
+        #expect(trash.trashed.isEmpty)
+    }
+}

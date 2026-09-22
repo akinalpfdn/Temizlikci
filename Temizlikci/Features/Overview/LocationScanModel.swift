@@ -63,6 +63,9 @@ final class LocationScanModel {
     private(set) var cleanupTask: Task<Void, Never>?
     var isHighlightingReclaimable = false
 
+    /// The largest files in the current tree, largest first.
+    private(set) var largeFiles: [LargeFile] = []
+
     /// What changed since the previous scan of this location; `nil` for a first scan.
     private(set) var growth: GrowthReport?
     private(set) var historyTask: Task<Void, Never>?
@@ -243,13 +246,15 @@ final class LocationScanModel {
         guard hasResult, let root = tree else {
             cleanupMatches = []
             matchesByID = [:]
+            largeFiles = []
             isHighlightingReclaimable = false
             return
         }
         let engine = ruleEngine
         cleanupTask = Task { [weak self] in
-            let found = await Self.findMatches(engine: engine, root: root)
+            let (found, largest) = await Self.analyze(engine: engine, root: root)
             guard let self, !Task.isCancelled, self.tree?.id == root.id else { return }
+            self.largeFiles = largest
             self.cleanupMatches = found.sorted { $0.node.allocatedSize > $1.node.allocatedSize }
             self.matchesByID = Dictionary(found.map { ($0.node.id, $0) }, uniquingKeysWith: { first, _ in first })
             if found.isEmpty { self.isHighlightingReclaimable = false }
@@ -307,10 +312,36 @@ final class LocationScanModel {
         select(target.kind == .directory && !target.children.isEmpty ? nil : target)
     }
 
-    /// Walks the whole tree, so it must not run on the main actor.
+    /// Walks the whole tree (rules and largest files), so it must not run on the main actor.
     @concurrent
-    nonisolated private static func findMatches(engine: RuleEngine, root: FileNode) async -> [CleanupMatch] {
-        engine.matches(in: root)
+    nonisolated private static func analyze(engine: RuleEngine, root: FileNode) async -> ([CleanupMatch], [LargeFile]) {
+        (engine.matches(in: root), LargeFileFinder.largest(in: root))
+    }
+
+    /// The rule match covering an item anywhere in the tree, given its IDs from the root.
+    private func cleanupMatch(alongIDPath ids: [String]) -> CleanupMatch? {
+        ids.reversed().lazy.compactMap { self.matchesByID[$0] }.first
+    }
+
+    func canMoveToTrash(_ file: LargeFile) -> Bool {
+        hasResult && (cleanupMatch(alongIDPath: file.idPath)?.rule.safety ?? .safe) == .safe
+    }
+
+    /// Moves a file from the Large Files view to the Trash and drops it from the list right away.
+    func moveToTrash(_ file: LargeFile, undoManager: UndoManager?) {
+        guard canMoveToTrash(file) else { return }
+        moveToTrash(file.node, idPath: file.idPath, undoManager: undoManager)
+        if lastTrashed?.node.id == file.node.id {
+            largeFiles.removeAll { $0.node.id == file.node.id }
+        }
+    }
+
+    func revealInFinder(_ file: LargeFile) {
+        revealer.reveal(file.node.url)
+    }
+
+    func quickLook(_ file: LargeFile) {
+        previewURL = file.node.url
     }
 
     // MARK: - Trash
@@ -341,7 +372,7 @@ final class LocationScanModel {
 
     private func moveToTrash(_ node: FileNode, idPath ids: [String], undoManager: UndoManager?) {
         guard hasResult, let tree, node.id != tree.id, node.kind == .directory || node.kind == .file,
-              (matchesByID[node.id]?.rule.safety ?? cleanupMatch(for: node)?.rule.safety ?? .safe) == .safe else { return }
+              (cleanupMatch(alongIDPath: ids)?.rule.safety ?? .safe) == .safe else { return }
         let trashedURL: URL
         do {
             trashedURL = try trash.moveToTrash(node.url)
