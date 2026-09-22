@@ -77,6 +77,7 @@ nonisolated enum L10n {
         static func savedFooter(_ age: String) -> LocalizedStringResource {
             LocalizedStringResource("scan.footer.saved", defaultValue: "From the scan \(age)", comment: "Footer when the tree comes from a saved scan. The argument is a relative time such as \"3 days ago\".")
         }
+        static let measuring = LocalizedStringResource("scan.measuring", defaultValue: "Still measuring", comment: "Spoken for a folder whose size is still growing during a scan.")
         static let refreshing = LocalizedStringResource("scan.refreshing", defaultValue: "Refreshing in the background…", comment: "Shown while a new scan replaces a saved one.")
         static let refreshNow = LocalizedStringResource("scan.refreshNow", defaultValue: "Rescan", comment: "Button that starts a fresh scan of a saved result.")
         static let sizesFooter = LocalizedStringResource("scan.footer.sizes", defaultValue: "Sizes are space on disk. APFS clones may be counted more than once.", comment: "Footer note explaining how sizes are measured.")

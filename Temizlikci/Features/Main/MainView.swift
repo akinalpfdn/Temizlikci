@@ -95,7 +95,7 @@ private struct MainToolbar: ToolbarContent {
         }
         ToolbarItem {
             Toggle(isOn: Binding(get: { scan?.isHighlightingReclaimable ?? false }, set: { scan?.isHighlightingReclaimable = $0 })) {
-                Label { Text(L10n.Cleanup.highlight) } icon: { Image(systemName: "sparkles") }
+                Label { Text(L10n.Cleanup.highlight) } icon: { Image(systemName: "highlighter") }
             }
             .toggleStyle(.button)
             .help(Text(L10n.Cleanup.highlight))

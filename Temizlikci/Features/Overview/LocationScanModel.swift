@@ -69,6 +69,9 @@ final class LocationScanModel {
     /// Project folders in the current tree, most reclaimable first.
     private(set) var projects: [DeveloperProject] = []
 
+    /// Top-level folders still being scanned, shown with their size so far.
+    private(set) var measuringIDs: Set<String> = []
+
     /// When the tree on screen was measured, whether it came from a scan or from the cache.
     private(set) var scannedAt: Date?
     /// True while a scan refreshes a tree that is already on screen.
@@ -202,6 +205,15 @@ final class LocationScanModel {
     private func apply(_ snapshot: ScanProgress) {
         progress = snapshot
         var children = snapshot.completedTopLevel
+        // Folders still being read appear with what has been measured so far and grow on every
+        // update, so a large folder like Users fills the chart as it's scanned.
+        let finished = Set(children.map(\.url))
+        let measuring = snapshot.measuringTopLevel.filter { $0.value > 0 && !finished.contains($0.key) }
+        measuringIDs = Set(measuring.keys.map { FileNode.directory(url: $0, modificationDate: nil, children: []).id })
+        // No children yet: the chart shows one growing segment per folder, without an outer ring.
+        children += measuring.map { url, size in
+            FileNode(url: url, kind: .directory, allocatedSize: size, fileCount: 0, modificationDate: nil, children: [])
+        }
         let measured = children.reduce(0) { $0 + $1.allocatedSize }
         if let usage, usage.usedCapacity > measured {
             children.append(.pending(in: location.url, allocatedSize: usage.usedCapacity - measured))
@@ -229,6 +241,7 @@ final class LocationScanModel {
         phase = .finished
         scanTask = nil
         isRefreshing = false
+        measuringIDs = []
         recordsHistoryAfterMatching = true
         show(root)
         // A refresh shouldn't move the person: go back to the folder they were looking at.

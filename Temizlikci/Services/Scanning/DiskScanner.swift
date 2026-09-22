@@ -57,7 +57,7 @@ nonisolated struct FileSystemScanner: DiskScanning {
         }
         defer { ticker.cancel() }
 
-        let node = try await scanDirectory(root, modificationDate: rootValues.contentModificationDate, depth: 0, context: context)
+        let node = try await scanDirectory(root, modificationDate: rootValues.contentModificationDate, depth: 0, topLevel: nil, context: context)
         let tally = context.snapshot()
         return ScanResult(
             root: node,
@@ -84,17 +84,23 @@ nonisolated struct FileSystemScanner: DiskScanning {
 
     // MARK: - Walking
 
-    private func scanDirectory(_ url: URL, modificationDate: Date?, depth: Int, context: ScanContext) async throws -> FileNode {
+    /// - Parameter topLevel: the scan root's child this folder is inside, used to report how far
+    ///   each top-level folder has got; `nil` for the root itself.
+    private func scanDirectory(_ url: URL, modificationDate: Date?, depth: Int, topLevel: URL?, context: ScanContext) async throws -> FileNode {
         guard depth < configuration.parallelDepth else {
-            return try scanDirectorySynchronously(url, modificationDate: modificationDate, context: context)
+            return try scanDirectorySynchronously(url, modificationDate: modificationDate, topLevel: topLevel, context: context)
         }
         try Task.checkCancellation()
-        guard let listing = read(url, context: context) else { return .inaccessible(url: url) }
+        guard let listing = read(url, topLevel: topLevel, context: context) else { return .inaccessible(url: url) }
 
         let subdirectories = try await withThrowingTaskGroup(of: FileNode.self) { group in
             for directory in listing.directories {
+                let childTopLevel = topLevel ?? directory.url
                 group.addTask {
-                    try await scanDirectory(directory.url, modificationDate: directory.modificationDate, depth: depth + 1, context: context)
+                    try await scanDirectory(
+                        directory.url, modificationDate: directory.modificationDate, depth: depth + 1,
+                        topLevel: childTopLevel, context: context
+                    )
                 }
             }
             var nodes: [FileNode] = []
@@ -107,11 +113,11 @@ nonisolated struct FileSystemScanner: DiskScanning {
         return .directory(url: url, modificationDate: modificationDate, children: listing.fileNodes + subdirectories)
     }
 
-    private func scanDirectorySynchronously(_ url: URL, modificationDate: Date?, context: ScanContext) throws -> FileNode {
+    private func scanDirectorySynchronously(_ url: URL, modificationDate: Date?, topLevel: URL?, context: ScanContext) throws -> FileNode {
         try Task.checkCancellation()
-        guard let listing = read(url, context: context) else { return .inaccessible(url: url) }
+        guard let listing = read(url, topLevel: topLevel, context: context) else { return .inaccessible(url: url) }
         let subdirectories = try listing.directories.map {
-            try scanDirectorySynchronously($0.url, modificationDate: $0.modificationDate, context: context)
+            try scanDirectorySynchronously($0.url, modificationDate: $0.modificationDate, topLevel: topLevel ?? $0.url, context: context)
         }
         return .directory(url: url, modificationDate: modificationDate, children: listing.fileNodes + subdirectories)
     }
@@ -131,13 +137,13 @@ nonisolated struct FileSystemScanner: DiskScanning {
     private static let keySet = Set(keys)
 
     /// Returns `nil` when the directory can't be listed, after recording it as inaccessible.
-    private func read(_ url: URL, context: ScanContext) -> Listing? {
+    private func read(_ url: URL, topLevel: URL?, context: ScanContext) -> Listing? {
         // Listing creates many autoreleased Foundation objects; without a pool per directory they
         // pile up until the whole subtree task ends.
-        autoreleasepool { readEntries(of: url, context: context) }
+        autoreleasepool { readEntries(of: url, topLevel: topLevel, context: context) }
     }
 
-    private func readEntries(of url: URL, context: ScanContext) -> Listing? {
+    private func readEntries(of url: URL, topLevel: URL?, context: ScanContext) -> Listing? {
         let entries: [URL]
         do {
             entries = try FileManager.default.contentsOfDirectory(at: url, includingPropertiesForKeys: Self.keys)
@@ -182,7 +188,7 @@ nonisolated struct FileSystemScanner: DiskScanning {
         if smallCount > 0 {
             listing.fileNodes.append(.smallerFiles(in: url, count: smallCount, allocatedSize: smallSize))
         }
-        context.recordDirectory(url, fileCount: fileCount, allocatedSize: listedBytes)
+        context.recordDirectory(url, topLevel: topLevel, fileCount: fileCount, allocatedSize: listedBytes)
         return listing
     }
 
@@ -202,12 +208,13 @@ nonisolated private final class ScanContext: Sendable {
         progress.withLock { $0 }
     }
 
-    func recordDirectory(_ url: URL, fileCount: Int, allocatedSize: Int64) {
+    func recordDirectory(_ url: URL, topLevel: URL?, fileCount: Int, allocatedSize: Int64) {
         progress.withLock {
             $0.directoryCount += 1
             $0.fileCount += fileCount
             $0.allocatedSize += allocatedSize
             $0.currentDirectory = url
+            if let topLevel { $0.measuringTopLevel[topLevel, default: 0] += allocatedSize }
         }
     }
 
@@ -216,7 +223,10 @@ nonisolated private final class ScanContext: Sendable {
     }
 
     func recordCompletedTopLevel(_ node: FileNode) {
-        progress.withLock { $0.completedTopLevel.append(node) }
+        progress.withLock {
+            $0.completedTopLevel.append(node)
+            $0.measuringTopLevel[node.url] = nil
+        }
     }
 
     /// Returns true the first time a hard-linked file is seen, so its space is counted once.

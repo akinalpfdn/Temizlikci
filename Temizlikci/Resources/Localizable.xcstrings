@@ -2857,6 +2857,18 @@
         }
       }
     },
+    "scan.measuring": {
+      "comment": "Spoken for a folder whose size is still growing during a scan.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Still measuring"
+          }
+        }
+      }
+    },
     "scan.refreshNow": {
       "comment": "Button that starts a fresh scan of a saved result.",
       "extractionState": "manual",

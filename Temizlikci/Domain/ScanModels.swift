@@ -34,6 +34,9 @@ nonisolated struct ScanProgress: Sendable {
     var currentDirectory: URL?
     /// Top-level children of the scan root that are fully measured, for progressive rendering.
     var completedTopLevel: [FileNode] = []
+    /// Space measured so far inside top-level children that are still being scanned, so the chart
+    /// can grow while a large folder like Users is read instead of waiting for it to finish.
+    var measuringTopLevel: [URL: Int64] = [:]
 }
 
 nonisolated struct ScanResult: Sendable {

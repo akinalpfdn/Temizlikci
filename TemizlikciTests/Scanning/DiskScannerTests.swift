@@ -219,6 +219,27 @@ struct DiskScannerTests {
         #expect(error.errorDescription?.contains("Private") == true)
         #expect(error.recoverySuggestion?.isEmpty == false)
     }
+
+    @Test("should report running sizes only for the root's own folders, never more than their final size")
+    func runningTopLevelSizes() async throws {
+        let tree = try FixtureTree()
+        for index in 0..<40 {
+            _ = try tree.file("big/level\(index % 4)/file\(index).bin", bytes: 40_000)
+        }
+        _ = try tree.file("small/one.bin", bytes: 10_000)
+
+        let (result, progress) = try await scan(tree.root)
+
+        let finalSizes = Dictionary(uniqueKeysWithValues: result.root.children.map { ($0.path, $0.allocatedSize) })
+        for snapshot in progress {
+            for (url, size) in snapshot.measuringTopLevel {
+                var path = url.path(percentEncoded: false)
+                if path.hasSuffix("/") { path.removeLast() }
+                let final = try #require(finalSizes[path], "\(path) is not a folder directly inside the root")
+                #expect(size <= final)
+            }
+        }
+    }
 }
 
 struct VolumeUsageTests {

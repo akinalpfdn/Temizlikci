@@ -78,6 +78,12 @@ private struct NameCell: View {
             Text(model.title(for: node))
                 .lineLimit(1)
                 .truncationMode(.middle)
+            if model.measuringIDs.contains(node.id) {
+                // Still being read: its size keeps growing until the folder is finished.
+                ProgressView()
+                    .controlSize(.mini)
+                    .accessibilityLabel(Text(L10n.Scan.measuring))
+            }
             if node.kind == .inaccessible {
                 Label { Text(L10n.Nodes.needsAccess) } icon: { Image(systemName: "lock") }
                     .font(Typography.badge)

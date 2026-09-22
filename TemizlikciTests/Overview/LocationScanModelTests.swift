@@ -567,4 +567,19 @@ struct LocationScanModelTests {
         #expect(model.currentFolder?.name == "Docs")
         #expect(model.result != nil)
     }
+
+    @Test("should show folders that are still being read with their size so far, and shrink the unmeasured part")
+    func growingFolders() async {
+        var progress = ScanProgress()
+        progress.completedTopLevel = [TreeBuilder.folder("Apps", [TreeBuilder.file("Apps/Big.app", 300)])]
+        let docs = TreeBuilder.root.appending(path: "Docs", directoryHint: .isDirectory)
+        progress.measuringTopLevel = [docs: 500]
+        let model = await scanned(makeModel(wholeVolume: true, events: [.progress(progress)]))
+
+        let growing = model.tree?.children.first { $0.url == docs }
+        #expect(growing?.allocatedSize == 500)
+        #expect(growing?.children.isEmpty == true, "no outer ring until the folder is finished")
+        #expect(model.measuringIDs.count == 1)
+        #expect(model.tree?.children.contains { $0.kind == .pending && $0.allocatedSize == 400 } == true)
+    }
 }
