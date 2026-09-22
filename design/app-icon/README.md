@@ -14,4 +14,4 @@ Concept approved in Phase 1: three sunburst rings with one outer segment swept l
 2. Drag `1-rings.svg`, `2-lifted-segment.svg`, and `3-sparkle.svg` onto the canvas as separate layers (in that order, sparkle on top).
 3. Select the document and set **Background** to a linear gradient `#1d2b44` (top) → `#0c1320` (bottom), or drop in `0-background.svg`.
 4. Optional: raise the lifted segment's Liquid Glass/specular slightly, and check the Dark, Clear, and Tinted previews.
-5. Save as **`AppIcon.icon`** in this folder (`design/app-icon/AppIcon.icon`), then ask Claude to wire it into the project.
+5. Save as **`AppIcon.icon`**. The project's copy lives at `Temizlikci/Resources/AppIcon.icon` (the app target builds it; `ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon`). Edit that file directly in Icon Composer to change the icon.

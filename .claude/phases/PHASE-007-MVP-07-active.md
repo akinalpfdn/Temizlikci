@@ -5,7 +5,7 @@ Status: ACTIVE
 A signed, notarized build usable daily and shareable.
 
 ## Tasks
-- [ ] Layered app icon (Icon Composer) — layers + preview ready in design/app-icon (fbcb472); developer assembles AppIcon.icon, then wire it
+- [x] Layered app icon (Icon Composer) — developer assembled AppIcon.icon; wired at Temizlikci/Resources/AppIcon.icon (IconImageStack + .icns fallback verified in the build)
 - [x] Optional interactive sunburst introduction, reachable from Help (4914fe8)
 - [x] Review empty, error, low-space states — Find command, Help menu, free-space badge added (4914fe8)
 - [x] Performance pass (engineering part): retained heap −36% (5c96931); startup-disk figure to be measured live. Scan memory (Lore knownIssue 101 — 1.1 GB peak on the startup disk, measured before the /.nofollow fix)
@@ -24,3 +24,4 @@ A signed, notarized build usable daily and shareable.
 ## Decisions Made This Phase
 - 2026-09-22 — Developer chose: icon via Icon Composer layers they assemble; notarized DMG after the final live audit.
 - Finding: running `xcodebuild test` while the Debug app is open made test-host launch take ~15 min (same bundle ID). Close the app before running tests.
+- 2026-09-22 — With the app closed the full suite ran in 11.6 s (80 tests, 79 pass, 1 opt-in), confirming the slow runs came from the open Debug app.

@@ -1,0 +1,38 @@
+{
+  "fill" : {
+    "automatic-gradient" : "extended-srgb:0.00000,0.53333,1.00000,1.00000"
+  },
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "image-name" : "2-lifted-segment.svg",
+          "name" : "2-lifted-segment"
+        },
+        {
+          "image-name" : "1-rings.svg",
+          "name" : "1-rings"
+        },
+        {
+          "image-name" : "0-background.svg",
+          "name" : "0-background"
+        }
+      ],
+      "name" : "Temizlikci",
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}
