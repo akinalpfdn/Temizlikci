@@ -32,6 +32,7 @@ final class MainViewModel {
     private let settings: PrivacySettingsOpening
     private let apps: AppOpening
     private let ruleEngine: RuleEngine
+    private let projectFinder: ProjectFinder
     private let snapshots: SnapshotStoring
     private let makeScanner: (ScanConfiguration) -> DiskScanning
 
@@ -59,6 +60,7 @@ final class MainViewModel {
         self.snapshots = snapshots
         self.makeScanner = makeScanner
         ruleEngine = RuleEngine(home: homeFolder)
+        projectFinder = ProjectFinder(home: homeFolder)
         startupFreeSpace = try? volumeInfo.usage(ofVolumeContaining: URL(filePath: "/")).availableCapacity
         simulators = SimulatorsModel(service: SimulatorService(runner: tools))
         trashLedger = TrashLedger(trash: trash)
@@ -112,7 +114,8 @@ final class MainViewModel {
     private func makeScanModel(_ location: ScanLocation) -> LocationScanModel {
         LocationScanModel(
             location: location, volumeInfo: volumeInfo, access: access, revealer: revealer,
-            trash: trash, ledger: trashLedger, ruleEngine: ruleEngine, snapshots: snapshots, makeScanner: makeScanner
+            trash: trash, ledger: trashLedger, ruleEngine: ruleEngine, projectFinder: projectFinder,
+            snapshots: snapshots, makeScanner: makeScanner
         )
     }
 

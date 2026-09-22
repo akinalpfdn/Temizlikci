@@ -36,6 +36,7 @@ private struct DeveloperResults: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: Spacing.xLarge) {
                     summary
+                    StaleProjectsSection(scan: scan)
                     ForEach(Ecosystem.allCases, id: \.self) { ecosystem in
                         let matches = scan.cleanupMatches.filter { $0.rule.ecosystem == ecosystem }
                         if !matches.isEmpty {

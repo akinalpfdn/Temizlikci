@@ -355,4 +355,32 @@ nonisolated enum L10n {
         static let noneTitle = LocalizedStringResource("largeFiles.none.title", defaultValue: "No Files Over 10 MB", comment: "Title when a scan found no large files.")
         static let noneMessage = LocalizedStringResource("largeFiles.none.message", defaultValue: "Temizlikci lists files of 10 MB or more here after a scan.", comment: "Message when a scan found no large files.")
     }
+
+    enum Projects {
+        static let title = LocalizedStringResource("projects.title", defaultValue: "Stale Projects", comment: "Section listing projects nobody has worked on for a while.")
+        static let periodLabel = LocalizedStringResource("projects.period.label", defaultValue: "Untouched for", comment: "Label of the control that picks how old a project must be.")
+        static let periodMonth = LocalizedStringResource("projects.period.month", defaultValue: "30 days", comment: "Staleness period.")
+        static let periodQuarter = LocalizedStringResource("projects.period.quarter", defaultValue: "90 days", comment: "Staleness period.")
+        static let periodHalfYear = LocalizedStringResource("projects.period.halfYear", defaultValue: "6 months", comment: "Staleness period.")
+        static let periodYear = LocalizedStringResource("projects.period.year", defaultValue: "1 year", comment: "Staleness period.")
+        static let empty = LocalizedStringResource("projects.empty", defaultValue: "No project has been left alone that long.", comment: "Shown when no project is stale.")
+        static func lastTouched(_ date: String) -> LocalizedStringResource {
+            LocalizedStringResource("projects.lastTouched", defaultValue: "Last worked on \(date)", comment: "When someone last changed a project's own files.")
+        }
+        static func total(_ size: String) -> LocalizedStringResource {
+            LocalizedStringResource("projects.total", defaultValue: "\(size) in total", comment: "Size of the whole project folder.")
+        }
+        static let buildOutput = LocalizedStringResource("projects.buildOutput", defaultValue: "Build output", comment: "Header over a project's build artifacts.")
+        static let noArtifacts = LocalizedStringResource("projects.noArtifacts", defaultValue: "No build output to remove.", comment: "Shown for a stale project that holds no artifacts.")
+        static let evidenceGit = LocalizedStringResource("projects.evidence.git", defaultValue: "Git repository", comment: "How a folder was identified as a project.")
+        static let evidenceXcode = LocalizedStringResource("projects.evidence.xcode", defaultValue: "Xcode project", comment: "How a folder was identified as a project.")
+        static let evidenceSwiftPackage = LocalizedStringResource("projects.evidence.swiftPackage", defaultValue: "Swift package", comment: "How a folder was identified as a project.")
+        static let evidenceNode = LocalizedStringResource("projects.evidence.node", defaultValue: "Node.js project", comment: "How a folder was identified as a project.")
+        static let evidenceFlutter = LocalizedStringResource("projects.evidence.flutter", defaultValue: "Flutter or Dart package", comment: "How a folder was identified as a project.")
+        static let evidenceRust = LocalizedStringResource("projects.evidence.rust", defaultValue: "Rust crate", comment: "How a folder was identified as a project.")
+        static let evidenceGradle = LocalizedStringResource("projects.evidence.gradle", defaultValue: "Gradle project", comment: "How a folder was identified as a project.")
+        static let evidenceGo = LocalizedStringResource("projects.evidence.go", defaultValue: "Go module", comment: "How a folder was identified as a project.")
+        static let evidenceUnity = LocalizedStringResource("projects.evidence.unity", defaultValue: "Unity project", comment: "How a folder was identified as a project.")
+        static let unknownActivity = LocalizedStringResource("projects.unknownActivity", defaultValue: "Last change unknown", comment: "Shown when the project's activity date can't be read.")
+    }
 }

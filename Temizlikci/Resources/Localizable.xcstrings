@@ -1657,6 +1657,258 @@
         }
       }
     },
+    "projects.buildOutput": {
+      "comment": "Header over a project's build artifacts.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Build output"
+          }
+        }
+      }
+    },
+    "projects.empty": {
+      "comment": "Shown when no project is stale.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No project has been left alone that long."
+          }
+        }
+      }
+    },
+    "projects.evidence.flutter": {
+      "comment": "How a folder was identified as a project.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flutter or Dart package"
+          }
+        }
+      }
+    },
+    "projects.evidence.git": {
+      "comment": "How a folder was identified as a project.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git repository"
+          }
+        }
+      }
+    },
+    "projects.evidence.go": {
+      "comment": "How a folder was identified as a project.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Go module"
+          }
+        }
+      }
+    },
+    "projects.evidence.gradle": {
+      "comment": "How a folder was identified as a project.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gradle project"
+          }
+        }
+      }
+    },
+    "projects.evidence.node": {
+      "comment": "How a folder was identified as a project.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Node.js project"
+          }
+        }
+      }
+    },
+    "projects.evidence.rust": {
+      "comment": "How a folder was identified as a project.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rust crate"
+          }
+        }
+      }
+    },
+    "projects.evidence.swiftPackage": {
+      "comment": "How a folder was identified as a project.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Swift package"
+          }
+        }
+      }
+    },
+    "projects.evidence.unity": {
+      "comment": "How a folder was identified as a project.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unity project"
+          }
+        }
+      }
+    },
+    "projects.evidence.xcode": {
+      "comment": "How a folder was identified as a project.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xcode project"
+          }
+        }
+      }
+    },
+    "projects.lastTouched": {
+      "comment": "When someone last changed a project's own files.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last worked on %@"
+          }
+        }
+      }
+    },
+    "projects.noArtifacts": {
+      "comment": "Shown for a stale project that holds no artifacts.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No build output to remove."
+          }
+        }
+      }
+    },
+    "projects.period.halfYear": {
+      "comment": "Staleness period.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "6 months"
+          }
+        }
+      }
+    },
+    "projects.period.label": {
+      "comment": "Label of the control that picks how old a project must be.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Untouched for"
+          }
+        }
+      }
+    },
+    "projects.period.month": {
+      "comment": "Staleness period.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 days"
+          }
+        }
+      }
+    },
+    "projects.period.quarter": {
+      "comment": "Staleness period.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "90 days"
+          }
+        }
+      }
+    },
+    "projects.period.year": {
+      "comment": "Staleness period.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 year"
+          }
+        }
+      }
+    },
+    "projects.title": {
+      "comment": "Section listing projects nobody has worked on for a while.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stale Projects"
+          }
+        }
+      }
+    },
+    "projects.total": {
+      "comment": "Size of the whole project folder.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ in total"
+          }
+        }
+      }
+    },
+    "projects.unknownActivity": {
+      "comment": "Shown when the project's activity date can't be read.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last change unknown"
+          }
+        }
+      }
+    },
     "scan.action.scanLocation": {
       "comment": "Button that starts scanning a location. The argument is its name.",
       "extractionState": "manual",

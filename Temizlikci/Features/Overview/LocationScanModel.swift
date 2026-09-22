@@ -66,6 +66,9 @@ final class LocationScanModel {
     /// The largest files in the current tree, largest first.
     private(set) var largeFiles: [LargeFile] = []
 
+    /// Project folders in the current tree, most reclaimable first.
+    private(set) var projects: [DeveloperProject] = []
+
     /// What changed since the previous scan of this location; `nil` for a first scan.
     private(set) var growth: GrowthReport?
     /// True while `growth` comes from saved scans rather than the scan on screen.
@@ -81,6 +84,7 @@ final class LocationScanModel {
     private let trash: Trashing
     private let ledger: TrashLedger
     private let ruleEngine: RuleEngine
+    private let projectFinder: ProjectFinder
     private let snapshots: SnapshotStoring
     private(set) var scanTask: Task<Void, Never>?
 
@@ -95,10 +99,12 @@ final class LocationScanModel {
         trash: Trashing,
         ledger: TrashLedger,
         ruleEngine: RuleEngine,
+        projectFinder: ProjectFinder = ProjectFinder(),
         snapshots: SnapshotStoring,
         makeScanner: @escaping (ScanConfiguration) -> DiskScanning
     ) {
         self.ruleEngine = ruleEngine
+        self.projectFinder = projectFinder
         self.snapshots = snapshots
         self.location = location
         self.volumeInfo = volumeInfo
@@ -249,14 +255,17 @@ final class LocationScanModel {
             cleanupMatches = []
             matchesByID = [:]
             largeFiles = []
+            projects = []
             isHighlightingReclaimable = false
             return
         }
         let engine = ruleEngine
+        let finder = projectFinder
         cleanupTask = Task { [weak self] in
-            let (found, largest) = await Self.analyze(engine: engine, root: root)
+            let (found, largest, projects) = await Self.analyze(engine: engine, finder: finder, root: root)
             guard let self, !Task.isCancelled, self.tree?.id == root.id else { return }
             self.largeFiles = largest
+            self.projects = projects
             self.cleanupMatches = found.sorted { $0.node.allocatedSize > $1.node.allocatedSize }
             self.matchesByID = Dictionary(found.map { ($0.node.id, $0) }, uniquingKeysWith: { first, _ in first })
             if found.isEmpty { self.isHighlightingReclaimable = false }
@@ -336,10 +345,19 @@ final class LocationScanModel {
         select(target.kind == .directory && !target.children.isEmpty ? nil : target)
     }
 
-    /// Walks the whole tree (rules and largest files), so it must not run on the main actor.
+    /// Walks the whole tree (rules, largest files, projects) and reads a little from disk for the
+    /// projects, so it must not run on the main actor.
     @concurrent
-    nonisolated private static func analyze(engine: RuleEngine, root: FileNode) async -> ([CleanupMatch], [LargeFile]) {
-        (engine.matches(in: root), LargeFileFinder.largest(in: root))
+    nonisolated private static func analyze(
+        engine: RuleEngine, finder: ProjectFinder, root: FileNode
+    ) async -> ([CleanupMatch], [LargeFile], [DeveloperProject]) {
+        let matches = engine.matches(in: root)
+        return (matches, LargeFileFinder.largest(in: root), finder.projects(in: root, matches: matches))
+    }
+
+    /// Projects untouched for at least `period`, most reclaimable first.
+    func staleProjects(after period: StalePeriod, now: Date = Date()) -> [DeveloperProject] {
+        projects.filter { $0.isStale(on: now, after: period) }
     }
 
     /// The rule match covering an item anywhere in the tree, given its IDs from the root.

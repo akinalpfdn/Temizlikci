@@ -263,3 +263,12 @@ See `rules/common/decisions.md` for the logging format and rules. Append-only.
 **Why:** History that disappears when the app quits is worthless — the developer said so directly. Snapshots were already on disk; only the comparison was tied to a scan. Scanning automatically at launch would spend minutes of disk I/O nobody asked for.
 **Trade-offs:** The numbers are as old as the last scan, so the view states its dates.
 **Revisit if:** Background or scheduled scanning is added.
+
+---
+
+## 2026-09-22 — Stale projects: Git activity over folder dates, tool repositories excluded
+**Chosen:** A folder is a project when it holds `.git` or an `*.xcodeproj`/`*.xcworkspace` (both visible in the scan tree), or when a marker file (`package.json`, `Package.swift`, `pubspec.yaml`, `Cargo.toml`, `build.gradle[.kts]`, `go.mod`) sits next to a folder that already contains a build artifact. "Last worked on" is `.git/index`/`HEAD`, or the newest file in the project's own top two levels with artifact folders skipped. Repositories under `~/Library`, `/Library`, `/System`, `/Applications`, `/opt`, `/usr` and `/private` are not listed, and the outermost project owns everything inside it.
+**Alternatives:** Ask the disk for markers next to every folder; use folder modification dates; record the newest file date per folder during the scan.
+**Why:** Marker lookups for every folder of a startup disk would be hundreds of thousands of extra file-system calls. A folder's date only changes when entries are added or removed, so editing a file leaves it untouched — Git's index is rewritten on every stage, commit and checkout, which is what "working on it" means. Storing a date per node would grow the tree in memory, which is already the tightest budget in the app. Homebrew taps and tool caches hold hundreds of repositories nobody works on; listing them would bury the developer's own projects.
+**Trade-offs:** A project with no build output and no Git folder is not found; a project worked on only through a tool that doesn't touch Git may look older than it is; someone keeping real projects in `~/Library` won't see them.
+**Revisit if:** Projects are missing in practice, or per-folder activity dates become cheap enough to record during the scan.
