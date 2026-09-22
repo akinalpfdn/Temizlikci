@@ -10,18 +10,18 @@ struct ContentsTable: View {
             TableColumn(String(localized: L10n.Table.name), value: \.name) { node in
                 NameCell(model: model, node: node)
             }
-            .width(min: 140, ideal: 220)
+            .width(min: 120)
             TableColumn(String(localized: L10n.Table.size), value: \.allocatedSize) { node in
                 SizeCell(model: model, node: node, largest: model.rows.map(\.allocatedSize).max() ?? 0)
             }
-            .width(min: 120, ideal: 140)
+            .width(min: 110, ideal: 120, max: 160)
             TableColumn(String(localized: L10n.Table.share)) { node in
                 Text(model.share(of: node, in: model.currentFolder).map(Formatting.percent) ?? "")
                     .font(Typography.listSize)
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, alignment: .trailing)
             }
-            .width(min: 56, ideal: 60)
+            .width(min: 52, ideal: 56, max: 72)
         }
         .contextMenu(forSelectionType: String.self) { ids in
             if let id = ids.first, let node = model.node(withID: id) {
