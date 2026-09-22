@@ -4,6 +4,7 @@ import SwiftUI
 struct MainView: View {
     @Bindable var model: MainViewModel
     @Environment(\.undoManager) private var undoManager
+    @AppStorage("hasSeenChartIntro") private var hasSeenChartIntro = false
 
     var body: some View {
         NavigationSplitView {
@@ -29,6 +30,14 @@ struct MainView: View {
         }
         .frame(minWidth: WindowMetrics.minimumSize.width, minHeight: WindowMetrics.minimumSize.height)
         .onAppear { model.undoManager = undoManager }
+        .onChange(of: model.currentScan?.hasResult ?? false) { _, finished in
+            guard finished else { return }
+            model.refreshFreeSpace()
+            if !hasSeenChartIntro { model.isShowingIntro = true }
+        }
+        .sheet(isPresented: $model.isShowingIntro, onDismiss: { hasSeenChartIntro = true }) {
+            ChartIntroView { model.isShowingIntro = false }
+        }
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
             model.refreshAccess()
         }

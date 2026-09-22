@@ -6,6 +6,7 @@ struct OverviewView: View {
     @Bindable var model: LocationScanModel
     let main: MainViewModel
     @Environment(\.undoManager) private var undoManager
+    @FocusState private var isSearchFocused: Bool
 
     var body: some View {
         switch model.phase {
@@ -16,6 +17,8 @@ struct OverviewView: View {
         case .scanning, .finished:
             results
                 .searchable(text: $model.searchText, placement: .toolbar, prompt: Text(L10n.Navigation.searchPrompt))
+                .searchFocused($isSearchFocused)
+                .onChange(of: main.searchFocusRequest) { isSearchFocused = true }
                 .quickLookPreview($model.previewURL)
                 .overlay(alignment: .bottom) { trashConfirmation }
                 .alert(item: $model.actionError) { error in

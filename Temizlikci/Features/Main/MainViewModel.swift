@@ -13,6 +13,10 @@ final class MainViewModel {
     var isAccessBannerDismissed = false
     let trashLedger: TrashLedger
     let simulators: SimulatorsModel
+    var isShowingIntro = false
+    /// Incremented by Edit › Find; the visible overview moves focus to its search field.
+    private(set) var searchFocusRequest = 0
+    private(set) var startupFreeSpace: Int64?
 
     private(set) var chosenFolder: URL?
     let startupVolumeName: String
@@ -52,6 +56,7 @@ final class MainViewModel {
         self.apps = apps
         self.makeScanner = makeScanner
         ruleEngine = RuleEngine(home: homeFolder)
+        startupFreeSpace = try? volumeInfo.usage(ofVolumeContaining: URL(filePath: "/")).availableCapacity
         simulators = SimulatorsModel(service: SimulatorService(runner: tools))
         trashLedger = TrashLedger(trash: trash)
         hasFullDiskAccess = access.hasFullDiskAccess()
@@ -153,6 +158,16 @@ final class MainViewModel {
     /// Re-reads access, for example when the app becomes active after the person visited System Settings.
     func refreshAccess() {
         hasFullDiskAccess = access.hasFullDiskAccess()
+        refreshFreeSpace()
+    }
+
+    /// Free space changes as people work; it's re-read on activation and after scans. A read failure only hides the badge.
+    func refreshFreeSpace() {
+        startupFreeSpace = try? volumeInfo.usage(ofVolumeContaining: URL(filePath: "/")).availableCapacity
+    }
+
+    func focusSearch() {
+        searchFocusRequest += 1
     }
 
     func openPrivacySettings() {

@@ -925,6 +925,222 @@
         }
       }
     },
+    "intro.done": {
+      "comment": "Button that closes the introduction.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get Started"
+          }
+        }
+      }
+    },
+    "intro.menuItem": {
+      "comment": "Help menu item that shows the introduction again.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How to Read the Chart"
+          }
+        }
+      }
+    },
+    "intro.sample.apps": {
+      "comment": "Folder name in the introduction's example chart.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps"
+          }
+        }
+      }
+    },
+    "intro.sample.caches": {
+      "comment": "Folder name in the introduction's example chart.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Caches"
+          }
+        }
+      }
+    },
+    "intro.sample.family": {
+      "comment": "Folder name in the introduction's example chart.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Family"
+          }
+        }
+      }
+    },
+    "intro.sample.game": {
+      "comment": "Folder name in the introduction's example chart.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Game"
+          }
+        }
+      }
+    },
+    "intro.sample.music": {
+      "comment": "Folder name in the introduction's example chart.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Music"
+          }
+        }
+      }
+    },
+    "intro.sample.name": {
+      "comment": "Name of the sample folder in the introduction.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Example Folder"
+          }
+        }
+      }
+    },
+    "intro.sample.photos": {
+      "comment": "Folder name in the introduction's example chart.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photos"
+          }
+        }
+      }
+    },
+    "intro.sample.projects": {
+      "comment": "Folder name in the introduction's example chart.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Projects"
+          }
+        }
+      }
+    },
+    "intro.sample.vacation": {
+      "comment": "Folder name in the introduction's example chart.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vacation"
+          }
+        }
+      }
+    },
+    "intro.sample.website": {
+      "comment": "Folder name in the introduction's example chart.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Website"
+          }
+        }
+      }
+    },
+    "intro.tip.highlight": {
+      "comment": "Intro tip about highlighting.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn on Highlight Reclaimable to see which developer files are safe to remove."
+          }
+        }
+      }
+    },
+    "intro.tip.interaction": {
+      "comment": "Intro tip about interaction.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Click a segment to see its details. Double-click a folder to open it, and click the center to go back up."
+          }
+        }
+      }
+    },
+    "intro.tip.rings": {
+      "comment": "Intro tip about rings.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Each ring shows what’s inside the ring before it. The innermost ring is the folder you’re looking at."
+          }
+        }
+      }
+    },
+    "intro.tip.size": {
+      "comment": "Intro tip about segment size.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The wider a segment, the more space it uses. The list beside the chart shows the same items with exact sizes."
+          }
+        }
+      }
+    },
+    "intro.title": {
+      "comment": "Title of the chart introduction.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How to Read the Chart"
+          }
+        }
+      }
+    },
+    "intro.tryIt": {
+      "comment": "Invitation to interact with the sample chart.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try it on this example."
+          }
+        }
+      }
+    },
     "menu.file.chooseFolder": {
       "comment": "File menu command that opens a panel to pick a folder to scan.",
       "extractionState": "manual",
@@ -1341,6 +1557,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Give Temizlikci Full Disk Access in System Settings › Privacy & Security, then scan again."
+          }
+        }
+      }
+    },
+    "search.find": {
+      "comment": "Edit menu command that moves focus to the search field.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Find"
           }
         }
       }
@@ -1893,6 +2121,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Moved “%@” to the Trash. Its %@ is freed when you empty the Trash."
+          }
+        }
+      }
+    },
+    "volume.free": {
+      "comment": "Sidebar badge with a disk's free space.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ free"
           }
         }
       }

@@ -6,7 +6,7 @@ private struct StubVolumeInfo: VolumeInfoProviding {
     let name: String?
     func startupVolumeName() -> String? { name }
     func usage(ofVolumeContaining url: URL) throws -> VolumeUsage {
-        VolumeUsage(totalCapacity: 0, availableCapacity: 0, availableForImportantUsage: nil)
+        VolumeUsage(totalCapacity: 500, availableCapacity: 35, availableForImportantUsage: nil)
     }
 }
 
@@ -112,6 +112,16 @@ struct MainViewModelTests {
 
         withoutAccess.isAccessBannerDismissed = true
         #expect(!withoutAccess.shouldShowAccessBanner(for: scan))
+    }
+
+    @Test("should show the startup disk's free space and ask the overview to focus search")
+    func freeSpaceAndFind() {
+        let model = makeModel()
+
+        #expect(model.startupFreeSpace == 35)
+        let before = model.searchFocusRequest
+        model.focusSearch()
+        #expect(model.searchFocusRequest == before + 1)
     }
 }
 

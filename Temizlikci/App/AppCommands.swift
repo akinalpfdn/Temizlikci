@@ -35,9 +35,16 @@ struct AppCommands: Commands {
 
         CommandGroup(after: .pasteboard) {
             Divider()
+            Button { model.focusSearch() } label: { Text(L10n.Search.find) }
+                .keyboardShortcut("f")
+                .disabled(scan?.tree == nil)
             Button { model.moveSelectionToTrash() } label: { Text(L10n.Trash.moveToTrash) }
                 .keyboardShortcut(.delete)
                 .disabled(!model.canMoveSelectionToTrash)
+        }
+
+        CommandGroup(replacing: .help) {
+            Button { model.isShowingIntro = true } label: { Text(L10n.Intro.menuItem) }
         }
 
         CommandMenu(String(localized: L10n.Navigation.goMenu)) {

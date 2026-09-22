@@ -33,7 +33,13 @@ struct SidebarView: View {
     }
 
     private func badge(for destination: SidebarDestination) -> Text? {
-        guard destination == .trash, model.trashLedger.totalSize > 0 else { return nil }
-        return Text(Formatting.bytes(model.trashLedger.totalSize))
+        switch destination {
+        case .startupDisk:
+            return model.startupFreeSpace.map { Text(L10n.Volume.free(Formatting.bytes($0))) }
+        case .trash where model.trashLedger.totalSize > 0:
+            return Text(Formatting.bytes(model.trashLedger.totalSize))
+        default:
+            return nil
+        }
     }
 }

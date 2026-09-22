@@ -281,4 +281,35 @@ nonisolated enum L10n {
         static let toolUnavailableSuggestion = LocalizedStringResource("simulators.error.toolUnavailable.suggestion", defaultValue: "Install Xcode and open it once to finish setup, then try again.", comment: "Recovery suggestion.")
         static let toolFailed = LocalizedStringResource("simulators.error.failed", defaultValue: "The simulator tool reported an error.", comment: "Error when simctl fails.")
     }
+
+    enum Intro {
+        static let title = LocalizedStringResource("intro.title", defaultValue: "How to Read the Chart", comment: "Title of the chart introduction.")
+        static let rings = LocalizedStringResource("intro.tip.rings", defaultValue: "Each ring shows what’s inside the ring before it. The innermost ring is the folder you’re looking at.", comment: "Intro tip about rings.")
+        static let size = LocalizedStringResource("intro.tip.size", defaultValue: "The wider a segment, the more space it uses. The list beside the chart shows the same items with exact sizes.", comment: "Intro tip about segment size.")
+        static let interaction = LocalizedStringResource("intro.tip.interaction", defaultValue: "Click a segment to see its details. Double-click a folder to open it, and click the center to go back up.", comment: "Intro tip about interaction.")
+        static let highlight = LocalizedStringResource("intro.tip.highlight", defaultValue: "Turn on Highlight Reclaimable to see which developer files are safe to remove.", comment: "Intro tip about highlighting.")
+        static let tryIt = LocalizedStringResource("intro.tryIt", defaultValue: "Try it on this example.", comment: "Invitation to interact with the sample chart.")
+        static let done = LocalizedStringResource("intro.done", defaultValue: "Get Started", comment: "Button that closes the introduction.")
+        static let menuItem = LocalizedStringResource("intro.menuItem", defaultValue: "How to Read the Chart", comment: "Help menu item that shows the introduction again.")
+        static let sampleName = LocalizedStringResource("intro.sample.name", defaultValue: "Example Folder", comment: "Name of the sample folder in the introduction.")
+        static let samplePhotos = LocalizedStringResource("intro.sample.photos", defaultValue: "Photos", comment: "Folder name in the introduction's example chart.")
+        static let sampleProjects = LocalizedStringResource("intro.sample.projects", defaultValue: "Projects", comment: "Folder name in the introduction's example chart.")
+        static let sampleMusic = LocalizedStringResource("intro.sample.music", defaultValue: "Music", comment: "Folder name in the introduction's example chart.")
+        static let sampleApps = LocalizedStringResource("intro.sample.apps", defaultValue: "Apps", comment: "Folder name in the introduction's example chart.")
+        static let sampleCaches = LocalizedStringResource("intro.sample.caches", defaultValue: "Caches", comment: "Folder name in the introduction's example chart.")
+        static let sampleVacation = LocalizedStringResource("intro.sample.vacation", defaultValue: "Vacation", comment: "Folder name in the introduction's example chart.")
+        static let sampleFamily = LocalizedStringResource("intro.sample.family", defaultValue: "Family", comment: "Folder name in the introduction's example chart.")
+        static let sampleWebsite = LocalizedStringResource("intro.sample.website", defaultValue: "Website", comment: "Folder name in the introduction's example chart.")
+        static let sampleGame = LocalizedStringResource("intro.sample.game", defaultValue: "Game", comment: "Folder name in the introduction's example chart.")
+    }
+
+    enum Search {
+        static let find = LocalizedStringResource("search.find", defaultValue: "Find", comment: "Edit menu command that moves focus to the search field.")
+    }
+
+    enum Volume {
+        static func free(_ size: String) -> LocalizedStringResource {
+            LocalizedStringResource("volume.free", defaultValue: "\(size) free", comment: "Sidebar badge with a disk's free space.")
+        }
+    }
 }
