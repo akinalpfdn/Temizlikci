@@ -408,6 +408,8 @@ nonisolated enum L10n {
         static func total(_ size: String) -> LocalizedStringResource {
             LocalizedStringResource("projects.total", defaultValue: "\(size) in total", comment: "Size of the whole project folder.")
         }
+        static let onlyBuildOutput = LocalizedStringResource("projects.onlyBuildOutput", defaultValue: "Temizlikci only ever moves this project’s build output to the Trash, never the project itself.", comment: "Reassurance in the project inspector.")
+        static let lastWorkedOn = LocalizedStringResource("projects.lastWorkedOn", defaultValue: "Last Worked On", comment: "Inspector label for when a project was last changed.")
         static let buildOutput = LocalizedStringResource("projects.buildOutput", defaultValue: "Build output", comment: "Header over a project's build artifacts.")
         static let noArtifacts = LocalizedStringResource("projects.noArtifacts", defaultValue: "No build output to remove.", comment: "Shown for a stale project that holds no artifacts.")
         static let evidenceGit = LocalizedStringResource("projects.evidence.git", defaultValue: "Git repository", comment: "How a folder was identified as a project.")
@@ -499,5 +501,26 @@ nonisolated enum L10n {
         static let unavailableNotEnabled = LocalizedStringResource("identity.unavailable.notEnabled", defaultValue: "Turn on Apple Intelligence in System Settings to have unknown folders explained on this Mac.", comment: "Shown when Apple Intelligence is off.")
         static let unavailableDevice = LocalizedStringResource("identity.unavailable.device", defaultValue: "This Mac doesn't support Apple Intelligence, so unknown folders can't be explained.", comment: "Shown when the Mac can't run the model.")
         static let unavailableNotReady = LocalizedStringResource("identity.unavailable.notReady", defaultValue: "Apple Intelligence is still downloading. Explanations work once it's ready.", comment: "Shown when the model isn't downloaded yet.")
+    }
+
+    enum Git {
+        static let title = LocalizedStringResource("git.title", defaultValue: "Git", comment: "Header of the Git section in the project inspector.")
+        static let reading = LocalizedStringResource("git.reading", defaultValue: "Checking for work that exists only on this Mac…", comment: "Shown while Git is read.")
+        static let unreadable = LocalizedStringResource("git.unreadable", defaultValue: "Git couldn’t read this repository. The developer tools may be missing, or the folder is no longer a repository.", comment: "Shown when Git can't read a repository.")
+        static let localWork = LocalizedStringResource("git.localWork", defaultValue: "Some work exists only on this Mac. Push or back it up before deleting this project.", comment: "Warning when a repository has uncommitted or unpushed work.")
+        static let allPushed = LocalizedStringResource("git.allPushed", defaultValue: "Everything is committed and pushed.", comment: "Shown when a repository has no local-only work.")
+        static let localWorkBadge = LocalizedStringResource("git.badge.localWork", defaultValue: "Unpushed Work", comment: "Short badge on a project row with local-only Git work.")
+        static let allPushedBadge = LocalizedStringResource("git.badge.allPushed", defaultValue: "Pushed", comment: "Short badge on a project row whose Git work is all pushed.")
+        static let branch = LocalizedStringResource("git.branch", defaultValue: "Branch", comment: "Label for the checked-out branch.")
+        static let detached = LocalizedStringResource("git.detached", defaultValue: "No branch (detached)", comment: "Shown when HEAD isn't on a branch.")
+        static let noRemote = LocalizedStringResource("git.noRemote", defaultValue: "No remote: nothing here was ever pushed", comment: "Row for a repository without a remote.")
+        static let unpushedCommits = LocalizedStringResource("git.unpushedCommits", defaultValue: "Commits not on any remote", comment: "Label for the number of commits that exist only locally.")
+        static let behind = LocalizedStringResource("git.behind", defaultValue: "Commits to pull", comment: "Label for how far the branch is behind its upstream.")
+        static let staged = LocalizedStringResource("git.staged", defaultValue: "Staged changes", comment: "Label for staged files.")
+        static let unstaged = LocalizedStringResource("git.unstaged", defaultValue: "Unstaged changes", comment: "Label for modified files not staged.")
+        static let untracked = LocalizedStringResource("git.untracked", defaultValue: "Untracked files", comment: "Label for files Git doesn't track.")
+        static let conflicted = LocalizedStringResource("git.conflicted", defaultValue: "Unresolved conflicts", comment: "Label for files with merge conflicts.")
+        static let stashes = LocalizedStringResource("git.stashes", defaultValue: "Stashes", comment: "Label for stashed changes.")
+        static let branchesOnlyHere = LocalizedStringResource("git.branchesOnlyHere", defaultValue: "Branches with commits only here", comment: "Header over local branches with unpushed commits.")
     }
 }

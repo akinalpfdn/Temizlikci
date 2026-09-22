@@ -317,3 +317,12 @@ See `rules/common/decisions.md` for the logging format and rules. Append-only.
 **Why:** HIG "Generative AI": keep people in control, label AI clearly, prefer on-device, scope prompts to limit hallucinations, never let generated text drive destructive actions, and work without the feature. Deterministic answers are correct rather than plausible, and most of what fills a developer's disk is recognizable without a model. Automatic generation would spend battery and would look like an authoritative answer nobody asked for.
 **Trade-offs:** Unknown folders need one click, and the model's answer may be wrong, which the label states. The catalog needs updating when macOS moves a folder.
 **Revisit if:** macOS 27's model gets tool calling worth using, or a structured output would be more useful than free text.
+
+---
+
+## 2026-09-23 — Stale projects show Git work that exists only on this Mac
+**Chosen:** For a project recognized by its `.git` folder, the app reads uncommitted changes (staged, unstaged, untracked, conflicted), stashes, whether a remote exists, and commits that no remote-tracking branch contains (in total and per local branch). A row badge says "Unpushed Work" or "Pushed"; the inspector lists the details. Reads happen only for projects on screen, three at a time. Every Git call uses `--no-optional-locks`, and `xcode-select -p` is checked before `/usr/bin/git` is run.
+**Alternatives:** Only `git status` (misses other branches and stashes); a Git library; reading `.git` files directly.
+**Why:** The developer's case: a project left for six months with its last commits never pushed — deleting the folder would lose them. `git rev-list --count --branches --not --remotes` counts exactly the commits that exist nowhere else, across all branches. A plain `git status` rewrites `.git/index`, and the stale-project date is read from that file, so looking at a project would make it look worked on today; `--no-optional-locks` prevents the write (a test checks the index's date is unchanged). `/usr/bin/git` is a shim that opens an install dialog when the developer tools are missing; `xcode-select -p` never does.
+**Trade-offs:** Needs the developer tools. Branches without an upstream are counted individually, capped at 12. Temizlikci still never removes a project itself — the information is for the person deciding.
+**Revisit if:** Repositories are large enough that `git status` is slow in practice, or submodules need their own check.

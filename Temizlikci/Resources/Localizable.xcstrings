@@ -1225,6 +1225,222 @@
         }
       }
     },
+    "git.allPushed": {
+      "comment": "Shown when a repository has no local-only work.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Everything is committed and pushed."
+          }
+        }
+      }
+    },
+    "git.badge.allPushed": {
+      "comment": "Short badge on a project row whose Git work is all pushed.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pushed"
+          }
+        }
+      }
+    },
+    "git.badge.localWork": {
+      "comment": "Short badge on a project row with local-only Git work.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unpushed Work"
+          }
+        }
+      }
+    },
+    "git.behind": {
+      "comment": "Label for how far the branch is behind its upstream.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commits to pull"
+          }
+        }
+      }
+    },
+    "git.branch": {
+      "comment": "Label for the checked-out branch.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Branch"
+          }
+        }
+      }
+    },
+    "git.branchesOnlyHere": {
+      "comment": "Header over local branches with unpushed commits.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Branches with commits only here"
+          }
+        }
+      }
+    },
+    "git.conflicted": {
+      "comment": "Label for files with merge conflicts.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unresolved conflicts"
+          }
+        }
+      }
+    },
+    "git.detached": {
+      "comment": "Shown when HEAD isn't on a branch.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No branch (detached)"
+          }
+        }
+      }
+    },
+    "git.localWork": {
+      "comment": "Warning when a repository has uncommitted or unpushed work.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Some work exists only on this Mac. Push or back it up before deleting this project."
+          }
+        }
+      }
+    },
+    "git.noRemote": {
+      "comment": "Row for a repository without a remote.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No remote: nothing here was ever pushed"
+          }
+        }
+      }
+    },
+    "git.reading": {
+      "comment": "Shown while Git is read.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checking for work that exists only on this Mac…"
+          }
+        }
+      }
+    },
+    "git.staged": {
+      "comment": "Label for staged files.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Staged changes"
+          }
+        }
+      }
+    },
+    "git.stashes": {
+      "comment": "Label for stashed changes.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stashes"
+          }
+        }
+      }
+    },
+    "git.title": {
+      "comment": "Header of the Git section in the project inspector.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git"
+          }
+        }
+      }
+    },
+    "git.unpushedCommits": {
+      "comment": "Label for the number of commits that exist only locally.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Commits not on any remote"
+          }
+        }
+      }
+    },
+    "git.unreadable": {
+      "comment": "Shown when Git can't read a repository.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Git couldn’t read this repository. The developer tools may be missing, or the folder is no longer a repository."
+          }
+        }
+      }
+    },
+    "git.unstaged": {
+      "comment": "Label for modified files not staged.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unstaged changes"
+          }
+        }
+      }
+    },
+    "git.untracked": {
+      "comment": "Label for files Git doesn't track.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Untracked files"
+          }
+        }
+      }
+    },
     "growth.accessibility.grew": {
       "comment": "Accessibility description of growth.",
       "extractionState": "manual",
@@ -2677,6 +2893,18 @@
         }
       }
     },
+    "projects.lastWorkedOn": {
+      "comment": "Inspector label for when a project was last changed.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last Worked On"
+          }
+        }
+      }
+    },
     "projects.noArtifacts": {
       "comment": "Shown for a stale project that holds no artifacts.",
       "extractionState": "manual",
@@ -2685,6 +2913,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "No build output to remove."
+          }
+        }
+      }
+    },
+    "projects.onlyBuildOutput": {
+      "comment": "Reassurance in the project inspector.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlikci only ever moves this project’s build output to the Trash, never the project itself."
           }
         }
       }

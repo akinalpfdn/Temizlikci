@@ -125,5 +125,16 @@ struct MainViewModelTests {
         model.focusSearch()
         #expect(model.searchFocusRequest == before + 1)
     }
-}
 
+    @Test("should forget the inspected item when another sidebar destination is chosen")
+    func inspectedItemBelongsToItsView() {
+        let model = makeModel()
+        model.selection = .developer
+        model.inspect(.project("/Users/dev/Work/app"))
+        #expect(model.inspected == .project("/Users/dev/Work/app"))
+
+        model.selection = .largeFiles
+
+        #expect(model.inspected == nil)
+    }
+}

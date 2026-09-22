@@ -1,3 +1,4 @@
+import QuickLook
 import Charts
 import SwiftUI
 
@@ -42,7 +43,7 @@ private struct DeveloperResults: View {
                     summary
                         .padding(.bottom, Spacing.small)
                     section(id: "projects", title: Text(L10n.Projects.title), detail: nil) {
-                        StaleProjectsSection(scan: scan)
+                        StaleProjectsSection(scan: scan, main: main)
                     }
                     ForEach(Ecosystem.allCases, id: \.self) { ecosystem in
                         let matches = scan.cleanupMatches.filter { $0.rule.ecosystem == ecosystem }
@@ -58,6 +59,7 @@ private struct DeveloperResults: View {
         }
         .overlay(alignment: .bottom) { TrashConfirmation(model: scan) }
         .modifier(ActionErrorAlert(model: scan))
+        .quickLookPreview(Bindable(scan).previewURL)
         .task { if !main.simulators.hasLoaded { await main.simulators.load() } }
         .onChange(of: main.simulators.didChangeDisk) { _, changed in
             if changed { main.simulatorsDidChangeDisk() }
@@ -178,6 +180,11 @@ private struct DeveloperResults: View {
                 .frame(minWidth: 150, alignment: .trailing)
         }
         .padding(Spacing.medium)
+        // Clicking a row shows it in the inspector, like selecting an item in the chart.
+        .background(main.inspected == .node(match.node.id) ? AnyShapeStyle(.selection.opacity(0.35)) : AnyShapeStyle(.clear))
+        .contentShape(.rect)
+        .onTapGesture { main.inspect(.node(match.node.id)) }
+        .accessibilityAddTraits(main.inspected == .node(match.node.id) ? .isSelected : [])
     }
 
     @ViewBuilder

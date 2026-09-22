@@ -533,6 +533,26 @@ final class LocationScanModel {
         }
     }
 
+    func reveal(_ node: FileNode) {
+        if let url = actionableURL(for: node) { revealer.reveal(url) }
+    }
+
+    func quickLook(_ node: FileNode) {
+        previewURL = actionableURL(for: node)
+    }
+
+    /// Any node of the current tree by ID, including ones outside the open folder (the Developer
+    /// view shows items from all over the disk).
+    func nodeAnywhere(withID id: String) -> FileNode? {
+        if let known = node(withID: id) { return known }
+        if let match = matchesByID[id] { return match.node }
+        return projects.first { $0.id == id }?.node ?? largeFiles.first { $0.id == id }?.node
+    }
+
+    func project(withID id: String) -> DeveloperProject? {
+        projects.first { $0.id == id }
+    }
+
     func revealInFinder(_ file: LargeFile) {
         revealer.reveal(file.node.url)
     }

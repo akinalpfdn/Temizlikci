@@ -58,6 +58,7 @@ struct LargeFilesView: View {
             }
             .width(min: 80, ideal: 96, max: 120)
         }
+        .onChange(of: selection) { _, id in main.inspect(id.map { .node($0) }) }
         .contextMenu(forSelectionType: LargeFile.ID.self) { ids in
             if let file = file(for: ids) {
                 Button { main.show(path: file.node.path, in: scan) } label: { Text(L10n.Growth.showInChart) }

@@ -71,4 +71,7 @@ enum StatusPalette {
     static let safeInk = Color.statusSafeInk
     static let toolFill = Color.statusTool
     static let toolInk = Color.statusToolInk
+    /// A warning that isn't a cleanup label (for example, unpushed Git work): the system orange,
+    /// always paired with a warning symbol and text.
+    static let attention = Color.orange
 }

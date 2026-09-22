@@ -21,7 +21,13 @@ struct MainView: View {
                 .toolbar { MainToolbar(model: model, scan: model.currentScan) }
         }
         .inspector(isPresented: $model.isInspectorPresented) {
-            InspectorView(scan: model.currentScan)
+            Group {
+                if model.selection?.isLocation == true {
+                    InspectorView(scan: model.currentScan)
+                } else {
+                    InsightInspectorView(main: model)
+                }
+            }
                 .inspectorColumnWidth(
                     min: WindowMetrics.inspectorWidth.minimum,
                     ideal: WindowMetrics.inspectorWidth.ideal,

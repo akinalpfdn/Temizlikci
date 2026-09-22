@@ -4,7 +4,20 @@ import Observation
 @MainActor
 @Observable
 final class MainViewModel {
-    var selection: SidebarDestination? = .startupDisk
+    var selection: SidebarDestination? = .startupDisk {
+        // What the inspector shows for an insight view belongs to that view only.
+        didSet { if selection != oldValue { inspected = nil } }
+    }
+
+    /// An item picked in an insight view (Developer, Large Files), shown in the inspector.
+    enum InspectedItem: Equatable {
+        case node(FileNode.ID)
+        case project(FileNode.ID)
+    }
+
+    private(set) var inspected: InspectedItem?
+    /// Git state of the projects listed in the Developer view, read on demand.
+    let gitStatus = GitStatusModel()
     var isInspectorPresented = true
     /// The window's undo manager, so menu commands can register Undo for Move to Trash.
     weak var undoManager: UndoManager?
@@ -164,6 +177,20 @@ final class MainViewModel {
     // MARK: - Developer insights
 
     /// The scan the Developer view summarizes: the startup disk if it has results, otherwise Home.
+    func inspect(_ item: InspectedItem?) {
+        inspected = item
+    }
+
+    /// The scan behind the insight view on screen, so the inspector can look items up in it.
+    var insightScan: LocationScanModel? {
+        switch selection {
+        case .developer: developerScan
+        case .largeFiles: largeFilesScan
+        case .whatGrew: growthScan
+        default: nil
+        }
+    }
+
     var developerScan: LocationScanModel? {
         [scanModels[.startupDisk], scanModels[.home]].compactMap { $0 }.first { $0.hasResult }
     }
