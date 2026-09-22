@@ -12,10 +12,10 @@
 
   ],
   "sprintID" : "TEMIZLIK-SPRINT-1",
-  "status" : "sprint",
+  "status" : "inProgress",
   "title" : "Phase 006 (MVP-06): Developer insights",
   "type" : "task",
-  "updatedAt" : "2026-09-21T21:25:53Z"
+  "updatedAt" : "2026-09-22T00:06:37Z"
 }
 ---
 
