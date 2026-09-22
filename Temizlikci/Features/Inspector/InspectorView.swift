@@ -90,6 +90,11 @@ private struct NodeDetailsView: View {
             if let parent = scan.parent(of: node), let share = scan.share(of: node, in: parent) {
                 LabeledContent { Text(Formatting.percent(share)) } label: { Text(L10n.Details.shareOfFolder) }
             }
+            if let change = scan.growth(for: node), let report = scan.growth {
+                LabeledContent { GrowthLabel(change: change) } label: {
+                    Text(L10n.Growth.inspectorChange(report.previousDate.formatted(date: .abbreviated, time: .omitted)))
+                }
+            }
             if node.fileCount > 0 {
                 LabeledContent { Text(Formatting.count(node.fileCount)) } label: { Text(L10n.Details.files) }
             }

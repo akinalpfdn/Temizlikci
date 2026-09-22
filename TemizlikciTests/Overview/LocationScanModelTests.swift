@@ -39,6 +39,7 @@ struct LocationScanModelTests {
     private let revealer = RecordingRevealer()
     private let trash = StubTrash()
     private let ledger: TrashLedger
+    private let snapshots = InMemorySnapshots()
 
     init() {
         ledger = TrashLedger(trash: trash)
@@ -58,6 +59,7 @@ struct LocationScanModelTests {
             trash: trash,
             ledger: ledger,
             ruleEngine: RuleEngine(home: URL(filePath: "/Users/dev", directoryHint: .isDirectory), markers: NoMarkers()),
+            snapshots: snapshots,
             makeScanner: { _ in StubScanner(events: events, failure: failure) }
         )
     }
@@ -334,6 +336,7 @@ struct LocationScanModelTests {
             volumeInfo: FixedVolume(usage: VolumeUsage(totalCapacity: 0, availableCapacity: 0, availableForImportantUsage: nil)),
             access: GrantedAccess(), revealer: revealer, trash: trash, ledger: ledger,
             ruleEngine: RuleEngine(home: URL(filePath: "/Users/dev", directoryHint: .isDirectory), markers: NoMarkers()),
+            snapshots: snapshots,
             makeScanner: { _ in StubScanner(events: [.finished(ScanResult(root: root, duration: .seconds(1), fileCount: 2, directoryCount: 6, inaccessibleCount: 0))]) }
         )
     }
@@ -376,6 +379,58 @@ struct LocationScanModelTests {
         #expect(trash.trashed == [derived.node.url])
         #expect(model.tree?.allocatedSize == 300)
         #expect(model.cleanupMatches.map(\.rule.id) == ["xcode.archives"])
+    }
+
+    // MARK: - History
+
+    private func model(events: [ScanEvent]) -> LocationScanModel {
+        LocationScanModel(
+            location: ScanLocation(url: TreeBuilder.root, displayName: "Scan Place", isWholeVolume: false),
+            volumeInfo: FixedVolume(usage: VolumeUsage(totalCapacity: 0, availableCapacity: 0, availableForImportantUsage: nil)),
+            access: GrantedAccess(), revealer: revealer, trash: trash, ledger: ledger,
+            ruleEngine: RuleEngine(rules: []), snapshots: snapshots,
+            makeScanner: { _ in StubScanner(events: events) }
+        )
+    }
+
+    private func finished(_ root: FileNode) -> [ScanEvent] {
+        [.finished(ScanResult(root: root, duration: .seconds(1), fileCount: 0, directoryCount: 0, inaccessibleCount: 0))]
+    }
+
+    private func scannedWithHistory(_ model: LocationScanModel) async -> LocationScanModel {
+        let model = await scanned(model)
+        await model.cleanupTask?.value
+        await model.historyTask?.value
+        return model
+    }
+
+    @Test("should save a snapshot after the first scan and show growth after the next one")
+    func growthBetweenScans() async throws {
+        let first = await scannedWithHistory(model(events: finished(TreeBuilder.sample())))
+        #expect(first.growth == nil)
+        #expect(snapshots.all.count == 1)
+
+        let bigger = FileNode.directory(url: TreeBuilder.root, modificationDate: nil, children: [
+            TreeBuilder.folder("Apps", [TreeBuilder.file("Apps/Big.app", 50_000_000_500), TreeBuilder.file("Apps/Small.app", 100)]),
+            TreeBuilder.folder("Docs", [TreeBuilder.folder("Docs/Reports", [TreeBuilder.file("Docs/Reports/q1.pdf", 200)]), TreeBuilder.file("Docs/notes.txt", 100)]),
+            TreeBuilder.file("movie.mov", 100),
+        ])
+        let second = await scannedWithHistory(model(events: finished(bigger)))
+
+        let apps = try #require(second.rows.first { $0.name == "Apps" })
+        #expect(second.growth(for: apps)?.kind == .grew)
+        #expect(second.growth?.biggestChanges().first?.path.hasSuffix("/Apps/Big.app") == true)
+        #expect(snapshots.all.count == 2)
+    }
+
+    @Test("should open the folder that holds a changed item and select it")
+    func showChangedItem() async throws {
+        let model = await scannedWithHistory(model(events: finished(TreeBuilder.sample())))
+
+        model.showItem(atPath: TreeBuilder.root.appending(path: "Docs/notes.txt").path(percentEncoded: false))
+
+        #expect(model.currentFolder?.name == "Docs")
+        #expect(model.selection?.name == "notes.txt")
     }
 }
 

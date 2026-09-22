@@ -7,6 +7,7 @@ enum SidebarDestination: Hashable, Identifiable {
     case home
     case chosenFolder
     case developer
+    case whatGrew
     case largeFiles
     case trash
 
@@ -18,6 +19,7 @@ enum SidebarDestination: Hashable, Identifiable {
         case .home: "house"
         case .chosenFolder: "folder"
         case .developer: "hammer"
+        case .whatGrew: "chart.line.uptrend.xyaxis"
         case .largeFiles: "doc"
         case .trash: "trash"
         }
@@ -26,7 +28,7 @@ enum SidebarDestination: Hashable, Identifiable {
     var isLocation: Bool {
         switch self {
         case .startupDisk, .home, .chosenFolder: true
-        case .developer, .largeFiles, .trash: false
+        case .developer, .whatGrew, .largeFiles, .trash: false
         }
     }
 }

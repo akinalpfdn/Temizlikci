@@ -62,6 +62,11 @@ final class LocationScanModel {
     private var matchesByID: [String: CleanupMatch] = [:]
     private(set) var cleanupTask: Task<Void, Never>?
     var isHighlightingReclaimable = false
+
+    /// What changed since the previous scan of this location; `nil` for a first scan.
+    private(set) var growth: GrowthReport?
+    private(set) var historyTask: Task<Void, Never>?
+    private var recordsHistoryAfterMatching = false
     var canHighlightReclaimable: Bool { hasResult && !cleanupMatches.isEmpty }
 
     private let makeScanner: (ScanConfiguration) -> DiskScanning
@@ -71,6 +76,7 @@ final class LocationScanModel {
     private let trash: Trashing
     private let ledger: TrashLedger
     private let ruleEngine: RuleEngine
+    private let snapshots: SnapshotStoring
     private(set) var scanTask: Task<Void, Never>?
 
     /// Search stops after this many matches so typing stays responsive on large trees.
@@ -84,9 +90,11 @@ final class LocationScanModel {
         trash: Trashing,
         ledger: TrashLedger,
         ruleEngine: RuleEngine,
+        snapshots: SnapshotStoring,
         makeScanner: @escaping (ScanConfiguration) -> DiskScanning
     ) {
         self.ruleEngine = ruleEngine
+        self.snapshots = snapshots
         self.location = location
         self.volumeInfo = volumeInfo
         self.access = access
@@ -126,6 +134,8 @@ final class LocationScanModel {
         progress = ScanProgress()
         result = nil
         finishedAt = nil
+        growth = nil
+        historyTask?.cancel()
         show(nil)
 
         let events = scanner.scan(location.url)
@@ -179,6 +189,7 @@ final class LocationScanModel {
         }
         phase = .finished
         scanTask = nil
+        recordsHistoryAfterMatching = true
         show(root)
     }
 
@@ -242,7 +253,58 @@ final class LocationScanModel {
             self.cleanupMatches = found.sorted { $0.node.allocatedSize > $1.node.allocatedSize }
             self.matchesByID = Dictionary(found.map { ($0.node.id, $0) }, uniquingKeysWith: { first, _ in first })
             if found.isEmpty { self.isHighlightingReclaimable = false }
+            if self.recordsHistoryAfterMatching {
+                self.recordsHistoryAfterMatching = false
+                self.recordHistory(root: root, matchPaths: Set(found.map(\.node.path)))
+            }
         }
+    }
+
+    // MARK: - History
+
+    func growth(for node: FileNode) -> GrowthChange? {
+        growth?.change(forPath: node.path)
+    }
+
+    /// Saves this scan's snapshot and compares it with the previous one, off the main actor.
+    private func recordHistory(root: FileNode, matchPaths: Set<String>) {
+        let store = snapshots
+        let locationPath = location.url.path(percentEncoded: false)
+        let date = finishedAt ?? Date()
+        historyTask = Task { [weak self] in
+            let report = await Self.compareAndSave(store: store, root: root, locationPath: locationPath, date: date, matchPaths: matchPaths)
+            guard let self, !Task.isCancelled, self.tree?.id == root.id else { return }
+            self.growth = report
+        }
+    }
+
+    @concurrent
+    nonisolated private static func compareAndSave(
+        store: SnapshotStoring, root: FileNode, locationPath: String, date: Date, matchPaths: Set<String>
+    ) async -> GrowthReport? {
+        // History is a convenience: failing to read or write it must never affect the scan itself.
+        let previous = try? store.latest(forLocation: locationPath)
+        let current = SnapshotBuilder.snapshot(
+            of: root, locationPath: locationPath, date: date,
+            alsoRecording: matchPaths.union(previous.map { Set($0.sizes.keys) } ?? [])
+        )
+        try? store.save(current)
+        try? store.prune(location: locationPath, keeping: FileSnapshotStore.keptPerLocation)
+        return previous.map { GrowthReport.compare(previous: $0, current: current) }
+    }
+
+    /// Opens the folder containing `path` and selects the item, for "Show in Chart".
+    func showItem(atPath path: String) {
+        guard hasResult, let root = tree else { return }
+        var chain = [root]
+        while let current = chain.last, current.path != path,
+              let next = current.children.first(where: { path == $0.path || path.hasPrefix($0.path + "/") }) {
+            chain.append(next)
+        }
+        guard let target = chain.last, target.path == path, chain.count >= 2 else { return }
+        let folderChain = target.kind == .directory && !target.children.isEmpty ? chain : Array(chain.dropLast())
+        navigate(to: folderChain)
+        select(target.kind == .directory && !target.children.isEmpty ? nil : target)
     }
 
     /// Walks the whole tree, so it must not run on the main actor.

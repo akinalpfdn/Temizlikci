@@ -42,6 +42,13 @@ nonisolated struct FileNode: Sendable, Identifiable {
         }
     }
 
+    /// The path without a trailing slash, for comparing nodes across scans.
+    var path: String {
+        var path = url.path(percentEncoded: false)
+        if path.count > 1, path.hasSuffix("/") { path.removeLast() }
+        return path
+    }
+
     /// The item's file name; empty for aggregate entries, which get their titles from the view model.
     var name: String {
         switch kind {

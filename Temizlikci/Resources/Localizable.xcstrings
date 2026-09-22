@@ -841,6 +841,162 @@
         }
       }
     },
+    "growth.accessibility.grew": {
+      "comment": "Accessibility description of growth.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grew by %@"
+          }
+        }
+      }
+    },
+    "growth.accessibility.shrank": {
+      "comment": "Accessibility description of shrinking.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shrank by %@"
+          }
+        }
+      }
+    },
+    "growth.appeared.help": {
+      "comment": "Explains an item that wasn't recorded in the previous scan.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New, or under 100 MB in the previous scan."
+          }
+        }
+      }
+    },
+    "growth.column": {
+      "comment": "List column with the change in size since the previous scan.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change"
+          }
+        }
+      }
+    },
+    "growth.empty.message": {
+      "comment": "Explanation when there's only one scan.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlikci keeps a small summary of every scan on this Mac. Scan the same location again later to see what grew."
+          }
+        }
+      }
+    },
+    "growth.empty.title": {
+      "comment": "Title when there's only one scan.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing to Compare Yet"
+          }
+        }
+      }
+    },
+    "growth.header": {
+      "comment": "Title of the What Grew view. Arguments: location, date of the previous scan.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ since %@"
+          }
+        }
+      }
+    },
+    "growth.inspector.label": {
+      "comment": "Inspector label for the size change.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Change since %@"
+          }
+        }
+      }
+    },
+    "growth.noChanges.message": {
+      "comment": "Message when nothing changed much.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing changed by more than 10 MB since %@."
+          }
+        }
+      }
+    },
+    "growth.noChanges.title": {
+      "comment": "Title when nothing changed by more than 10 MB.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Big Changes"
+          }
+        }
+      }
+    },
+    "growth.previous": {
+      "comment": "Previous size of a changed item.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "was %@"
+          }
+        }
+      }
+    },
+    "growth.removed": {
+      "comment": "Label for an item that no longer exists.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Removed"
+          }
+        }
+      }
+    },
+    "growth.showInChart": {
+      "comment": "Button that opens a changed folder in the chart.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show in Chart"
+          }
+        }
+      }
+    },
     "insights.empty.largeFiles": {
       "comment": "Empty state message of the Large Files view.",
       "extractionState": "manual",
@@ -1605,6 +1761,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Trash"
+          }
+        }
+      }
+    },
+    "sidebar.item.whatGrew": {
+      "comment": "Sidebar item that compares the latest scan with the previous one.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What Grew"
           }
         }
       }

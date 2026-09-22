@@ -32,6 +32,7 @@ final class MainViewModel {
     private let settings: PrivacySettingsOpening
     private let apps: AppOpening
     private let ruleEngine: RuleEngine
+    private let snapshots: SnapshotStoring
     private let makeScanner: (ScanConfiguration) -> DiskScanning
 
     init(
@@ -43,6 +44,7 @@ final class MainViewModel {
         settings: PrivacySettingsOpening = SystemPrivacySettings(),
         apps: AppOpening = WorkspaceAppOpener(),
         tools: ToolRunning = ProcessToolRunner(),
+        snapshots: SnapshotStoring = FileSnapshotStore(),
         homeFolder: URL = URL.homeDirectory,
         makeScanner: @escaping (ScanConfiguration) -> DiskScanning = { FileSystemScanner(configuration: $0) }
     ) {
@@ -54,6 +56,7 @@ final class MainViewModel {
         self.trash = trash
         self.settings = settings
         self.apps = apps
+        self.snapshots = snapshots
         self.makeScanner = makeScanner
         ruleEngine = RuleEngine(home: homeFolder)
         startupFreeSpace = try? volumeInfo.usage(ofVolumeContaining: URL(filePath: "/")).availableCapacity
@@ -68,7 +71,7 @@ final class MainViewModel {
         chosenFolder == nil ? [.startupDisk, .home] : [.startupDisk, .home, .chosenFolder]
     }
 
-    let insightDestinations: [SidebarDestination] = [.developer, .largeFiles, .trash]
+    let insightDestinations: [SidebarDestination] = [.developer, .whatGrew, .largeFiles, .trash]
 
     /// The scan model behind the selected sidebar location, if a location is selected.
     var currentScan: LocationScanModel? {
@@ -92,6 +95,7 @@ final class MainViewModel {
         case .home: String(localized: L10n.Sidebar.home)
         case .chosenFolder: chosenFolder.map(Self.displayName(of:)) ?? String(localized: L10n.Sidebar.chooseFolder)
         case .developer: String(localized: L10n.Sidebar.developer)
+        case .whatGrew: String(localized: L10n.Sidebar.whatGrew)
         case .largeFiles: String(localized: L10n.Sidebar.largeFiles)
         case .trash: String(localized: L10n.Sidebar.trash)
         }
@@ -108,8 +112,22 @@ final class MainViewModel {
     private func makeScanModel(_ location: ScanLocation) -> LocationScanModel {
         LocationScanModel(
             location: location, volumeInfo: volumeInfo, access: access, revealer: revealer,
-            trash: trash, ledger: trashLedger, ruleEngine: ruleEngine, makeScanner: makeScanner
+            trash: trash, ledger: trashLedger, ruleEngine: ruleEngine, snapshots: snapshots, makeScanner: makeScanner
         )
+    }
+
+    // MARK: - What Grew
+
+    /// The scan the What Grew view compares: the first location, in sidebar order, with a previous scan to compare.
+    var growthScan: LocationScanModel? {
+        locationDestinations.compactMap { scanModels[$0] }.first { $0.growth != nil }
+    }
+
+    /// Opens a changed item in its location's chart.
+    func show(_ change: GrowthChange, in scan: LocationScanModel) {
+        guard let destination = scanModels.first(where: { $0.value === scan })?.key else { return }
+        selection = destination
+        scan.showItem(atPath: change.path)
     }
 
     // MARK: - Developer insights

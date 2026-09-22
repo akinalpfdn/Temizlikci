@@ -7,6 +7,8 @@ struct DetailView: View {
         switch model.selection {
         case .developer:
             DeveloperView(main: model)
+        case .whatGrew:
+            WhatGrewView(main: model)
         case .largeFiles:
             InsightEmptyView(systemImage: "doc", message: L10n.Insights.largeFilesMessage)
         case .trash:

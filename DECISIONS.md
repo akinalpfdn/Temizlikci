@@ -236,3 +236,12 @@ See `rules/common/decisions.md` for the logging format and rules. Append-only.
 **Why:** Accuracy and privacy: folder paths stay on the Mac, and deterministic answers are right more often than a small model.
 **Trade-offs:** Unavailable on Macs without Apple Intelligence.
 **Revisit if:** Moving to Xcode 27 (the macOS 27 model is better at reasoning and tool calling).
+
+---
+
+## 2026-09-22 — What Grew: compact local snapshots, compared with the previous scan
+**Chosen:** After each finished scan, a snapshot records sizes by path for the top two levels, anything ≥ 100 MB, every cleanup match, and every path the previous snapshot recorded, plus the folders left unread. It's stored as LZFSE-compressed JSON in `~/Library/Application Support/Temizlikci/Snapshots/<location hash>/`, keeping the last 10 per location. Changes under 10 MB are ignored. The What Grew list hides a folder when one item inside it explains at least 80% of its change.
+**Alternatives:** Store full trees; compare only top-level folders; keep history in memory only.
+**Why:** Full trees would be hundreds of MB per scan. Recording the previous snapshot's paths means "missing" really means removed, not "shrank below the threshold". Unread folders (no Full Disk Access) are excluded so they never look like they shrank. Folder paths never leave the Mac.
+**Trade-offs:** Items first seen above 100 MB show as "new or previously under 100 MB". Deep changes below 100 MB are invisible unless they're developer artifacts.
+**Revisit if:** Snapshots on the startup disk grow large (measure), or finer history is wanted.

@@ -36,7 +36,8 @@ struct MainViewModelTests {
             access: StubAccess(granted: accessGranted),
             revealer: FinderRevealer(),
             trash: StubTrash(),
-            settings: settings
+            settings: settings,
+            snapshots: InMemorySnapshots()
         )
     }
 

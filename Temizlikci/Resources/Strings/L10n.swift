@@ -15,6 +15,7 @@ nonisolated enum L10n {
         static let home = LocalizedStringResource("sidebar.item.home", defaultValue: "Home", comment: "Sidebar item for the user's home folder.")
         static let chooseFolder = LocalizedStringResource("sidebar.action.chooseFolder", defaultValue: "Choose Folder…", comment: "Sidebar row that opens a panel to pick a folder to scan.")
         static let developer = LocalizedStringResource("sidebar.item.developer", defaultValue: "Developer", comment: "Sidebar item for reclaimable developer files.")
+        static let whatGrew = LocalizedStringResource("sidebar.item.whatGrew", defaultValue: "What Grew", comment: "Sidebar item that compares the latest scan with the previous one.")
         static let largeFiles = LocalizedStringResource("sidebar.item.largeFiles", defaultValue: "Large Files", comment: "Sidebar item listing the largest files.")
         static let trash = LocalizedStringResource("sidebar.item.trash", defaultValue: "Trash", comment: "Sidebar item for items moved to the Trash.")
     }
@@ -306,6 +307,34 @@ nonisolated enum L10n {
     enum Volume {
         static func free(_ size: String) -> LocalizedStringResource {
             LocalizedStringResource("volume.free", defaultValue: "\(size) free", comment: "Sidebar badge with a disk's free space.")
+        }
+    }
+
+    enum Growth {
+        static let column = LocalizedStringResource("growth.column", defaultValue: "Change", comment: "List column with the change in size since the previous scan.")
+        static func grew(_ size: String) -> LocalizedStringResource {
+            LocalizedStringResource("growth.accessibility.grew", defaultValue: "Grew by \(size)", comment: "Accessibility description of growth.")
+        }
+        static func shrank(_ size: String) -> LocalizedStringResource {
+            LocalizedStringResource("growth.accessibility.shrank", defaultValue: "Shrank by \(size)", comment: "Accessibility description of shrinking.")
+        }
+        static let appearedHelp = LocalizedStringResource("growth.appeared.help", defaultValue: "New, or under 100 MB in the previous scan.", comment: "Explains an item that wasn't recorded in the previous scan.")
+        static let removed = LocalizedStringResource("growth.removed", defaultValue: "Removed", comment: "Label for an item that no longer exists.")
+        static let emptyTitle = LocalizedStringResource("growth.empty.title", defaultValue: "Nothing to Compare Yet", comment: "Title when there's only one scan.")
+        static let emptyMessage = LocalizedStringResource("growth.empty.message", defaultValue: "Temizlikci keeps a small summary of every scan on this Mac. Scan the same location again later to see what grew.", comment: "Explanation when there's only one scan.")
+        static let noChangesTitle = LocalizedStringResource("growth.noChanges.title", defaultValue: "No Big Changes", comment: "Title when nothing changed by more than 10 MB.")
+        static func noChangesMessage(_ date: String) -> LocalizedStringResource {
+            LocalizedStringResource("growth.noChanges.message", defaultValue: "Nothing changed by more than 10 MB since \(date).", comment: "Message when nothing changed much.")
+        }
+        static func header(_ name: String, date: String) -> LocalizedStringResource {
+            LocalizedStringResource("growth.header", defaultValue: "\(name) since \(date)", comment: "Title of the What Grew view. Arguments: location, date of the previous scan.")
+        }
+        static let showInChart = LocalizedStringResource("growth.showInChart", defaultValue: "Show in Chart", comment: "Button that opens a changed folder in the chart.")
+        static func previous(_ size: String) -> LocalizedStringResource {
+            LocalizedStringResource("growth.previous", defaultValue: "was \(size)", comment: "Previous size of a changed item.")
+        }
+        static func inspectorChange(_ date: String) -> LocalizedStringResource {
+            LocalizedStringResource("growth.inspector.label", defaultValue: "Change since \(date)", comment: "Inspector label for the size change.")
         }
     }
 }

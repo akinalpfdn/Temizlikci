@@ -15,6 +15,13 @@ struct ContentsTable: View {
                 SizeCell(model: model, node: node, largest: model.rows.map(\.allocatedSize).max() ?? 0)
             }
             .width(min: 110, ideal: 120, max: 160)
+            TableColumn(String(localized: L10n.Growth.column)) { node in
+                if let change = model.growth(for: node) {
+                    GrowthLabel(change: change)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                }
+            }
+            .width(min: 84, ideal: 92, max: 120)
             TableColumn(String(localized: L10n.Table.share)) { node in
                 Text(model.share(of: node, in: model.currentFolder).map(Formatting.percent) ?? "")
                     .font(Typography.listSize)

@@ -25,7 +25,7 @@ enum ChartMetrics {
     static let minimumSide: CGFloat = 240
     static let maximumSide: CGFloat = 520
     /// The list keeps at least this width; the chart shrinks first (developer feedback: the list scrolled sideways).
-    static let listMinimumWidth: CGFloat = 380
+    static let listMinimumWidth: CGFloat = 480
     /// Ring-1 segments at least this wide (radians) get a text label.
     static let labelMinimumSweep = 0.42
 }

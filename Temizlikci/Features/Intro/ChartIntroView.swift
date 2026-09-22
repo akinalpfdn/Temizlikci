@@ -50,6 +50,7 @@ struct ChartIntroView: View {
             trash: SampleTrash(),
             ledger: TrashLedger(trash: SampleTrash()),
             ruleEngine: RuleEngine(rules: []),
+            snapshots: SampleSnapshots(),
             makeScanner: { _ in SampleScanner() }
         )
     }
@@ -125,4 +126,11 @@ private struct SampleTrash: Trashing {
     func moveToTrash(_ url: URL) throws -> URL { throw TrashError.failed(name: url.lastPathComponent) }
     func putBack(_ trashedURL: URL, to originalURL: URL) throws { throw TrashError.putBackFailed(name: originalURL.lastPathComponent) }
     func showTrashInFinder() {}
+}
+
+/// The example keeps no history.
+nonisolated private struct SampleSnapshots: SnapshotStoring {
+    func latest(forLocation path: String) throws -> ScanSnapshot? { nil }
+    func save(_ snapshot: ScanSnapshot) throws {}
+    func prune(location path: String, keeping count: Int) throws {}
 }
