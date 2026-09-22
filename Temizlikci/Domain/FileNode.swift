@@ -18,9 +18,7 @@ nonisolated struct FileNode: Sendable, Identifiable {
         case pending
     }
 
-    let id: String
     let url: URL
-    let name: String
     let kind: Kind
     /// Space on disk in bytes (allocated size, not logical length). Hard links count once.
     let allocatedSize: Int64
@@ -31,14 +29,32 @@ nonisolated struct FileNode: Sendable, Identifiable {
     let children: [FileNode]
 
     var isContainer: Bool { kind == .directory }
+
+    /// Derived from the URL rather than stored: a scan holds hundreds of thousands of nodes, and a
+    /// second copy of every path was a large share of the memory (Lore knownIssue 101).
+    var id: String {
+        let path = url.path(percentEncoded: false)
+        switch kind {
+        case .directory, .file, .inaccessible: return path
+        case .smallerFiles: return path + "\u{0}smaller-files"
+        case .unattributed: return path + "\u{0}unattributed"
+        case .pending: return path + "\u{0}pending"
+        }
+    }
+
+    /// The item's file name; empty for aggregate entries, which get their titles from the view model.
+    var name: String {
+        switch kind {
+        case .directory, .file, .inaccessible: url.lastPathComponent
+        case .smallerFiles, .unattributed, .pending: ""
+        }
+    }
 }
 
 extension FileNode {
     nonisolated static func file(url: URL, allocatedSize: Int64, modificationDate: Date?) -> FileNode {
         FileNode(
-            id: url.path(percentEncoded: false),
             url: url,
-            name: url.lastPathComponent,
             kind: .file,
             allocatedSize: allocatedSize,
             fileCount: 1,
@@ -49,9 +65,7 @@ extension FileNode {
 
     nonisolated static func smallerFiles(in directory: URL, count: Int, allocatedSize: Int64) -> FileNode {
         FileNode(
-            id: directory.path(percentEncoded: false) + "\u{0}smaller-files",
             url: directory,
-            name: "",
             kind: .smallerFiles(count: count),
             allocatedSize: allocatedSize,
             fileCount: count,
@@ -62,9 +76,7 @@ extension FileNode {
 
     nonisolated static func inaccessible(url: URL) -> FileNode {
         FileNode(
-            id: url.path(percentEncoded: false),
             url: url,
-            name: url.lastPathComponent,
             kind: .inaccessible,
             allocatedSize: 0,
             fileCount: 0,
@@ -75,9 +87,7 @@ extension FileNode {
 
     nonisolated static func unattributed(on volume: URL, allocatedSize: Int64) -> FileNode {
         FileNode(
-            id: volume.path(percentEncoded: false) + "\u{0}unattributed",
             url: volume,
-            name: "",
             kind: .unattributed,
             allocatedSize: allocatedSize,
             fileCount: 0,
@@ -88,9 +98,7 @@ extension FileNode {
 
     nonisolated static func pending(in root: URL, allocatedSize: Int64) -> FileNode {
         FileNode(
-            id: root.path(percentEncoded: false) + "\u{0}pending",
             url: root,
-            name: "",
             kind: .pending,
             allocatedSize: allocatedSize,
             fileCount: 0,
@@ -107,9 +115,7 @@ extension FileNode {
     nonisolated static func directory(url: URL, modificationDate: Date?, children: [FileNode]) -> FileNode {
         let sorted = children.sorted { $0.allocatedSize > $1.allocatedSize }
         return FileNode(
-            id: url.path(percentEncoded: false),
             url: url,
-            name: url.lastPathComponent,
             kind: .directory,
             allocatedSize: sorted.reduce(0) { $0 + $1.allocatedSize },
             fileCount: sorted.reduce(0) { $0 + $1.fileCount },

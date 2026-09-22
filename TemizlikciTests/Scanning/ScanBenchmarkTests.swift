@@ -19,6 +19,7 @@ struct ScanBenchmarkTests {
         let rootPath = ScanConfiguration.comparablePath(of: root)
         let protectedInside = configuration.unreadFolders.contains { $0.hasPrefix(rootPath + "/") }
         let clock = ContinuousClock()
+        let heapBefore = Self.heapInUse()
 
         let scanStart = clock.now
         var result: ScanResult?
@@ -28,11 +29,13 @@ struct ScanBenchmarkTests {
         let scanned = try #require(result)
         let scanDuration = scanStart.duration(to: clock.now)
         let peakMemory = Self.peakResidentBytes()
+        let retainedHeap = Self.heapInUse() - heapBefore
 
         var report = """
         BENCHMARK \(root.path(percentEncoded: false))
           scanner: \(scanned.root.allocatedSize) bytes, \(scanned.fileCount) files, \(scanned.directoryCount) folders, \(scanned.inaccessibleCount) inaccessible, \(scanDuration)
           peak resident memory (process, after scan): \(peakMemory / 1_048_576) MB
+          heap retained by the result: \(retainedHeap / 1_048_576) MB (\(retainedHeap / Int64(max(scanned.directoryCount, 1))) bytes per folder)
         """
         if protectedInside {
             report += "\n  du -skx: skipped (consent-prompting folders inside the root)"
@@ -69,6 +72,14 @@ struct ScanBenchmarkTests {
         let text = String(decoding: data, as: UTF8.self)
         let kilobytes = try #require(text.split(separator: "\t").first.flatMap { Int64($0) })
         return kilobytes * 1024
+    }
+
+    /// Bytes currently allocated in the default malloc zone. Unlike peak RSS this is stable between
+    /// runs, so it measures what the result tree itself keeps alive.
+    private static func heapInUse() -> Int64 {
+        var statistics = malloc_statistics_t()
+        malloc_zone_statistics(nil, &statistics)
+        return Int64(statistics.size_in_use)
     }
 
     /// Peak resident set size of the test process in bytes (`ru_maxrss` is bytes on macOS).
