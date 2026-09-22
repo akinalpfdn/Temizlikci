@@ -299,3 +299,12 @@ See `rules/common/decisions.md` for the logging format and rules. Append-only.
 **Why:** `~/Library/Containers` is labelled "keep" (app data), and Docker Desktop stores its disk image inside it. Stopping there meant Docker's tens of gigabytes had no label at all.
 **Trade-offs:** A folder to keep and a rule inside it are both listed; the nesting is visible in the paths.
 **Revisit if:** Kept folders ever get numerous rules inside them and the list becomes noisy.
+
+---
+
+## 2026-09-22 — The last scan is cached and shown at launch
+**Chosen:** Every finished scan is written as one compressed archive per location (`Application Support/Temizlikci/Scans`). Opening a location shows that archive straight away; when it is older than the period in Settings (default 3 days, "never" available) a scan starts in the background, leaves the old tree on screen while it runs, and on finish returns the person to the folder they had open. The archive is a compact binary format: pre-order nodes with names only, paths rebuilt from the parent, fixed-width little-endian numbers. Moving to the Trash or undoing rewrites it.
+**Alternatives:** Scan on every launch (the old behavior); store the tree as JSON or a property list; refresh on every launch in the background; only refresh when asked.
+**Why:** Measured on this Mac's home folder (1,849,681 files): scanning takes 34.4 s, while the archive is 5 MB compressed, takes 2.1 s to write and 1.35 s to read back. Keeping full paths per node would have made the file several times larger, so names plus the parent's URL are stored instead. The developer chose age-based refreshing: always refreshing would spend minutes of disk I/O on every launch, and never refreshing would quietly show stale numbers.
+**Trade-offs:** The tree can be up to the chosen period old, so the footer states its age. A cached result has no duration to report, and What Grew compares saved snapshots until a real scan runs.
+**Revisit if:** Archives get large on a full startup disk, or the format needs a field (bump `ScanArchive.version`; an older file is ignored, not misread).

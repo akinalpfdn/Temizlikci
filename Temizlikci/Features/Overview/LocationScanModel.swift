@@ -69,6 +69,13 @@ final class LocationScanModel {
     /// Project folders in the current tree, most reclaimable first.
     private(set) var projects: [DeveloperProject] = []
 
+    /// When the tree on screen was measured, whether it came from a scan or from the cache.
+    private(set) var scannedAt: Date?
+    /// True while a scan refreshes a tree that is already on screen.
+    private(set) var isRefreshing = false
+    private(set) var cacheTask: Task<Void, Never>?
+    private(set) var cacheWriteTask: Task<Void, Never>?
+
     /// What makes up the unattributed space of a whole-volume scan; `nil` until it is read.
     private(set) var spaceBreakdown: SpaceBreakdown?
     private(set) var breakdownTask: Task<Void, Never>?
@@ -90,6 +97,7 @@ final class LocationScanModel {
     private let ruleEngine: RuleEngine
     private let projectFinder: ProjectFinder
     private let spaceBuilder: SpaceBreakdownBuilder
+    private let scanCache: ScanCaching
     private let snapshots: SnapshotStoring
     private(set) var scanTask: Task<Void, Never>?
 
@@ -106,12 +114,14 @@ final class LocationScanModel {
         ruleEngine: RuleEngine,
         projectFinder: ProjectFinder = ProjectFinder(),
         spaceBuilder: SpaceBreakdownBuilder = SpaceBreakdownBuilder(),
+        scanCache: ScanCaching = FileScanCache(),
         snapshots: SnapshotStoring,
         makeScanner: @escaping (ScanConfiguration) -> DiskScanning
     ) {
         self.ruleEngine = ruleEngine
         self.projectFinder = projectFinder
         self.spaceBuilder = spaceBuilder
+        self.scanCache = scanCache
         self.snapshots = snapshots
         self.location = location
         self.volumeInfo = volumeInfo
@@ -143,18 +153,24 @@ final class LocationScanModel {
 
     // MARK: - Scanning
 
-    func startScan() {
+    /// - Parameter refreshing: true replaces a tree that is already on screen; the chart, list and
+    ///   the open folder stay as they are until the new scan finishes.
+    func startScan(refreshing: Bool = false) {
         scanTask?.cancel()
         let scanner = makeScanner(ScanConfiguration.forScan(access: access))
         // Capacity only adds the unmeasured and unattributed segments; without it the scan is still correct.
         usage = location.isWholeVolume ? try? volumeInfo.usage(ofVolumeContaining: location.url) : nil
-        phase = .scanning
-        progress = ScanProgress()
-        result = nil
-        finishedAt = nil
-        growth = nil
-        historyTask?.cancel()
-        show(nil)
+        isRefreshing = refreshing && hasResult
+        if !isRefreshing {
+            phase = .scanning
+            progress = ScanProgress()
+            result = nil
+            finishedAt = nil
+            scannedAt = nil
+            growth = nil
+            historyTask?.cancel()
+            show(nil)
+        }
 
         let events = scanner.scan(location.url)
         scanTask = Task { [weak self] in
@@ -162,7 +178,8 @@ final class LocationScanModel {
                 for try await event in events {
                     guard let self else { return }
                     switch event {
-                    case .progress(let snapshot): self.apply(snapshot)
+                    // A refresh leaves the previous tree on screen, so partial results are ignored.
+                    case .progress(let snapshot): if !self.isRefreshing { self.apply(snapshot) }
                     case .finished(let finished): self.finish(finished)
                     }
                 }
@@ -196,8 +213,10 @@ final class LocationScanModel {
     }
 
     private func finish(_ finished: ScanResult) {
+        let openFolderPath = isRefreshing ? currentFolder?.path : nil
         result = finished
         finishedAt = Date()
+        scannedAt = finishedAt
         var root = finished.root
         if let usage {
             let unattributed = usage.unattributed(scannedSize: root.allocatedSize)
@@ -208,8 +227,63 @@ final class LocationScanModel {
         }
         phase = .finished
         scanTask = nil
+        isRefreshing = false
         recordsHistoryAfterMatching = true
         show(root)
+        // A refresh shouldn't move the person: go back to the folder they were looking at.
+        if let openFolderPath, openFolderPath != root.path { showItem(atPath: openFolderPath) }
+        saveToCache(root: root)
+    }
+
+    // MARK: - Cached scans
+
+    /// Shows the last scan of this location, if one was saved. Returns its age, or `nil` when there
+    /// is nothing to show.
+    @discardableResult
+    func loadCachedScan() -> Date? {
+        guard !hasResult, phase == .idle, cacheTask == nil else { return scannedAt }
+        let cache = scanCache
+        let path = location.url.path(percentEncoded: false)
+        cacheTask = Task { [weak self] in
+            let archived = await Self.readCache(cache, locationPath: path)
+            guard let self, !Task.isCancelled, !self.hasResult, self.phase == .idle else { return }
+            self.cacheTask = nil
+            guard let archived else { return }
+            self.usage = self.location.isWholeVolume ? try? self.volumeInfo.usage(ofVolumeContaining: self.location.url) : nil
+            self.scannedAt = archived.scannedAt
+            self.phase = .finished
+            self.recordsHistoryAfterMatching = false
+            self.show(archived.root)
+            if let usage = self.usage {
+                let unattributed = usage.unattributed(scannedSize: archived.root.allocatedSize)
+                if unattributed > 0 { self.loadSpaceBreakdown(unattributed: unattributed, usage: usage) }
+            }
+            self.loadSavedGrowth()
+        }
+        return nil
+    }
+
+    /// True when the tree on screen is older than `period` and a refresh is worth starting.
+    func needsRefresh(after period: RefreshPeriod, now: Date = Date()) -> Bool {
+        guard let interval = period.interval, let scannedAt, hasResult, phase == .finished else { return false }
+        return now.timeIntervalSince(scannedAt) >= interval
+    }
+
+    @concurrent
+    nonisolated private static func readCache(_ cache: ScanCaching, locationPath: String) async -> ScanArchive.Archived? {
+        // The cache is a convenience: a missing or unreadable file just means scanning instead.
+        try? cache.load(locationPath: locationPath)
+    }
+
+    private func saveToCache(root: FileNode) {
+        let cache = scanCache
+        let path = location.url.path(percentEncoded: false)
+        let date = scannedAt ?? Date()
+        cacheWriteTask?.cancel()
+        cacheWriteTask = Task.detached(priority: .utility) {
+            // Writing the cache is a convenience; a failure must never disturb the scan.
+            try? cache.save(root: root, scannedAt: date, locationPath: path)
+        }
     }
 
     private func fail(_ error: Error) {
@@ -548,6 +622,9 @@ final class LocationScanModel {
         refreshLayout()
         refreshRows()
         refreshCleanupMatches()
+        // Keep the saved scan in step with the tree, so reopening the app doesn't list items that
+        // were moved to the Trash (or miss ones that were put back).
+        saveToCache(root: root)
     }
 
     /// Marks the result as outdated after an outside tool (such as simctl) changed the disk.

@@ -74,6 +74,11 @@ nonisolated enum L10n {
         static func scannedFooter(date: String, duration: String) -> LocalizedStringResource {
             LocalizedStringResource("scan.footer.scanned", defaultValue: "Scanned \(date) in \(duration)", comment: "Footer after a scan. Arguments: when it finished, how long it took.")
         }
+        static func savedFooter(_ age: String) -> LocalizedStringResource {
+            LocalizedStringResource("scan.footer.saved", defaultValue: "From the scan \(age)", comment: "Footer when the tree comes from a saved scan. The argument is a relative time such as \"3 days ago\".")
+        }
+        static let refreshing = LocalizedStringResource("scan.refreshing", defaultValue: "Refreshing in the background…", comment: "Shown while a new scan replaces a saved one.")
+        static let refreshNow = LocalizedStringResource("scan.refreshNow", defaultValue: "Rescan", comment: "Button that starts a fresh scan of a saved result.")
         static let sizesFooter = LocalizedStringResource("scan.footer.sizes", defaultValue: "Sizes are space on disk. APFS clones may be counted more than once.", comment: "Footer note explaining how sizes are measured.")
     }
 
@@ -432,5 +437,15 @@ nonisolated enum L10n {
         static let mountedImageDetail = LocalizedStringResource("space.part.image.detail", defaultValue: "A disk image stored on this disk and mounted inside it. Simulator runtimes are kept this way; remove them in the Developer view.", comment: "Explains a mounted disk image.")
         static let source = LocalizedStringResource("space.source", defaultValue: "Figures come from macOS and from the disk's own layout, read at the end of the scan.", comment: "Says where the breakdown numbers come from.")
         static let reading = LocalizedStringResource("space.reading", defaultValue: "Reading the disk's layout…", comment: "Shown while the breakdown is being read.")
+    }
+
+    enum Settings {
+        static let title = LocalizedStringResource("settings.title", defaultValue: "General", comment: "Title of the settings pane.")
+        static let refreshLabel = LocalizedStringResource("settings.refresh.label", defaultValue: "Refresh a saved scan when it is older than", comment: "Label of the automatic refresh control.")
+        static let refreshDay = LocalizedStringResource("settings.refresh.day", defaultValue: "1 day", comment: "Refresh period.")
+        static let refreshThreeDays = LocalizedStringResource("settings.refresh.threeDays", defaultValue: "3 days", comment: "Refresh period.")
+        static let refreshWeek = LocalizedStringResource("settings.refresh.week", defaultValue: "1 week", comment: "Refresh period.")
+        static let refreshNever = LocalizedStringResource("settings.refresh.never", defaultValue: "Never", comment: "Refresh period meaning the app never scans by itself.")
+        static let refreshExplanation = LocalizedStringResource("settings.refresh.explanation", defaultValue: "Temizlikci shows the last scan of a location as soon as you open it. When that scan is older than this, it reads the disk again in the background and replaces it when it's done.", comment: "Explains the automatic refresh setting.")
     }
 }

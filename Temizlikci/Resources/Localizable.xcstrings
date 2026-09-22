@@ -2329,6 +2329,18 @@
         }
       }
     },
+    "scan.footer.saved": {
+      "comment": "Footer when the tree comes from a saved scan. The argument is a relative time such as \\\"3 days ago\\\".",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "From the scan %@"
+          }
+        }
+      }
+    },
     "scan.footer.scanned": {
       "comment": "Footer after a scan. Arguments: when it finished, how long it took.",
       "extractionState": "manual",
@@ -2349,6 +2361,30 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sizes are space on disk. APFS clones may be counted more than once."
+          }
+        }
+      }
+    },
+    "scan.refreshNow": {
+      "comment": "Button that starts a fresh scan of a saved result.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rescan"
+          }
+        }
+      }
+    },
+    "scan.refreshing": {
+      "comment": "Shown while a new scan replaces a saved one.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Refreshing in the background…"
           }
         }
       }
@@ -2421,6 +2457,90 @@
           "stringUnit": {
             "state": "translated",
             "value": "Find"
+          }
+        }
+      }
+    },
+    "settings.refresh.day": {
+      "comment": "Refresh period.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 day"
+          }
+        }
+      }
+    },
+    "settings.refresh.explanation": {
+      "comment": "Explains the automatic refresh setting.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlikci shows the last scan of a location as soon as you open it. When that scan is older than this, it reads the disk again in the background and replaces it when it's done."
+          }
+        }
+      }
+    },
+    "settings.refresh.label": {
+      "comment": "Label of the automatic refresh control.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Refresh a saved scan when it is older than"
+          }
+        }
+      }
+    },
+    "settings.refresh.never": {
+      "comment": "Refresh period meaning the app never scans by itself.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Never"
+          }
+        }
+      }
+    },
+    "settings.refresh.threeDays": {
+      "comment": "Refresh period.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 days"
+          }
+        }
+      }
+    },
+    "settings.refresh.week": {
+      "comment": "Refresh period.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 week"
+          }
+        }
+      }
+    },
+    "settings.title": {
+      "comment": "Title of the settings pane.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "General"
           }
         }
       }

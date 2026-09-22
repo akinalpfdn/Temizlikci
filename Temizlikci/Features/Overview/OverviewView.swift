@@ -7,6 +7,7 @@ struct OverviewView: View {
     let main: MainViewModel
     @Environment(\.undoManager) private var undoManager
     @FocusState private var isSearchFocused: Bool
+    @AppStorage("refreshPeriod") private var refreshPeriod = RefreshPeriod.threeDays.rawValue
 
     var body: some View {
         switch model.phase {
@@ -16,12 +17,23 @@ struct OverviewView: View {
             failure(message: message, suggestion: suggestion)
         case .scanning, .finished:
             results
+                .task { await loadSavedOrScan() }
                 .searchable(text: $model.searchText, placement: .toolbar, prompt: Text(L10n.Navigation.searchPrompt))
                 .searchFocused($isSearchFocused)
                 .onChange(of: main.searchFocusRequest) { isSearchFocused = true }
                 .quickLookPreview($model.previewURL)
                 .overlay(alignment: .bottom) { trashConfirmation }
                 .modifier(ActionErrorAlert(model: model))
+        }
+    }
+
+    /// Shows the saved scan first, then refreshes it in the background when it's older than the
+    /// period in Settings. Nothing is read from disk when the saved scan is still fresh.
+    private func loadSavedOrScan() async {
+        model.loadCachedScan()
+        await model.cacheTask?.value
+        if model.needsRefresh(after: RefreshPeriod(rawValue: refreshPeriod) ?? .threeDays) {
+            model.startScan(refreshing: true)
         }
     }
 
@@ -89,15 +101,26 @@ struct OverviewView: View {
 
     @ViewBuilder
     private var footer: some View {
-        if let finishedAt = model.finishedAt, let result = model.result {
-            HStack {
-                if model.isOutdated {
+        if let scannedAt = model.scannedAt {
+            HStack(spacing: Spacing.xSmall) {
+                if model.isRefreshing {
+                    ProgressView().controlSize(.small)
+                    Text(L10n.Scan.refreshing)
+                } else if model.isOutdated {
                     Label { Text(L10n.Trash.rescanSuggestion) } icon: { Image(systemName: "arrow.clockwise") }
                 }
-                Text(L10n.Scan.scannedFooter(
-                    date: finishedAt.formatted(date: .abbreviated, time: .shortened),
-                    duration: result.duration.formatted(.units(allowed: [.minutes, .seconds], width: .wide))
-                ))
+                if let result = model.result {
+                    Text(L10n.Scan.scannedFooter(
+                        date: scannedAt.formatted(date: .abbreviated, time: .shortened),
+                        duration: result.duration.formatted(.units(allowed: [.minutes, .seconds], width: .wide))
+                    ))
+                } else {
+                    // The tree came from the cache, so there is no duration to report.
+                    Text(L10n.Scan.savedFooter(scannedAt.formatted(.relative(presentation: .named))))
+                    Button { model.startScan(refreshing: true) } label: { Text(L10n.Scan.refreshNow) }
+                        .buttonStyle(.link)
+                        .disabled(model.isRefreshing)
+                }
                 Spacer()
                 Text(L10n.Scan.sizesFooter)
             }

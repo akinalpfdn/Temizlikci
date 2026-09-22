@@ -17,5 +17,9 @@ struct TemizlikciApp: App {
             InspectorCommands()
             AppCommands(model: model)
         }
+
+        Settings {
+            SettingsView()
+        }
     }
 }

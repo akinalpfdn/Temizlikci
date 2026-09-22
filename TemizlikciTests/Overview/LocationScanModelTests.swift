@@ -40,6 +40,7 @@ struct LocationScanModelTests {
     private let trash = StubTrash()
     private let ledger: TrashLedger
     private let snapshots = InMemorySnapshots()
+    private let scanCache = InMemoryScanCache()
 
     init() {
         ledger = TrashLedger(trash: trash)
@@ -59,6 +60,7 @@ struct LocationScanModelTests {
             trash: trash,
             ledger: ledger,
             ruleEngine: RuleEngine(home: URL(filePath: "/Users/dev", directoryHint: .isDirectory), markers: NoMarkers()),
+            scanCache: scanCache,
             snapshots: snapshots,
             makeScanner: { _ in StubScanner(events: events, failure: failure) }
         )
@@ -519,5 +521,50 @@ struct LocationScanModelTests {
         let other = try #require(model.rows.first { $0.kind == .unattributed })
 
         #expect(model.growth(for: other) == nil)
+    }
+
+    @Test("should save the finished scan and show it again without reading the disk")
+    func cachesAndReopens() async throws {
+        let first = await scanned(makeModel())
+        await first.cacheWriteTask?.value
+        #expect(scanCache.savedLocations == [TreeBuilder.root.path(percentEncoded: false)])
+
+        // A model whose scanner would fail: everything on screen has to come from the cache.
+        let reopened = makeModel(events: [], failure: .rootNotFound(TreeBuilder.root))
+        reopened.loadCachedScan()
+        await reopened.cacheTask?.value
+
+        #expect(reopened.hasResult)
+        #expect(reopened.rows.map(\.name) == first.rows.map(\.name))
+        #expect(reopened.scannedAt != nil)
+        #expect(reopened.result == nil)
+    }
+
+    @Test("should refresh a saved scan only once it is older than the chosen period")
+    func refreshAge() async throws {
+        let model = await scanned(makeModel())
+        let scannedAt = try #require(model.scannedAt)
+        let twoDaysLater = scannedAt.addingTimeInterval(2 * 24 * 60 * 60)
+
+        #expect(model.needsRefresh(after: .day, now: twoDaysLater))
+        #expect(!model.needsRefresh(after: .threeDays, now: twoDaysLater))
+        #expect(!model.needsRefresh(after: .never, now: twoDaysLater.addingTimeInterval(3_000 * 24 * 60 * 60)))
+    }
+
+    @Test("should keep the open folder on screen while a refresh runs, and return to it afterwards")
+    func refreshKeepsPlace() async throws {
+        let model = await scanned(makeModel())
+        let docs = try #require(child("Docs", of: model.currentFolder))
+        model.open(docs)
+        #expect(model.currentFolder?.name == "Docs")
+
+        model.startScan(refreshing: true)
+        #expect(model.isRefreshing)
+        #expect(model.currentFolder?.name == "Docs", "the previous tree stays on screen during a refresh")
+        await model.scanTask?.value
+
+        #expect(!model.isRefreshing)
+        #expect(model.currentFolder?.name == "Docs")
+        #expect(model.result != nil)
     }
 }
