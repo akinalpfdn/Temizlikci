@@ -40,7 +40,6 @@ nonisolated enum L10n {
 
     enum Insights {
         static let notScannedTitle = LocalizedStringResource("insights.empty.title", defaultValue: "Nothing Scanned Yet", comment: "Title shown in insight views before any scan has run.")
-        static let developerMessage = LocalizedStringResource("insights.empty.developer", defaultValue: "Scan a location to find build caches, simulators, and other developer files you can remove.", comment: "Empty state message of the Developer view.")
         static let largeFilesMessage = LocalizedStringResource("insights.empty.largeFiles", defaultValue: "Scan a location to list its largest files.", comment: "Empty state message of the Large Files view.")
         static let trashMessage = LocalizedStringResource("insights.empty.trash", defaultValue: "Items you move to the Trash from Temizlikci appear here until you empty it.", comment: "Empty state message of the Trash view.")
     }
@@ -75,7 +74,6 @@ nonisolated enum L10n {
             LocalizedStringResource("scan.footer.scanned", defaultValue: "Scanned \(date) in \(duration)", comment: "Footer after a scan. Arguments: when it finished, how long it took.")
         }
         static let sizesFooter = LocalizedStringResource("scan.footer.sizes", defaultValue: "Sizes are space on disk. APFS clones may be counted more than once.", comment: "Footer note explaining how sizes are measured.")
-        static let noMatches = LocalizedStringResource("scan.search.noMatches", defaultValue: "No Results", comment: "Shown in the list when a search finds nothing.")
     }
 
     enum Chart {
@@ -246,7 +244,6 @@ nonisolated enum L10n {
         static let summaryTitle = LocalizedStringResource("cleanup.developer.summary", defaultValue: "Developer Files", comment: "Title of the Developer view summary chart.")
         static let openAndroidStudio = LocalizedStringResource("cleanup.action.openAndroidStudio", defaultValue: "Open Android Studio", comment: "Button that opens Android Studio to manage emulators or SDK packages.")
         static let manageSimulators = LocalizedStringResource("cleanup.action.manageSimulators", defaultValue: "Manage Simulators", comment: "Button that jumps to the simulator section of the Developer view.")
-        static let noActions = LocalizedStringResource("cleanup.action.none", defaultValue: "Keep", comment: "Shown instead of an action for items to keep.")
     }
 
     enum Simulators {
@@ -260,7 +257,6 @@ nonisolated enum L10n {
             LocalizedStringResource("simulators.alert.deleteUnavailable.message", defaultValue: "This removes \(count) simulators whose runtime is no longer installed, and their data (\(size)). This can’t be undone.", comment: "Alert message.")
         }
         static let deleteUnavailableConfirm = LocalizedStringResource("simulators.alert.deleteUnavailable.confirm", defaultValue: "Delete Simulators", comment: "Alert button that deletes unavailable simulators.")
-        static let runtimesTitle = LocalizedStringResource("simulators.runtimes.title", defaultValue: "Simulator Runtimes", comment: "Section title listing installed simulator runtimes.")
         static func runtimeName(_ platform: String, version: String) -> LocalizedStringResource {
             LocalizedStringResource("simulators.runtime.name", defaultValue: "\(platform) \(version)", comment: "Runtime name. Arguments: platform (iOS, watchOS…), version.")
         }

@@ -229,18 +229,6 @@
         }
       }
     },
-    "cleanup.action.none": {
-      "comment": "Shown instead of an action for items to keep.",
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keep"
-          }
-        }
-      }
-    },
     "cleanup.action.openAndroidStudio": {
       "comment": "Button that opens Android Studio to manage emulators or SDK packages.",
       "extractionState": "manual",
@@ -849,18 +837,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Choose"
-          }
-        }
-      }
-    },
-    "insights.empty.developer": {
-      "comment": "Empty state message of the Developer view.",
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan a location to find build caches, simulators, and other developer files you can remove."
           }
         }
       }
@@ -1489,18 +1465,6 @@
         }
       }
     },
-    "scan.search.noMatches": {
-      "comment": "Shown in the list when a search finds nothing.",
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No Results"
-          }
-        }
-      }
-    },
     "scanError.rootNotFolder": {
       "comment": "Scan error. The argument is the item name.",
       "extractionState": "manual",
@@ -1833,18 +1797,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "%@ %@"
-          }
-        }
-      }
-    },
-    "simulators.runtimes.title": {
-      "comment": "Section title listing installed simulator runtimes.",
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Simulator Runtimes"
           }
         }
       }

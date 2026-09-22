@@ -57,4 +57,23 @@ struct StringCatalogTests {
         let orphans = Set(try loadCatalog().strings.keys).subtracting(used)
         #expect(orphans.isEmpty, "Unused catalog keys: \(orphans.sorted())")
     }
+
+    @Test("should use every string defined in L10n somewhere in the app")
+    func everyResourceUsed() throws {
+        let l10n = SourceTree.appSources.appending(path: "Resources/Strings/L10n.swift")
+        var enumName = ""
+        var symbols: [String] = []
+        for line in try String(contentsOf: l10n, encoding: .utf8).split(separator: "\n") {
+            if let match = line.firstMatch(of: /^    enum (\w+) \{/) { enumName = String(match.1) }
+            if let match = line.firstMatch(of: /^        static (?:let|func) (\w+)/) { symbols.append("L10n.\(enumName).\(match.1)") }
+        }
+        let sources = try SourceTree.swiftFiles(under: ".")
+            .filter { $0.lastPathComponent != "L10n.swift" }
+            .map { try String(contentsOf: $0, encoding: .utf8) }
+            .joined(separator: "\n")
+        let unused = symbols.filter { symbol in !sources.contains(symbol) }
+        #expect(!symbols.isEmpty)
+        #expect(unused.isEmpty, "Unused strings: \(unused)")
+    }
 }
+
