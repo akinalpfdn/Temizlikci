@@ -58,9 +58,9 @@ struct ProjectInspectorView: View {
                     Button { scan.reveal(project.node) } label: {
                         Text(L10n.Details.revealInFinder).frame(maxWidth: .infinity)
                     }
-                    if main.isVisualStudioCodeInstalled {
-                        Button { main.openInVisualStudioCode(project) } label: {
-                            Text(L10n.Projects.openInVSCode).frame(maxWidth: .infinity)
+                    ForEach(main.editors(for: project)) { target in
+                        Button { main.open(target) } label: {
+                            Text(target.editor.openTitle).frame(maxWidth: .infinity)
                         }
                     }
                 }
@@ -197,6 +197,16 @@ private struct GitDetails: View {
                     .monospacedDigit()
                     .fixedSize()
             }
+        }
+    }
+}
+
+extension EditorTarget.Editor {
+    var openTitle: LocalizedStringResource {
+        switch self {
+        case .xcode: L10n.Projects.openInXcode
+        case .androidStudio: L10n.Projects.openInAndroidStudio
+        case .visualStudioCode: L10n.Projects.openInVSCode
         }
     }
 }

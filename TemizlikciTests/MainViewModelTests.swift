@@ -140,24 +140,27 @@ struct MainViewModelTests {
         #expect(model.inspected == nil)
     }
 
-    @Test("should open a project folder in Visual Studio Code, and offer it only when installed")
-    func openInVisualStudioCode() {
+    @Test("should offer only installed editors, and open what each one needs")
+    func projectEditors() {
         let model = makeModel()
         let folder = URL(filePath: "/Users/dev/Work/app", directoryHint: .isDirectory)
+        let workspace = folder.appending(path: "App.xcworkspace", directoryHint: .isDirectory)
         let project = DeveloperProject(
-            node: .directory(url: folder, modificationDate: nil, children: []),
+            node: .directory(url: folder, modificationDate: nil, children: [
+                .directory(url: workspace, modificationDate: nil, children: []),
+            ]),
             idPath: [], evidence: .git, artifacts: [], lastTouched: nil
         )
 
-        #expect(!model.isVisualStudioCodeInstalled)
-        apps.installed.insert(WorkspaceAppOpener.visualStudioCode)
-        #expect(model.isVisualStudioCodeInstalled)
+        #expect(model.editors(for: project).isEmpty)
+        apps.installed = [WorkspaceAppOpener.xcode, WorkspaceAppOpener.visualStudioCode]
+        let targets = model.editors(for: project)
+        #expect(targets.map(\.editor) == [.xcode, .visualStudioCode])
 
-        model.openInVisualStudioCode(project)
+        model.open(targets[0])
 
-        #expect(apps.opened.count == 1)
-        #expect(apps.opened.first?.folder == folder)
-        #expect(apps.opened.first?.bundleIdentifier == WorkspaceAppOpener.visualStudioCode)
+        #expect(apps.opened.first?.folder == workspace)
+        #expect(apps.opened.first?.bundleIdentifier == WorkspaceAppOpener.xcode)
     }
 }
 

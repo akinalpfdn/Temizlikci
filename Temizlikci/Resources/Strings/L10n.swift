@@ -408,6 +408,8 @@ nonisolated enum L10n {
         static func total(_ size: String) -> LocalizedStringResource {
             LocalizedStringResource("projects.total", defaultValue: "\(size) in total", comment: "Size of the whole project folder.")
         }
+        static let openInXcode = LocalizedStringResource("projects.openInXcode", defaultValue: "Open in Xcode", comment: "Button that opens the project's workspace or project file in Xcode.")
+        static let openInAndroidStudio = LocalizedStringResource("projects.openInAndroidStudio", defaultValue: "Open in Android Studio", comment: "Button that opens the project folder in Android Studio.")
         static let openInVSCode = LocalizedStringResource("projects.openInVSCode", defaultValue: "Open in Visual Studio Code", comment: "Button that opens the project folder in Visual Studio Code.")
         static let onlyBuildOutput = LocalizedStringResource("projects.onlyBuildOutput", defaultValue: "Temizlikci only ever moves this project’s build output to the Trash, never the project itself.", comment: "Reassurance in the project inspector.")
         static let lastWorkedOn = LocalizedStringResource("projects.lastWorkedOn", defaultValue: "Last Worked On", comment: "Inspector label for when a project was last changed.")

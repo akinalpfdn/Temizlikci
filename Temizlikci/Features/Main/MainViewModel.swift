@@ -48,6 +48,7 @@ final class MainViewModel {
     private let projectFinder: ProjectFinder
     private let snapshots: SnapshotStoring
     private let scanCache: ScanCaching
+    private let markers: MarkerChecking
     private let makeScanner: (ScanConfiguration) -> DiskScanning
 
     init(
@@ -61,6 +62,7 @@ final class MainViewModel {
         tools: ToolRunning = ProcessToolRunner(),
         snapshots: SnapshotStoring = FileSnapshotStore(),
         scanCache: ScanCaching = FileScanCache(),
+        markers: MarkerChecking = FileSystemMarkerChecker(),
         homeFolder: URL = URL.homeDirectory,
         makeScanner: @escaping (ScanConfiguration) -> DiskScanning = { FileSystemScanner(configuration: $0) }
     ) {
@@ -74,6 +76,7 @@ final class MainViewModel {
         self.apps = apps
         self.snapshots = snapshots
         self.scanCache = scanCache
+        self.markers = markers
         self.makeScanner = makeScanner
         ruleEngine = RuleEngine(home: homeFolder)
         projectFinder = ProjectFinder(home: homeFolder)
@@ -197,11 +200,15 @@ final class MainViewModel {
 
     var isAndroidStudioInstalled: Bool { apps.isInstalled(WorkspaceAppOpener.androidStudio) }
 
-    /// Offered for projects only when Visual Studio Code is installed.
-    var isVisualStudioCodeInstalled: Bool { apps.isInstalled(WorkspaceAppOpener.visualStudioCode) }
+    /// The installed editors that can open a project, most specific first (Xcode or Android Studio,
+    /// then Visual Studio Code).
+    func editors(for project: DeveloperProject) -> [EditorTarget] {
+        ProjectEditors.targets(for: project, markers: markers)
+            .filter { apps.isInstalled($0.editor.bundleIdentifier) }
+    }
 
-    func openInVisualStudioCode(_ project: DeveloperProject) {
-        apps.open(project.url, with: WorkspaceAppOpener.visualStudioCode)
+    func open(_ target: EditorTarget) {
+        apps.open(target.url, with: target.editor.bundleIdentifier)
     }
 
     func openAndroidStudio() {

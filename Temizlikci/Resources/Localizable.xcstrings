@@ -2953,6 +2953,18 @@
         }
       }
     },
+    "projects.openInAndroidStudio": {
+      "comment": "Button that opens the project folder in Android Studio.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open in Android Studio"
+          }
+        }
+      }
+    },
     "projects.openInVSCode": {
       "comment": "Button that opens the project folder in Visual Studio Code.",
       "extractionState": "manual",
@@ -2961,6 +2973,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Open in Visual Studio Code"
+          }
+        }
+      }
+    },
+    "projects.openInXcode": {
+      "comment": "Button that opens the project's workspace or project file in Xcode.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open in Xcode"
           }
         }
       }

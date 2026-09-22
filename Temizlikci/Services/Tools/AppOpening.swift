@@ -9,8 +9,9 @@ protocol AppOpening {
 }
 
 struct WorkspaceAppOpener: AppOpening {
-    static let androidStudio = "com.google.android.studio"
-    static let visualStudioCode = "com.microsoft.VSCode"
+    nonisolated static let androidStudio = "com.google.android.studio"
+    nonisolated static let visualStudioCode = "com.microsoft.VSCode"
+    nonisolated static let xcode = "com.apple.dt.Xcode"
 
     func isInstalled(_ bundleIdentifier: String) -> Bool {
         NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundleIdentifier) != nil
