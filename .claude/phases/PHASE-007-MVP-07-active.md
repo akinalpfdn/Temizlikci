@@ -25,3 +25,4 @@ A signed, notarized build usable daily and shareable.
 - 2026-09-22 — Developer chose: icon via Icon Composer layers they assemble; notarized DMG after the final live audit.
 - Finding: running `xcodebuild test` while the Debug app is open made test-host launch take ~15 min (same bundle ID). Close the app before running tests.
 - 2026-09-22 — With the app closed the full suite ran in 11.6 s (80 tests, 79 pass, 1 opt-in), confirming the slow runs came from the open Debug app.
+- 2026-09-22 19:19–19:21 — Final in-app startup-disk scan (Debug): peak RSS 383 MB (was 1,112 → 1,017 MB). Lore knownIssue 101 closed. Developer confirmed Developer-view Move to Trash now drops the row immediately.
