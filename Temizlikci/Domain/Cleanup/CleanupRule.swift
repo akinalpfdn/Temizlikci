@@ -10,7 +10,7 @@ nonisolated enum SafetyLevel: String, Sendable, CaseIterable {
 }
 
 nonisolated enum Ecosystem: String, Sendable, CaseIterable {
-    case xcode, simulators, android, flutter, node, go, homebrew, appData
+    case xcode, simulators, swift, android, flutter, node, rust, go, python, dotnet, java, docker, unity, editors, homebrew, appData
 }
 
 /// What the app offers to do with a matched item.
@@ -72,6 +72,39 @@ nonisolated extension CleanupRule {
         // Go & Homebrew
         CleanupRule(id: "go.buildCache", ecosystem: .go, safety: .safe, matcher: .path("~/Library/Caches/go-build"), reason: L10n.Cleanup.reasonGoBuild, action: .moveToTrash),
         CleanupRule(id: "homebrew.cache", ecosystem: .homebrew, safety: .safe, matcher: .path("~/Library/Caches/Homebrew"), reason: L10n.Cleanup.reasonHomebrewCache, action: .moveToTrash),
+        // Swift Package Manager, Xcode caches and CocoaPods
+        CleanupRule(id: "swift.swiftpmCache", ecosystem: .swift, safety: .safe, matcher: .path("~/Library/Caches/org.swift.swiftpm"), reason: L10n.Cleanup.reasonSwiftPMCache, action: .moveToTrash),
+        CleanupRule(id: "swift.xcodeCache", ecosystem: .xcode, safety: .safe, matcher: .path("~/Library/Caches/com.apple.dt.Xcode"), reason: L10n.Cleanup.reasonXcodeCache, action: .moveToTrash),
+        CleanupRule(id: "swift.cocoapodsCache", ecosystem: .swift, safety: .safe, matcher: .path("~/Library/Caches/CocoaPods"), reason: L10n.Cleanup.reasonCocoaPodsCache, action: .moveToTrash),
+        CleanupRule(id: "swift.pods", ecosystem: .swift, safety: .safe, matcher: .projectFolder(name: "Pods", marker: "Podfile"), reason: L10n.Cleanup.reasonPods, action: .moveToTrash),
+        CleanupRule(id: "swift.packageBuild", ecosystem: .swift, safety: .safe, matcher: .projectFolder(name: ".build", marker: "Package.swift"), reason: L10n.Cleanup.reasonSwiftPMBuild, action: .moveToTrash),
+        // Rust
+        CleanupRule(id: "rust.registry", ecosystem: .rust, safety: .safe, matcher: .path("~/.cargo/registry"), reason: L10n.Cleanup.reasonCargoRegistry, action: .moveToTrash),
+        CleanupRule(id: "rust.target", ecosystem: .rust, safety: .safe, matcher: .projectFolder(name: "target", marker: "Cargo.toml"), reason: L10n.Cleanup.reasonCargoTarget, action: .moveToTrash),
+        CleanupRule(id: "rust.toolchains", ecosystem: .rust, safety: .tool, matcher: .path("~/.rustup"), reason: L10n.Cleanup.reasonRustup, action: .none),
+        // Python
+        CleanupRule(id: "python.pipCache", ecosystem: .python, safety: .safe, matcher: .path("~/Library/Caches/pip"), reason: L10n.Cleanup.reasonPipCache, action: .moveToTrash),
+        CleanupRule(id: "python.uvCache", ecosystem: .python, safety: .tool, matcher: .path("~/.cache/uv"), reason: L10n.Cleanup.reasonUvCache, action: .none),
+        // .NET and Java
+        CleanupRule(id: "dotnet.packages", ecosystem: .dotnet, safety: .tool, matcher: .path("~/.nuget/packages"), reason: L10n.Cleanup.reasonNuGet, action: .none),
+        CleanupRule(id: "java.maven", ecosystem: .java, safety: .safe, matcher: .path("~/.m2/repository"), reason: L10n.Cleanup.reasonMaven, action: .moveToTrash),
+        CleanupRule(id: "java.gradleBuild", ecosystem: .java, safety: .safe, matcher: .projectFolder(name: "build", marker: "build.gradle"), reason: L10n.Cleanup.reasonGradleBuild, action: .moveToTrash),
+        CleanupRule(id: "java.gradleBuildKts", ecosystem: .java, safety: .safe, matcher: .projectFolder(name: "build", marker: "build.gradle.kts"), reason: L10n.Cleanup.reasonGradleBuild, action: .moveToTrash),
+        // Go modules
+        CleanupRule(id: "go.modCache", ecosystem: .go, safety: .tool, matcher: .path("~/go/pkg/mod"), reason: L10n.Cleanup.reasonGoModCache, action: .none),
+        // Docker
+        CleanupRule(id: "docker.data", ecosystem: .docker, safety: .tool, matcher: .path("~/Library/Containers/com.docker.docker/Data"), reason: L10n.Cleanup.reasonDocker, action: .none),
+        // JavaScript toolchains
+        CleanupRule(id: "node.yarnCache", ecosystem: .node, safety: .safe, matcher: .path("~/Library/Caches/Yarn"), reason: L10n.Cleanup.reasonYarnCache, action: .moveToTrash),
+        CleanupRule(id: "node.yarnBerryCache", ecosystem: .node, safety: .safe, matcher: .path("~/.yarn/berry/cache"), reason: L10n.Cleanup.reasonYarnCache, action: .moveToTrash),
+        CleanupRule(id: "node.pnpmStore", ecosystem: .node, safety: .tool, matcher: .path("~/Library/pnpm/store"), reason: L10n.Cleanup.reasonPnpmStore, action: .none),
+        CleanupRule(id: "node.bunCache", ecosystem: .node, safety: .safe, matcher: .path("~/.bun/install/cache"), reason: L10n.Cleanup.reasonBunCache, action: .moveToTrash),
+        CleanupRule(id: "node.electronCache", ecosystem: .node, safety: .safe, matcher: .path("~/Library/Caches/electron"), reason: L10n.Cleanup.reasonElectronCache, action: .moveToTrash),
+        CleanupRule(id: "node.gypCache", ecosystem: .node, safety: .safe, matcher: .path("~/Library/Caches/node-gyp"), reason: L10n.Cleanup.reasonNodeGyp, action: .moveToTrash),
+        CleanupRule(id: "node.playwright", ecosystem: .node, safety: .safe, matcher: .path("~/Library/Caches/ms-playwright"), reason: L10n.Cleanup.reasonPlaywright, action: .moveToTrash),
+        // Editors and Unity
+        CleanupRule(id: "editors.jetbrains", ecosystem: .editors, safety: .safe, matcher: .path("~/Library/Caches/JetBrains"), reason: L10n.Cleanup.reasonJetBrains, action: .moveToTrash),
+        CleanupRule(id: "unity.library", ecosystem: .unity, safety: .safe, matcher: .projectFolder(name: "Library", marker: "ProjectSettings"), reason: L10n.Cleanup.reasonUnityLibrary, action: .moveToTrash),
         // App data
         CleanupRule(id: "appData.containers", ecosystem: .appData, safety: .keep, matcher: .path("~/Library/Containers"), reason: L10n.Cleanup.reasonAppData, action: .none),
         CleanupRule(id: "appData.groupContainers", ecosystem: .appData, safety: .keep, matcher: .path("~/Library/Group Containers"), reason: L10n.Cleanup.reasonAppData, action: .none),

@@ -23,7 +23,9 @@ nonisolated struct FileSystemMarkerChecker: MarkerChecking {
 }
 
 /// Finds developer artifacts in a scan result. Stops descending into a folder once it matches, so
-/// nested `node_modules` and everything inside a matched cache belong to the outermost match.
+/// nested `node_modules` and everything inside a matched cache belong to the outermost match. The
+/// exception is a folder labelled "keep": the search continues inside it, because app containers
+/// hold things with their own rules.
 nonisolated struct RuleEngine: Sendable {
     let rules: [CleanupRule]
     let home: URL
@@ -66,7 +68,9 @@ nonisolated struct RuleEngine: Sendable {
             }
             if let rule {
                 found.append(CleanupMatch(rule: rule, node: node, idPath: idPath))
-                return
+                // Stop inside caches: everything below belongs to the same match. Folders to keep are
+                // different — app containers hold Docker's disk image, and that needs its own label.
+                if rule.safety != .keep { return }
             }
             for child in node.children where child.kind == .directory || child.kind == .inaccessible {
                 let childID = autoreleasepool { child.id }

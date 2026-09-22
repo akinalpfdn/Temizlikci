@@ -47,6 +47,14 @@ extension Ecosystem {
         case .android: L10n.Cleanup.ecosystemAndroid
         case .flutter: L10n.Cleanup.ecosystemFlutter
         case .node: L10n.Cleanup.ecosystemNode
+        case .swift: L10n.Cleanup.ecosystemSwift
+        case .rust: L10n.Cleanup.ecosystemRust
+        case .python: L10n.Cleanup.ecosystemPython
+        case .dotnet: L10n.Cleanup.ecosystemDotNet
+        case .java: L10n.Cleanup.ecosystemJava
+        case .docker: L10n.Cleanup.ecosystemDocker
+        case .unity: L10n.Cleanup.ecosystemUnity
+        case .editors: L10n.Cleanup.ecosystemEditors
         case .go: L10n.Cleanup.ecosystemGo
         case .homebrew: L10n.Cleanup.ecosystemHomebrew
         case .appData: L10n.Cleanup.ecosystemAppData

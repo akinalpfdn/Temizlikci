@@ -487,4 +487,28 @@ struct LocationScanModelTests {
 
         #expect(!model.growthIsFromSavedScans)
     }
+
+    @Test("should move an item dropped on the Trash, and ignore drops from outside the scan")
+    func dropOnTrash() async throws {
+        let model = await scanned(makeModel())
+        let apps = try #require(child("Apps", of: model.currentFolder))
+
+        let moved = model.moveToTrash(droppedURLs: [apps.url, URL(filePath: "/Elsewhere/thing")], undoManager: nil)
+
+        #expect(moved)
+        #expect(trash.trashed == [apps.url])
+        #expect(model.rows.map(\.name) == ["Docs", "movie.mov"])
+    }
+
+    @Test("should refuse a drop of an item a rule protects")
+    func dropOfProtectedItem() async throws {
+        let model = await scanned(modelWithDerivedData())
+        await model.cleanupTask?.value
+        let archives = try #require(model.cleanupMatches.first { $0.rule.safety == .keep })
+
+        let moved = model.moveToTrash(droppedURLs: [archives.node.url], undoManager: nil)
+
+        #expect(!moved)
+        #expect(trash.trashed.isEmpty)
+    }
 }

@@ -89,10 +89,104 @@ struct RuleEngineTests {
             #expect(!String(localized: rule.reason).isEmpty)
             switch rule.safety {
             case .safe: #expect(rule.action == .moveToTrash, "\(rule.id)")
-            case .tool: #expect(rule.action == .manageSimulators || rule.action == .openAndroidStudio, "\(rule.id)")
+            // A tool-owned item either opens its tool or explains the command in its reason;
+            // it must never offer Move to Trash.
+            case .tool: #expect(rule.action != .moveToTrash, "\(rule.id)")
             case .keep: #expect(rule.action == .none, "\(rule.id)")
             }
         }
         #expect(Set(CleanupRule.catalog.map(\.id)).count == CleanupRule.catalog.count)
+    }
+
+    /// Builds a tree containing every folder the catalog's exact-path rules look for, so a rule that
+    /// stops matching its own target fails here.
+    private func treeOfEveryPathRule() -> FileNode {
+        var paths: [String] = []
+        for rule in CleanupRule.catalog {
+            guard case .path(let pattern) = rule.matcher else { continue }
+            paths.append(pattern.hasPrefix("~") ? "/Users/dev" + pattern.dropFirst() : pattern)
+        }
+        return tree(containing: paths)
+    }
+
+    /// Builds a directory tree from a list of absolute paths.
+    private func tree(containing paths: [String]) -> FileNode {
+        func build(prefix: String, components: [[String]]) -> [FileNode] {
+            var children: [FileNode] = []
+            for name in Set(components.compactMap(\.first)).sorted() {
+                let rest = components.filter { $0.first == name }.map { Array($0.dropFirst()) }.filter { !$0.isEmpty }
+                let path = prefix + "/" + name
+                children.append(dir(path, build(prefix: path, components: rest)))
+            }
+            return children
+        }
+        let components = paths.map { $0.split(separator: "/").map(String.init) }
+        return dir("/", build(prefix: "", components: components))
+    }
+
+    @Test("should match every exact-path rule in the catalog against its own target")
+    func everyPathRuleMatches() {
+        let expected = Set(CleanupRule.catalog.compactMap { rule -> String? in
+            guard case .path = rule.matcher else { return nil }
+            return rule.id
+        })
+
+        let matches = engine().matches(in: treeOfEveryPathRule())
+
+        #expect(Set(matches.map(\.rule.id)) == expected)
+    }
+
+    @Test("should not match folders that only look like a rule's target")
+    func lookAlikesAreNotMatched() {
+        let tree = tree(containing: [
+            "/Users/dev/.cargo/registry-backup",
+            "/Users/dev/Library/Caches/pip-tools",
+            "/Users/dev/Library/Caches/CocoaPodsOld",
+            "/Users/dev/go/pkg/sumdb",
+            "/Users/dev/.nuget/plugins",
+            "/Users/dev/Library/pnpm/global",
+        ])
+
+        #expect(engine().matches(in: tree).isEmpty)
+    }
+
+    @Test("should tell apart caches to remove and toolchains or stores that need their own tool")
+    func safetyOfNewRules() {
+        let byID = Dictionary(uniqueKeysWithValues: CleanupRule.catalog.map { ($0.id, $0) })
+
+        for id in ["swift.swiftpmCache", "swift.cocoapodsCache", "rust.registry", "java.maven", "python.pipCache", "node.playwright"] {
+            #expect(byID[id]?.safety == .safe, "\(id) should be safe to move to the Trash")
+            #expect(byID[id]?.action == .moveToTrash)
+        }
+        // Documented as unsafe to delete by hand: uv's cache, pnpm's linked store, NuGet's expanded
+        // packages, Go's read-only module cache, Rust toolchains, and Docker's disk image.
+        for id in ["python.uvCache", "node.pnpmStore", "dotnet.packages", "go.modCache", "rust.toolchains", "docker.data"] {
+            #expect(byID[id]?.safety == .tool, "\(id) should be removed through its own tool")
+            #expect(byID[id]?.action == CleanupAction.none)
+        }
+    }
+
+    @Test("should match build folders for each build system's own marker")
+    func buildFoldersByMarker() {
+        let tree = dir("/Work", [
+            dir("/Work/android", [dir("/Work/android/build", [file("/Work/android/build/a", 1)])]),
+            dir("/Work/kotlin", [dir("/Work/kotlin/build", [file("/Work/kotlin/build/b", 1)])]),
+            dir("/Work/swiftpkg", [dir("/Work/swiftpkg/.build", [file("/Work/swiftpkg/.build/c", 1)])]),
+            dir("/Work/ios", [dir("/Work/ios/Pods", [file("/Work/ios/Pods/d", 1)])]),
+            dir("/Work/game", [dir("/Work/game/Library", [file("/Work/game/Library/e", 1)])]),
+            dir("/Work/plain", [dir("/Work/plain/build", [file("/Work/plain/build/f", 1)])]),
+        ])
+
+        let matches = engine(markers: [
+            "/Work/android": ["build.gradle"],
+            "/Work/kotlin": ["build.gradle.kts"],
+            "/Work/swiftpkg": ["Package.swift"],
+            "/Work/ios": ["Podfile"],
+            "/Work/game": ["ProjectSettings"],
+        ]).matches(in: tree)
+
+        #expect(Set(matches.map(\.rule.id)) == [
+            "java.gradleBuild", "java.gradleBuildKts", "swift.packageBuild", "swift.pods", "unity.library",
+        ])
     }
 }

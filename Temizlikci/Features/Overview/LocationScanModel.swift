@@ -360,6 +360,36 @@ final class LocationScanModel {
     }
 
     /// Opens the folder containing `path` and selects the item, for "Show in Chart".
+    /// The node at an absolute path, with the IDs leading to it, or `nil` when it isn't in the tree.
+    private func locate(path: String) -> (node: FileNode, idPath: [String])? {
+        guard hasResult, let root = tree else { return nil }
+        var chain = [root]
+        while let current = chain.last, current.path != path,
+              let next = current.children.first(where: { path == $0.path || path.hasPrefix($0.path + "/") }) {
+            chain.append(next)
+        }
+        guard let target = chain.last, target.path == path else { return nil }
+        return (target, chain.map(\.id))
+    }
+
+    /// Moves items dropped on the sidebar's Trash. Only items of this scan, and only ones a rule
+    /// doesn't protect; the same Undo applies as for Move to Trash from the chart.
+    @discardableResult
+    func moveToTrash(droppedURLs urls: [URL], undoManager: UndoManager?) -> Bool {
+        var moved = false
+        for url in urls {
+            var path = url.path(percentEncoded: false)
+            if path.count > 1, path.hasSuffix("/") { path.removeLast() }
+            guard let found = locate(path: path),
+                  found.node.kind == .directory || found.node.kind == .file,
+                  cleanupMatch(alongIDPath: found.idPath)?.rule.safety ?? .safe == .safe
+            else { continue }
+            moveToTrash(found.node, idPath: found.idPath, undoManager: undoManager)
+            moved = lastTrashed?.node.id == found.node.id || moved
+        }
+        return moved
+    }
+
     func showItem(atPath path: String) {
         guard hasResult, let root = tree else { return }
         var chain = [root]

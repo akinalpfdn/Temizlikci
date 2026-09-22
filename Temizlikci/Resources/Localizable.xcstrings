@@ -313,6 +313,42 @@
         }
       }
     },
+    "cleanup.ecosystem.docker": {
+      "comment": "Group title in the Developer view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Docker"
+          }
+        }
+      }
+    },
+    "cleanup.ecosystem.dotnet": {
+      "comment": "Group title in the Developer view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ".NET"
+          }
+        }
+      }
+    },
+    "cleanup.ecosystem.editors": {
+      "comment": "Group title in the Developer view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Editors"
+          }
+        }
+      }
+    },
     "cleanup.ecosystem.flutter": {
       "comment": "Group title in the Developer view.",
       "extractionState": "manual",
@@ -349,6 +385,18 @@
         }
       }
     },
+    "cleanup.ecosystem.java": {
+      "comment": "Group title in the Developer view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Java & Gradle"
+          }
+        }
+      }
+    },
     "cleanup.ecosystem.node": {
       "comment": "Group title in the Developer view.",
       "extractionState": "manual",
@@ -361,6 +409,30 @@
         }
       }
     },
+    "cleanup.ecosystem.python": {
+      "comment": "Group title in the Developer view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Python"
+          }
+        }
+      }
+    },
+    "cleanup.ecosystem.rust": {
+      "comment": "Group title in the Developer view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rust"
+          }
+        }
+      }
+    },
     "cleanup.ecosystem.simulators": {
       "comment": "Group title in the Developer view.",
       "extractionState": "manual",
@@ -369,6 +441,30 @@
           "stringUnit": {
             "state": "translated",
             "value": "Simulators"
+          }
+        }
+      }
+    },
+    "cleanup.ecosystem.swift": {
+      "comment": "Group title in the Developer view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Swift & CocoaPods"
+          }
+        }
+      }
+    },
+    "cleanup.ecosystem.unity": {
+      "comment": "Group title in the Developer view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unity"
           }
         }
       }
@@ -457,6 +553,54 @@
         }
       }
     },
+    "cleanup.reason.bunCache": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bun’s install cache. Bun downloads packages again as needed."
+          }
+        }
+      }
+    },
+    "cleanup.reason.cargoRegistry": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Downloaded crates. Cargo restores anything a build needs, by re-extracting or downloading it again."
+          }
+        }
+      }
+    },
+    "cleanup.reason.cargoTarget": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rust build output. Running cargo build recreates it."
+          }
+        }
+      }
+    },
+    "cleanup.reason.cocoapodsCache": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Downloaded pods. Running pod install downloads them again."
+          }
+        }
+      }
+    },
     "cleanup.reason.dartTool": {
       "comment": "Why an item has its cleanup label.",
       "extractionState": "manual",
@@ -493,6 +637,18 @@
         }
       }
     },
+    "cleanup.reason.docker": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Docker’s disk image, holding every image, container and volume. Reclaim space with docker system prune; deleting the file loses all of it."
+          }
+        }
+      }
+    },
     "cleanup.reason.documentationCache": {
       "comment": "Why an item has its cleanup label.",
       "extractionState": "manual",
@@ -501,6 +657,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Downloaded documentation. Xcode downloads it again when needed."
+          }
+        }
+      }
+    },
+    "cleanup.reason.electronCache": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Downloaded Electron binaries. They are fetched again on the next install."
           }
         }
       }
@@ -529,6 +697,30 @@
         }
       }
     },
+    "cleanup.reason.goModCache": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Downloaded Go modules, stored read-only. Remove them with go clean -modcache."
+          }
+        }
+      }
+    },
+    "cleanup.reason.gradleBuild": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gradle build output for this project. The next build recreates it."
+          }
+        }
+      }
+    },
     "cleanup.reason.gradleCaches": {
       "comment": "Why an item has its cleanup label.",
       "extractionState": "manual",
@@ -553,6 +745,30 @@
         }
       }
     },
+    "cleanup.reason.jetbrains": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Caches and indexes of JetBrains IDEs. They are rebuilt when you open a project."
+          }
+        }
+      }
+    },
+    "cleanup.reason.maven": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Downloaded Java dependencies. Maven downloads them again on the next build."
+          }
+        }
+      }
+    },
     "cleanup.reason.nextBuild": {
       "comment": "Why an item has its cleanup label.",
       "extractionState": "manual",
@@ -561,6 +777,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Next.js build cache. The next build recreates it."
+          }
+        }
+      }
+    },
+    "cleanup.reason.nodeGyp": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Node headers kept for building native modules. They are downloaded again when needed."
           }
         }
       }
@@ -589,6 +817,66 @@
         }
       }
     },
+    "cleanup.reason.nuget": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Extracted NuGet packages that projects reference directly. Clear them with dotnet nuget locals global-packages --clear, then restore your projects."
+          }
+        }
+      }
+    },
+    "cleanup.reason.pipCache": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "pip’s download cache. Clear it with pip cache purge, or remove it here — pip downloads packages again as needed."
+          }
+        }
+      }
+    },
+    "cleanup.reason.playwright": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Browsers downloaded for Playwright tests. Running playwright install downloads them again."
+          }
+        }
+      }
+    },
+    "cleanup.reason.pnpmStore": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "pnpm’s package store, which every node_modules folder links into. Use pnpm store prune, which only removes what nothing references."
+          }
+        }
+      }
+    },
+    "cleanup.reason.pods": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dependencies installed for this project. Running pod install restores them."
+          }
+        }
+      }
+    },
     "cleanup.reason.previews": {
       "comment": "Why an item has its cleanup label.",
       "extractionState": "manual",
@@ -613,6 +901,18 @@
         }
       }
     },
+    "cleanup.reason.rustup": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installed Rust toolchains, not a cache. Remove ones you don’t need with rustup toolchain uninstall."
+          }
+        }
+      }
+    },
     "cleanup.reason.simulatorDevices": {
       "comment": "Why an item has its cleanup label.",
       "extractionState": "manual",
@@ -633,6 +933,78 @@
           "stringUnit": {
             "state": "translated",
             "value": "Simulator runtimes. Remove them with Xcode’s simulator tool or in Xcode › Settings › Components."
+          }
+        }
+      }
+    },
+    "cleanup.reason.swiftpmBuild": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Swift package build output. The next build recreates it."
+          }
+        }
+      }
+    },
+    "cleanup.reason.swiftpmCache": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Swift Package Manager’s download cache. Building a package fetches what it needs again."
+          }
+        }
+      }
+    },
+    "cleanup.reason.unityLibrary": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unity’s imported asset cache for this project. Unity rebuilds it when you open the project, which can take a while."
+          }
+        }
+      }
+    },
+    "cleanup.reason.uvCache": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "uv’s cache. uv states it is never safe to delete by hand; run uv cache clean instead."
+          }
+        }
+      }
+    },
+    "cleanup.reason.xcodeCache": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xcode’s own cache. Xcode refills it as you work."
+          }
+        }
+      }
+    },
+    "cleanup.reason.yarnCache": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yarn’s package cache. Yarn downloads packages again as needed."
           }
         }
       }

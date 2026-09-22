@@ -2,6 +2,8 @@ import SwiftUI
 
 struct SidebarView: View {
     @Bindable var model: MainViewModel
+    @Environment(\.undoManager) private var undoManager
+    @State private var isDropTargeted = false
 
     var body: some View {
         List(selection: $model.selection) {
@@ -26,10 +28,21 @@ struct SidebarView: View {
         .listStyle(.sidebar)
     }
 
+    @ViewBuilder
     private func row(for destination: SidebarDestination) -> some View {
-        Label { Text(model.title(for: destination)) } icon: { Image(systemName: destination.systemImage) }
+        let label = Label { Text(model.title(for: destination)) } icon: { Image(systemName: destination.systemImage) }
             .badge(badge(for: destination))
             .tag(destination)
+        if destination == .trash {
+            label
+                // Dragging a row onto the Trash does the same as Move to Trash, Undo included.
+                .dropDestination(for: URL.self) { urls, _ in
+                    model.moveToTrash(droppedURLs: urls, undoManager: undoManager)
+                } isTargeted: { isDropTargeted = $0 }
+                .background(isDropTargeted ? AnyShapeStyle(.selection) : AnyShapeStyle(.clear), in: .rect(cornerRadius: CornerRadius.small))
+        } else {
+            label
+        }
     }
 
     private func badge(for destination: SidebarDestination) -> Text? {

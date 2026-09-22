@@ -119,6 +119,13 @@ final class MainViewModel {
         )
     }
 
+    /// Handles a drop on the sidebar's Trash: the items come from the visible scan.
+    @discardableResult
+    func moveToTrash(droppedURLs urls: [URL], undoManager: UndoManager?) -> Bool {
+        guard let scan = currentScan else { return false }
+        return scan.moveToTrash(droppedURLs: urls, undoManager: undoManager)
+    }
+
     // MARK: - What Grew
 
     /// The scan the What Grew view compares: the first location, in sidebar order, with a previous scan to compare.

@@ -8,7 +8,11 @@ struct ContentsTable: View {
     var body: some View {
         Table(model.rows, selection: selection, sortOrder: $model.sortOrder) {
             TableColumn(String(localized: L10n.Table.name), value: \.name) { node in
-                NameCell(model: model, node: node)
+                if node.kind == .directory || node.kind == .file {
+                    NameCell(model: model, node: node).draggable(node.url)
+                } else {
+                    NameCell(model: model, node: node)
+                }
             }
             .width(min: 120)
             TableColumn(String(localized: L10n.Table.size), value: \.allocatedSize) { node in

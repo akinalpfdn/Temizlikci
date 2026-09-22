@@ -281,3 +281,21 @@ See `rules/common/decisions.md` for the logging format and rules. Append-only.
 **Why:** Every volume in an APFS container reports the container's free space, so capacity APIs cannot tell what each volume uses; `diskutil apfs list` can, and needs no privileges or permission prompt. On this Mac it showed 18.25 GB of VM swap, 9 GB of Preboot and ~26 GB of simulator runtimes in separate containers — space the scan steps over because it doesn't cross mount points, which is exactly why it looked unexplained. `tmutil` reported no snapshots here and their space is already counted as purgeable. Scaling parts to fit an estimate would invent numbers.
 **Trade-offs:** Depends on `diskutil`'s plist output; if that changes or fails, the breakdown falls back to purgeable plus remainder. The figures are as of the end of the scan.
 **Revisit if:** Snapshots need to be listed individually, or the app ever needs the breakdown without a scan.
+
+---
+
+## 2026-09-22 — Cache rules follow each tool's own documentation, not a guess
+**Chosen:** 25 more rules, each labelled from the tool's current documentation (read 2026-09-22). "Remove with its tool" for: uv's cache (docs: "it's never safe to modify the cache directly"), pnpm's store (every node_modules links into it; `pnpm store prune` only removes what nothing references), NuGet global-packages (projects reference it directly; `dotnet nuget locals global-packages --clear`), Go's module cache (read-only; `go clean -modcache`), `~/.rustup` (installed toolchains, not a cache), and Docker's disk image (holds every image, container and volume; `docker system prune`). Safe to trash: SwiftPM, Xcode, CocoaPods, Yarn, Bun, electron, node-gyp, Playwright, pip and JetBrains caches, `~/.cargo/registry`, `~/.m2/repository`, and per-project `Pods`, `.build`, `target`, Gradle `build`, Unity `Library`.
+**Alternatives:** Label everything under a cache folder as safe; skip the tools not installed on this Mac.
+**Why:** Several of these look like plain caches and are not: uv and pnpm say so in their own docs, NuGet's folder is referenced directly by projects, and deleting Docker's disk image loses every image and volume. A wrong label here costs someone their data, so each one is sourced. Rules for tools that aren't installed cost nothing and help on another Mac.
+**Trade-offs:** The catalog grows to 49 rules and has to be rechecked when tools change their layout.
+**Revisit if:** A tool moves its cache, or the reasons drift from current docs.
+
+---
+
+## 2026-09-22 — The rule search continues inside folders labelled "keep"
+**Chosen:** A match stops the search below it, except when its safety is "keep".
+**Alternatives:** Always stop at the first match.
+**Why:** `~/Library/Containers` is labelled "keep" (app data), and Docker Desktop stores its disk image inside it. Stopping there meant Docker's tens of gigabytes had no label at all.
+**Trade-offs:** A folder to keep and a rule inside it are both listed; the nesting is visible in the paths.
+**Revisit if:** Kept folders ever get numerous rules inside them and the list becomes noisy.
