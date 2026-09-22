@@ -9,6 +9,9 @@ struct GrowthLabel: View {
         Label { Text(amount).monospacedDigit() } icon: { Image(systemName: symbol) }
             .labelStyle(.titleAndIcon)
             .font(Typography.listSize)
+            // Never let the amount wrap: in a narrow column it would break character by character.
+            .lineLimit(1)
+            .fixedSize(horizontal: true, vertical: false)
             .foregroundStyle(GrowthPalette.ink(for: change.kind))
             .padding(.horizontal, Spacing.xSmall)
             .padding(.vertical, Spacing.xxSmall)

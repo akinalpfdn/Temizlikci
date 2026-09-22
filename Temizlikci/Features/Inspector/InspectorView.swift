@@ -94,9 +94,13 @@ private struct NodeDetailsView: View {
                 LabeledContent { Text(Formatting.percent(share)) } label: { Text(L10n.Details.shareOfFolder) }
             }
             if let change = scan.growth(for: node), let report = scan.growth {
-                LabeledContent { GrowthLabel(change: change) } label: {
+                // The badge needs its own line: the inspector is narrow and the label carries a date.
+                VStack(alignment: .leading, spacing: Spacing.xxSmall) {
                     Text(L10n.Growth.inspectorChange(report.previousDate.formatted(date: .abbreviated, time: .omitted)))
+                        .foregroundStyle(.secondary)
+                    GrowthLabel(change: change)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
             if node.fileCount > 0 {
                 LabeledContent { Text(Formatting.count(node.fileCount)) } label: { Text(L10n.Details.files) }
