@@ -1,5 +1,5 @@
 # Phase 006 (MVP-06) — Developer insights
-Status: ACTIVE
+Status: DONE
 
 ## Goal
 Developer artifacts are recognized and cleaned with the right method.
@@ -11,7 +11,7 @@ Developer artifacts are recognized and cleaned with the right method.
 - [x] `ToolRunner` + simctl (JSON output): list runtimes, delete runtime, delete unavailable devices; confirmation alerts; progress + output
 
 - [x] Highlight Reclaimable restored (toolbar + View menu)
-- [ ] Live test with the developer: Developer view on real data; optionally delete unavailable simulators (29 found on this Mac)
+- [x] Live test with the developer: Developer view on real data looked right ("gayet güzel duruyor")
 
 ## Acceptance Criteria
 - Each rule tested for matches and non-matches (look-alikes)
