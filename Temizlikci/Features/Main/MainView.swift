@@ -20,6 +20,10 @@ struct MainView: View {
                 .navigationSubtitle(subtitle)
                 .toolbar { MainToolbar(model: model, scan: model.currentScan) }
         }
+        // Coming back from Finder is when the Trash may have been emptied.
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+            Task { await model.appDidBecomeActive() }
+        }
         .inspector(isPresented: $model.isInspectorPresented) {
             Group {
                 if model.selection?.isLocation == true {

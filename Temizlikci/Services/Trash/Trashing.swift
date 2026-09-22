@@ -1,4 +1,22 @@
 import AppKit
+import Darwin
+
+/// Whether an item the app moved to the Trash is still there.
+nonisolated enum TrashPresence: Sendable, Equatable {
+    case present
+    /// Emptied from the Trash, or deleted from it in Finder.
+    case gone
+    /// The system wouldn't say — typically the Trash can't be read without Full Disk Access.
+    /// Treated as still there, so a missing permission never empties the list.
+    case unknown
+
+    /// One `lstat` per item: no directory listing, so it stays cheap however full the Trash is.
+    static func check(_ url: URL) -> TrashPresence {
+        var info = stat()
+        if lstat(url.path(percentEncoded: false), &info) == 0 { return .present }
+        return errno == ENOENT || errno == ENOTDIR ? .gone : .unknown
+    }
+}
 
 /// Moves items to the Trash and back. The only way the app removes anything; never `removeItem`.
 protocol Trashing {
@@ -7,6 +25,8 @@ protocol Trashing {
     /// Moves an item from the Trash back to where it was.
     func putBack(_ trashedURL: URL, to originalURL: URL) throws
     func showTrashInFinder()
+    /// Whether each trashed item is still in the Trash, in the same order.
+    func presence(of trashedURLs: [URL]) async -> [TrashPresence]
 }
 
 struct FileManagerTrash: Trashing {
@@ -32,6 +52,15 @@ struct FileManagerTrash: Trashing {
     func showTrashInFinder() {
         let trash = FileManager.default.urls(for: .trashDirectory, in: .userDomainMask).first
         if let trash { NSWorkspace.shared.open(trash) }
+    }
+
+    func presence(of trashedURLs: [URL]) async -> [TrashPresence] {
+        await Self.check(trashedURLs)
+    }
+
+    @concurrent
+    nonisolated private static func check(_ urls: [URL]) async -> [TrashPresence] {
+        urls.map(TrashPresence.check)
     }
 }
 

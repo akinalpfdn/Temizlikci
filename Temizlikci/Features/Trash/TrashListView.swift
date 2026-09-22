@@ -38,5 +38,7 @@ struct TrashListView: View {
             }
         }
         .padding(Spacing.large)
+        // Items emptied from the Trash since the list was last shown drop out when it appears.
+        .task { await main.trashLedger.reconcile() }
     }
 }

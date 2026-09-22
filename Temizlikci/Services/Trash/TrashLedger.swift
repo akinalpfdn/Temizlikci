@@ -37,4 +37,15 @@ final class TrashLedger {
     func showTrashInFinder() {
         trash.showTrashInFinder()
     }
+
+    /// Drops records whose items are no longer in the Trash (emptied, or deleted there in Finder).
+    /// Cheap: one file-system lookup per record, and only this session's records are checked.
+    func reconcile() async {
+        let checked = records
+        guard !checked.isEmpty else { return }
+        let presence = await trash.presence(of: checked.map(\.trashedURL))
+        let gone = Set(zip(checked, presence).filter { $0.1 == .gone }.map { $0.0.id })
+        guard !gone.isEmpty else { return }
+        records.removeAll { gone.contains($0.id) }
+    }
 }

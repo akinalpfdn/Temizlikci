@@ -126,6 +126,7 @@ private struct SampleTrash: Trashing {
     func moveToTrash(_ url: URL) throws -> URL { throw TrashError.failed(name: url.lastPathComponent) }
     func putBack(_ trashedURL: URL, to originalURL: URL) throws { throw TrashError.putBackFailed(name: originalURL.lastPathComponent) }
     func showTrashInFinder() {}
+    func presence(of trashedURLs: [URL]) async -> [TrashPresence] { trashedURLs.map { _ in .present } }
 }
 
 /// The example keeps no history.

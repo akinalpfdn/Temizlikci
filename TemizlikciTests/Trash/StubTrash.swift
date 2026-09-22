@@ -18,5 +18,13 @@ final class StubTrash: Trashing {
         putBack.append(originalURL)
     }
 
+    /// Trashed URLs that tests pretend were emptied from the Trash, or can't be checked.
+    var gone: Set<URL> = []
+    var unknown: Set<URL> = []
+
     func showTrashInFinder() {}
+
+    func presence(of trashedURLs: [URL]) async -> [TrashPresence] {
+        trashedURLs.map { gone.contains($0) ? .gone : unknown.contains($0) ? .unknown : .present }
+    }
 }

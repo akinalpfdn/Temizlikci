@@ -180,6 +180,13 @@ final class MainViewModel {
     // MARK: - Developer insights
 
     /// The scan the Developer view summarizes: the startup disk if it has results, otherwise Home.
+    /// Called when the app comes back to the front, typically after emptying the Trash in Finder:
+    /// drops items that are gone from the Trash and updates the free space shown in the sidebar.
+    func appDidBecomeActive() async {
+        startupFreeSpace = try? volumeInfo.usage(ofVolumeContaining: URL(filePath: "/")).availableCapacity
+        await trashLedger.reconcile()
+    }
+
     func inspect(_ item: InspectedItem?) {
         inspected = item
     }
