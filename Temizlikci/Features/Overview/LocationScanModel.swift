@@ -57,12 +57,20 @@ final class LocationScanModel {
     /// True when the tree could not be updated in place and a rescan would show sizes more accurately.
     private(set) var isOutdated = false
 
+    /// Developer artifacts recognized in the current tree, largest first.
+    private(set) var cleanupMatches: [CleanupMatch] = []
+    private var matchesByID: [String: CleanupMatch] = [:]
+    private(set) var cleanupTask: Task<Void, Never>?
+    var isHighlightingReclaimable = false
+    var canHighlightReclaimable: Bool { hasResult && !cleanupMatches.isEmpty }
+
     private let makeScanner: (ScanConfiguration) -> DiskScanning
     private let volumeInfo: VolumeInfoProviding
     private let access: FullDiskAccessChecking
     private let revealer: FileRevealing
     private let trash: Trashing
     private let ledger: TrashLedger
+    private let ruleEngine: RuleEngine
     private(set) var scanTask: Task<Void, Never>?
 
     /// Search stops after this many matches so typing stays responsive on large trees.
@@ -75,8 +83,10 @@ final class LocationScanModel {
         revealer: FileRevealing,
         trash: Trashing,
         ledger: TrashLedger,
+        ruleEngine: RuleEngine,
         makeScanner: @escaping (ScanConfiguration) -> DiskScanning
     ) {
+        self.ruleEngine = ruleEngine
         self.location = location
         self.volumeInfo = volumeInfo
         self.access = access
@@ -194,19 +204,77 @@ final class LocationScanModel {
         isOutdated = false
         refreshLayout()
         refreshRows()
+        refreshCleanupMatches()
+    }
+
+    // MARK: - Cleanup rules
+
+    /// The rule match that covers `node`: its own, or the closest matched folder above it.
+    func cleanupMatch(for node: FileNode) -> CleanupMatch? {
+        let ids = absolutePath(to: node) ?? [node.id]
+        return ids.reversed().lazy.compactMap { self.matchesByID[$0] }.first
+    }
+
+    /// The color role for a segment, honoring Highlight Reclaimable.
+    func displayFill(for segment: SunburstSegment) -> SegmentFill {
+        guard isHighlightingReclaimable else { return segment.fill }
+        guard let id = segment.nodeID, let node = node(withID: id), let match = cleanupMatch(for: node) else { return .dimmed }
+        return .safety(match.rule.safety)
+    }
+
+    func displayFill(for node: FileNode) -> SegmentFill {
+        guard isHighlightingReclaimable else { return fill(for: node) }
+        return cleanupMatch(for: node).map { .safety($0.rule.safety) } ?? .dimmed
+    }
+
+    private func refreshCleanupMatches() {
+        cleanupTask?.cancel()
+        guard hasResult, let root = tree else {
+            cleanupMatches = []
+            matchesByID = [:]
+            isHighlightingReclaimable = false
+            return
+        }
+        let engine = ruleEngine
+        cleanupTask = Task { [weak self] in
+            let found = await Self.findMatches(engine: engine, root: root)
+            guard let self, !Task.isCancelled, self.tree?.id == root.id else { return }
+            self.cleanupMatches = found.sorted { $0.node.allocatedSize > $1.node.allocatedSize }
+            self.matchesByID = Dictionary(found.map { ($0.node.id, $0) }, uniquingKeysWith: { first, _ in first })
+            if found.isEmpty { self.isHighlightingReclaimable = false }
+        }
+    }
+
+    /// Walks the whole tree, so it must not run on the main actor.
+    @concurrent
+    nonisolated private static func findMatches(engine: RuleEngine, root: FileNode) async -> [CleanupMatch] {
+        engine.matches(in: root)
     }
 
     // MARK: - Trash
 
+    /// Real files and folders below the scanned location, except items that must be kept or removed with their tool.
     func canMoveToTrash(_ node: FileNode?) -> Bool {
-        guard hasResult, let node, node.id != tree?.id else { return false }
-        return node.kind == .directory || node.kind == .file
+        guard hasResult, let node, node.id != tree?.id, node.kind == .directory || node.kind == .file else { return false }
+        return (cleanupMatch(for: node)?.rule.safety ?? .safe) == .safe
     }
 
     /// Moves `node` to the Trash, updates the tree without rescanning, and registers Undo.
     /// No confirmation: the action is undoable (HIG Alerts).
     func moveToTrash(_ node: FileNode?, undoManager: UndoManager?) {
-        guard let node, canMoveToTrash(node), let tree, let ids = absolutePath(to: node) else { return }
+        guard let node, let ids = absolutePath(to: node) else { return }
+        moveToTrash(node, idPath: ids, undoManager: undoManager)
+    }
+
+    /// Moves a developer artifact to the Trash from the Developer view, where it may not be visible in the chart.
+    func moveToTrash(_ match: CleanupMatch, undoManager: UndoManager?) {
+        guard match.rule.safety == .safe else { return }
+        moveToTrash(match.node, idPath: match.idPath, undoManager: undoManager)
+    }
+
+    private func moveToTrash(_ node: FileNode, idPath ids: [String], undoManager: UndoManager?) {
+        guard hasResult, let tree, node.id != tree.id, node.kind == .directory || node.kind == .file,
+              (matchesByID[node.id]?.rule.safety ?? cleanupMatch(for: node)?.rule.safety ?? .safe) == .safe else { return }
         let trashedURL: URL
         do {
             trashedURL = try trash.moveToTrash(node.url)
@@ -278,6 +346,12 @@ final class LocationScanModel {
         hoveredID = nil
         refreshLayout()
         refreshRows()
+        refreshCleanupMatches()
+    }
+
+    /// Marks the result as outdated after an outside tool (such as simctl) changed the disk.
+    func markOutdated() {
+        if hasResult { isOutdated = true }
     }
 
     /// Trashed items still use space until the Trash is emptied, so used capacity doesn't change:

@@ -42,6 +42,9 @@ enum ChartPalette {
         switch fill {
         case .slot(let index, let depth): tint(slot: index, depth: depth, colorScheme: colorScheme)
         case .neutral: neutral
+        case .safety(.safe): StatusPalette.safeFill
+        case .safety(.tool): StatusPalette.toolFill
+        case .safety(.keep), .dimmed: dimmed
         case .unattributedHatch, .inaccessibleHatch, .pending: nil
         }
     }

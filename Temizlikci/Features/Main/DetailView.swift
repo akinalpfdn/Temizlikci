@@ -6,7 +6,7 @@ struct DetailView: View {
     var body: some View {
         switch model.selection {
         case .developer:
-            InsightEmptyView(systemImage: "hammer", message: L10n.Insights.developerMessage)
+            DeveloperView(main: model)
         case .largeFiles:
             InsightEmptyView(systemImage: "doc", message: L10n.Insights.largeFilesMessage)
         case .trash:

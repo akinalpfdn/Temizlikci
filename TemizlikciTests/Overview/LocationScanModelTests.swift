@@ -24,6 +24,11 @@ private struct FixedVolume: VolumeInfoProviding {
     func usage(ofVolumeContaining url: URL) throws -> VolumeUsage { usage }
 }
 
+/// No project markers anywhere, so only path rules can match in these trees.
+nonisolated private struct NoMarkers: MarkerChecking {
+    func folder(_ folder: URL, contains marker: String) -> Bool { false }
+}
+
 private final class RecordingRevealer: FileRevealing {
     private(set) var revealed: [URL] = []
     func reveal(_ url: URL) { revealed.append(url) }
@@ -52,6 +57,7 @@ struct LocationScanModelTests {
             revealer: revealer,
             trash: trash,
             ledger: ledger,
+            ruleEngine: RuleEngine(home: URL(filePath: "/Users/dev", directoryHint: .isDirectory), markers: NoMarkers()),
             makeScanner: { _ in StubScanner(events: events, failure: failure) }
         )
     }
@@ -310,6 +316,65 @@ struct LocationScanModelTests {
         #expect(!model.canMoveToTrash(model.tree))
         #expect(!model.canMoveToTrash(other))
         #expect(model.canMoveToTrash(child("movie.mov", of: model.currentFolder)))
+    }
+
+    // MARK: - Cleanup rules
+
+    private func modelWithDerivedData() -> LocationScanModel {
+        let derived = FileNode.directory(url: URL(filePath: "/Users/dev/Library/Developer/Xcode/DerivedData", directoryHint: .isDirectory), modificationDate: nil,
+                                         children: [.file(url: URL(filePath: "/Users/dev/Library/Developer/Xcode/DerivedData/App"), allocatedSize: 700, modificationDate: nil)])
+        let archives = FileNode.directory(url: URL(filePath: "/Users/dev/Library/Developer/Xcode/Archives", directoryHint: .isDirectory), modificationDate: nil,
+                                          children: [.file(url: URL(filePath: "/Users/dev/Library/Developer/Xcode/Archives/A"), allocatedSize: 300, modificationDate: nil)])
+        func folder(_ path: String, _ children: [FileNode]) -> FileNode {
+            .directory(url: URL(filePath: path, directoryHint: .isDirectory), modificationDate: nil, children: children)
+        }
+        let root = folder("/Users/dev", [folder("/Users/dev/Library", [folder("/Users/dev/Library/Developer", [folder("/Users/dev/Library/Developer/Xcode", [derived, archives])])])])
+        return LocationScanModel(
+            location: ScanLocation(url: URL(filePath: "/Users/dev", directoryHint: .isDirectory), displayName: "Home", isWholeVolume: false),
+            volumeInfo: FixedVolume(usage: VolumeUsage(totalCapacity: 0, availableCapacity: 0, availableForImportantUsage: nil)),
+            access: GrantedAccess(), revealer: revealer, trash: trash, ledger: ledger,
+            ruleEngine: RuleEngine(home: URL(filePath: "/Users/dev", directoryHint: .isDirectory), markers: NoMarkers()),
+            makeScanner: { _ in StubScanner(events: [.finished(ScanResult(root: root, duration: .seconds(1), fileCount: 2, directoryCount: 6, inaccessibleCount: 0))]) }
+        )
+    }
+
+    @Test("should find developer artifacts after a scan, largest first")
+    func cleanupMatchesAfterScan() async throws {
+        let model = await scanned(modelWithDerivedData())
+        await model.cleanupTask?.value
+
+        #expect(model.cleanupMatches.map(\.rule.id) == ["xcode.derivedData", "xcode.archives"])
+        #expect(model.canHighlightReclaimable)
+        let derived = try #require(model.cleanupMatches.first?.node)
+        #expect(model.cleanupMatch(for: derived)?.rule.safety == .safe)
+    }
+
+    @Test("should never offer Move to Trash for items to keep, and color them by safety when highlighting")
+    func keepAndHighlight() async throws {
+        let model = await scanned(modelWithDerivedData())
+        await model.cleanupTask?.value
+        let archives = try #require(model.cleanupMatches.first { $0.rule.safety == .keep })
+
+        model.moveToTrash(archives, undoManager: nil)
+        #expect(trash.trashed.isEmpty)
+
+        model.isHighlightingReclaimable = true
+        let derivedMatch = try #require(model.cleanupMatches.first { $0.rule.safety == .safe })
+        #expect(model.displayFill(for: derivedMatch.node) == .safety(.safe))
+    }
+
+    @Test("should move a matched cache to the Trash from the Developer view and drop its match")
+    func trashFromDeveloperView() async throws {
+        let model = await scanned(modelWithDerivedData())
+        await model.cleanupTask?.value
+        let derived = try #require(model.cleanupMatches.first { $0.rule.safety == .safe })
+
+        model.moveToTrash(derived, undoManager: nil)
+        await model.cleanupTask?.value
+
+        #expect(trash.trashed == [derived.node.url])
+        #expect(model.tree?.allocatedSize == 300)
+        #expect(model.cleanupMatches.map(\.rule.id) == ["xcode.archives"])
     }
 }
 

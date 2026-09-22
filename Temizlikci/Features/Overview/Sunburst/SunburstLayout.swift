@@ -13,6 +13,10 @@ nonisolated enum SegmentFill: Equatable, Sendable {
     case inaccessibleHatch
     /// Not measured yet.
     case pending
+    /// Highlight Reclaimable: a matched item (or something inside one) with its cleanup label.
+    case safety(SafetyLevel)
+    /// Highlight Reclaimable: everything else, faded.
+    case dimmed
 }
 
 nonisolated struct SunburstSegment: Identifiable, Equatable, Sendable {

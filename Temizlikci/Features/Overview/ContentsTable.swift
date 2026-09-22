@@ -57,7 +57,7 @@ private struct NameCell: View {
 
     var body: some View {
         HStack(spacing: Spacing.small) {
-            Swatch(fill: model.fill(for: node))
+            Swatch(fill: model.displayFill(for: node))
             Text(model.title(for: node))
                 .lineLimit(1)
                 .truncationMode(.middle)
@@ -66,6 +66,9 @@ private struct NameCell: View {
                     .font(Typography.badge)
                     .foregroundStyle(.secondary)
                     .labelStyle(.titleAndIcon)
+            }
+            if let match = model.cleanupMatch(for: node), match.node.id == node.id {
+                SafetyBadge(level: match.rule.safety)
             }
         }
         .help(model.actionableURL(for: node)?.path(percentEncoded: false) ?? "")
@@ -81,7 +84,7 @@ private struct SizeCell: View {
     var body: some View {
         HStack(spacing: Spacing.small) {
             Capsule()
-                .fill(ChartPalette.color(for: model.fill(for: node), colorScheme: colorScheme) ?? ChartPalette.hatch)
+                .fill(ChartPalette.color(for: model.displayFill(for: node), colorScheme: colorScheme) ?? ChartPalette.hatch)
                 .frame(width: max(2, SizeCell.barWidth * fraction), height: 6)
                 .frame(width: SizeCell.barWidth, alignment: .leading)
             Text(Formatting.bytes(node.allocatedSize))

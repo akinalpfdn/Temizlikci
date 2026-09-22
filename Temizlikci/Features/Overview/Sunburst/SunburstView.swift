@@ -84,7 +84,7 @@ struct SunburstView: View {
                                           start: segment.startAngle, end: segment.endAngle)
             var layer = context
             if let hovered, !Self.isWithin(segment, hovered) { layer.opacity = 0.42 }
-            fill(segment.fill, path: path, in: layer)
+            fill(model.displayFill(for: segment), path: path, in: layer)
             if segment.fill != .pending {
                 layer.stroke(path, with: .color(ChartPalette.surface), lineWidth: ChartPalette.segmentGap)
             }
@@ -105,7 +105,7 @@ struct SunburstView: View {
         case .inaccessibleHatch: hatch(path, rising: false, in: context)
         case .pending:
             context.stroke(path, with: .color(.secondary), style: StrokeStyle(lineWidth: 1, dash: [4, 4]))
-        case .slot, .neutral:
+        case .slot, .neutral, .safety, .dimmed:
             break
         }
     }
@@ -136,7 +136,7 @@ struct SunburstView: View {
         for segment in model.segments where segment.depth == 1 && segment.sweep >= ChartMetrics.labelMinimumSweep && !segment.isMerged {
             let angle = segment.midAngle - .pi / 2
             let point = CGPoint(x: center.x + labelRadius * cos(angle), y: center.y + labelRadius * sin(angle))
-            let ink = labelInk(on: segment.fill)
+            let ink = labelInk(on: model.displayFill(for: segment))
             let ringThickness = (bounds.outer - bounds.inner) * radius
             let maxWidth = min(labelRadius * segment.sweep * 0.8, ringThickness * 1.9)
             let name = fittedLabel(model.title(for: segment), maxWidth: maxWidth, ink: ink, in: context)

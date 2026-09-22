@@ -200,5 +200,85 @@ nonisolated enum L10n {
 
     enum Alerts {
         static let ok = LocalizedStringResource("alert.ok", defaultValue: "OK", comment: "Button that dismisses an informational alert.")
+        static let cancel = LocalizedStringResource("alert.cancel", defaultValue: "Cancel", comment: "Button that cancels an alert's action.")
+    }
+
+    enum Cleanup {
+        static let safe = LocalizedStringResource("cleanup.safety.safe", defaultValue: "Safe to Remove", comment: "Label for items that regenerate on their own.")
+        static let tool = LocalizedStringResource("cleanup.safety.tool", defaultValue: "Remove with Tool", comment: "Label for items that must be removed with their own tool.")
+        static let keep = LocalizedStringResource("cleanup.safety.keep", defaultValue: "Keep", comment: "Label for items that hold personal data and shouldn't be deleted here.")
+        static let highlight = LocalizedStringResource("cleanup.highlight", defaultValue: "Highlight Reclaimable", comment: "Toolbar toggle and menu item that colors the chart by cleanup safety.")
+        static let reasonDerivedData = LocalizedStringResource("cleanup.reason.derivedData", defaultValue: "Build products and indexes. Xcode rebuilds them on the next build.", comment: "Why an item has its cleanup label.")
+        static let reasonDeviceSupport = LocalizedStringResource("cleanup.reason.deviceSupport", defaultValue: "Debug symbols copied from your devices. Xcode copies them again the next time a device connects.", comment: "Why an item has its cleanup label.")
+        static let reasonPreviews = LocalizedStringResource("cleanup.reason.previews", defaultValue: "SwiftUI preview builds. Xcode recreates them when you open a preview.", comment: "Why an item has its cleanup label.")
+        static let reasonDocumentationCache = LocalizedStringResource("cleanup.reason.documentationCache", defaultValue: "Downloaded documentation. Xcode downloads it again when needed.", comment: "Why an item has its cleanup label.")
+        static let reasonArchives = LocalizedStringResource("cleanup.reason.archives", defaultValue: "Builds you archived for distribution. Their debug symbols are needed to read crash reports, so keep the ones you still support.", comment: "Why an item has its cleanup label.")
+        static let reasonSimulatorDevices = LocalizedStringResource("cleanup.reason.simulatorDevices", defaultValue: "Simulator devices and their data. Remove them with Xcode’s simulator tool so Xcode’s device list stays consistent.", comment: "Why an item has its cleanup label.")
+        static let reasonSimulatorRuntimes = LocalizedStringResource("cleanup.reason.simulatorRuntimes", defaultValue: "Simulator runtimes. Remove them with Xcode’s simulator tool or in Xcode › Settings › Components.", comment: "Why an item has its cleanup label.")
+        static let reasonGradleCaches = LocalizedStringResource("cleanup.reason.gradleCaches", defaultValue: "Gradle’s download and build caches. Gradle fetches them again on the next build.", comment: "Why an item has its cleanup label.")
+        static let reasonAndroidEmulators = LocalizedStringResource("cleanup.reason.androidEmulators", defaultValue: "Android emulators. Remove them in Android Studio’s Device Manager.", comment: "Why an item has its cleanup label.")
+        static let reasonAndroidSystemImages = LocalizedStringResource("cleanup.reason.androidSystemImages", defaultValue: "Android system images. Remove them in Android Studio’s SDK Manager.", comment: "Why an item has its cleanup label.")
+        static let reasonFlutterBuild = LocalizedStringResource("cleanup.reason.flutterBuild", defaultValue: "Flutter build output. Building the project recreates it.", comment: "Why an item has its cleanup label.")
+        static let reasonDartTool = LocalizedStringResource("cleanup.reason.dartTool", defaultValue: "Dart tooling state. Running flutter pub get recreates it.", comment: "Why an item has its cleanup label.")
+        static let reasonPubCache = LocalizedStringResource("cleanup.reason.pubCache", defaultValue: "Downloaded Dart and Flutter packages. Running flutter pub get downloads them again.", comment: "Why an item has its cleanup label.")
+        static let reasonNodeModules = LocalizedStringResource("cleanup.reason.nodeModules", defaultValue: "Installed npm packages. Running npm install restores them.", comment: "Why an item has its cleanup label.")
+        static let reasonNextBuild = LocalizedStringResource("cleanup.reason.nextBuild", defaultValue: "Next.js build cache. The next build recreates it.", comment: "Why an item has its cleanup label.")
+        static let reasonNpmCache = LocalizedStringResource("cleanup.reason.npmCache", defaultValue: "npm’s download cache. npm refills it as you install packages.", comment: "Why an item has its cleanup label.")
+        static let reasonGoBuild = LocalizedStringResource("cleanup.reason.goBuild", defaultValue: "Go’s build cache. Go rebuilds it as needed.", comment: "Why an item has its cleanup label.")
+        static let reasonHomebrewCache = LocalizedStringResource("cleanup.reason.homebrewCache", defaultValue: "Homebrew downloads. Homebrew fetches them again when needed.", comment: "Why an item has its cleanup label.")
+        static let reasonAppData = LocalizedStringResource("cleanup.reason.appData", defaultValue: "Data that belongs to other apps, such as messages and documents. Clear it inside each app.", comment: "Why an item has its cleanup label.")
+        static let ecosystemXcode = LocalizedStringResource("cleanup.ecosystem.xcode", defaultValue: "Xcode", comment: "Group title in the Developer view.")
+        static let ecosystemSimulators = LocalizedStringResource("cleanup.ecosystem.simulators", defaultValue: "Simulators", comment: "Group title in the Developer view.")
+        static let ecosystemAndroid = LocalizedStringResource("cleanup.ecosystem.android", defaultValue: "Android", comment: "Group title in the Developer view.")
+        static let ecosystemFlutter = LocalizedStringResource("cleanup.ecosystem.flutter", defaultValue: "Flutter & Dart", comment: "Group title in the Developer view.")
+        static let ecosystemNode = LocalizedStringResource("cleanup.ecosystem.node", defaultValue: "Node.js", comment: "Group title in the Developer view.")
+        static let ecosystemGo = LocalizedStringResource("cleanup.ecosystem.go", defaultValue: "Go", comment: "Group title in the Developer view.")
+        static let ecosystemHomebrew = LocalizedStringResource("cleanup.ecosystem.homebrew", defaultValue: "Homebrew", comment: "Group title in the Developer view.")
+        static let ecosystemAppData = LocalizedStringResource("cleanup.ecosystem.appData", defaultValue: "App Data", comment: "Group title in the Developer view.")
+        static func reclaimable(_ size: String) -> LocalizedStringResource {
+            LocalizedStringResource("cleanup.group.reclaimable", defaultValue: "\(size) reclaimable", comment: "Size that can be removed in a group.")
+        }
+        static func sourceScan(_ name: String) -> LocalizedStringResource {
+            LocalizedStringResource("cleanup.developer.source", defaultValue: "From the scan of \(name)", comment: "Which scan the Developer view uses.")
+        }
+        static let scanFirst = LocalizedStringResource("cleanup.developer.scanFirst", defaultValue: "Scan Home or your startup disk to find developer files.", comment: "Developer view empty state.")
+        static let scanHome = LocalizedStringResource("cleanup.developer.scanHome", defaultValue: "Scan Home", comment: "Button in the Developer view empty state.")
+        static let summaryTitle = LocalizedStringResource("cleanup.developer.summary", defaultValue: "Developer Files", comment: "Title of the Developer view summary chart.")
+        static let openAndroidStudio = LocalizedStringResource("cleanup.action.openAndroidStudio", defaultValue: "Open Android Studio", comment: "Button that opens Android Studio to manage emulators or SDK packages.")
+        static let manageSimulators = LocalizedStringResource("cleanup.action.manageSimulators", defaultValue: "Manage Simulators", comment: "Button that jumps to the simulator section of the Developer view.")
+        static let noActions = LocalizedStringResource("cleanup.action.none", defaultValue: "Keep", comment: "Shown instead of an action for items to keep.")
+    }
+
+    enum Simulators {
+        static let unavailableTitle = LocalizedStringResource("simulators.unavailable.title", defaultValue: "Unavailable Simulators", comment: "Row title for simulator devices whose runtime is gone.")
+        static func unavailableDetail(_ count: String, size: String) -> LocalizedStringResource {
+            LocalizedStringResource("simulators.unavailable.detail", defaultValue: "\(count) devices · \(size)", comment: "Count and size of unavailable simulators.")
+        }
+        static let deleteUnavailable = LocalizedStringResource("simulators.action.deleteUnavailable", defaultValue: "Delete Unavailable Simulators…", comment: "Button that removes simulators whose runtime is gone.")
+        static let deleteUnavailableTitle = LocalizedStringResource("simulators.alert.deleteUnavailable.title", defaultValue: "Delete unavailable simulators?", comment: "Alert title before deleting unavailable simulators.")
+        static func deleteUnavailableMessage(_ count: String, size: String) -> LocalizedStringResource {
+            LocalizedStringResource("simulators.alert.deleteUnavailable.message", defaultValue: "This removes \(count) simulators whose runtime is no longer installed, and their data (\(size)). This can’t be undone.", comment: "Alert message.")
+        }
+        static let deleteUnavailableConfirm = LocalizedStringResource("simulators.alert.deleteUnavailable.confirm", defaultValue: "Delete Simulators", comment: "Alert button that deletes unavailable simulators.")
+        static let runtimesTitle = LocalizedStringResource("simulators.runtimes.title", defaultValue: "Simulator Runtimes", comment: "Section title listing installed simulator runtimes.")
+        static func runtimeName(_ platform: String, version: String) -> LocalizedStringResource {
+            LocalizedStringResource("simulators.runtime.name", defaultValue: "\(platform) \(version)", comment: "Runtime name. Arguments: platform (iOS, watchOS…), version.")
+        }
+        static func lastUsed(_ date: String) -> LocalizedStringResource {
+            LocalizedStringResource("simulators.runtime.lastUsed", defaultValue: "Last used \(date)", comment: "When a runtime was last used.")
+        }
+        static let deleteRuntime = LocalizedStringResource("simulators.action.deleteRuntime", defaultValue: "Delete Runtime…", comment: "Button that deletes a simulator runtime.")
+        static func deleteRuntimeTitle(_ name: String) -> LocalizedStringResource {
+            LocalizedStringResource("simulators.alert.deleteRuntime.title", defaultValue: "Delete the \(name) simulator runtime?", comment: "Alert title before deleting a runtime.")
+        }
+        static func deleteRuntimeMessage(_ size: String) -> LocalizedStringResource {
+            LocalizedStringResource("simulators.alert.deleteRuntime.message", defaultValue: "This frees \(size). Simulators that use it stop working until you download it again in Xcode › Settings › Components. This can’t be undone.", comment: "Alert message.")
+        }
+        static let deleteRuntimeConfirm = LocalizedStringResource("simulators.alert.deleteRuntime.confirm", defaultValue: "Delete Runtime", comment: "Alert button that deletes a runtime.")
+        static let working = LocalizedStringResource("simulators.working", defaultValue: "Working…", comment: "Shown while the simulator tool runs.")
+        static let rescanHint = LocalizedStringResource("simulators.rescanHint", defaultValue: "Rescan to update sizes in the chart.", comment: "Shown after a simulator tool action.")
+        static let toolUnavailable = LocalizedStringResource("simulators.error.toolUnavailable", defaultValue: "Xcode’s simulator tool isn’t available.", comment: "Error when simctl can't run.")
+        static let toolUnavailableSuggestion = LocalizedStringResource("simulators.error.toolUnavailable.suggestion", defaultValue: "Install Xcode and open it once to finish setup, then try again.", comment: "Recovery suggestion.")
+        static let toolFailed = LocalizedStringResource("simulators.error.failed", defaultValue: "The simulator tool reported an error.", comment: "Error when simctl fails.")
     }
 }

@@ -85,6 +85,14 @@ private struct MainToolbar: ToolbarContent {
             }
         }
         ToolbarItem {
+            Toggle(isOn: Binding(get: { scan?.isHighlightingReclaimable ?? false }, set: { scan?.isHighlightingReclaimable = $0 })) {
+                Label { Text(L10n.Cleanup.highlight) } icon: { Image(systemName: "sparkles") }
+            }
+            .toggleStyle(.button)
+            .help(Text(L10n.Cleanup.highlight))
+            .disabled(!(scan?.canHighlightReclaimable ?? false))
+        }
+        ToolbarItem {
             Button {
                 model.isInspectorPresented.toggle()
             } label: {

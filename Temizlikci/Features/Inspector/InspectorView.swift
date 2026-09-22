@@ -27,6 +27,18 @@ private struct NodeDetailsView: View {
             VStack(alignment: .leading, spacing: Spacing.large) {
                 header
                 details
+                if let match = scan.cleanupMatch(for: node) {
+                    VStack(alignment: .leading, spacing: Spacing.small) {
+                        SafetyBadge(level: match.rule.safety)
+                        Text(match.rule.reason)
+                            .font(Typography.chartCaption)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .padding(Spacing.medium)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(.quaternary, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
+                }
                 if let explanation {
                     Text(explanation)
                         .font(Typography.chartCaption)

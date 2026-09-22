@@ -12,6 +12,7 @@ final class MainViewModel {
     private(set) var hasFullDiskAccess: Bool
     var isAccessBannerDismissed = false
     let trashLedger: TrashLedger
+    let simulators: SimulatorsModel
 
     private(set) var chosenFolder: URL?
     let startupVolumeName: String
@@ -25,6 +26,8 @@ final class MainViewModel {
     private let revealer: FileRevealing
     private let trash: Trashing
     private let settings: PrivacySettingsOpening
+    private let apps: AppOpening
+    private let ruleEngine: RuleEngine
     private let makeScanner: (ScanConfiguration) -> DiskScanning
 
     init(
@@ -34,6 +37,8 @@ final class MainViewModel {
         revealer: FileRevealing = FinderRevealer(),
         trash: Trashing = FileManagerTrash(),
         settings: PrivacySettingsOpening = SystemPrivacySettings(),
+        apps: AppOpening = WorkspaceAppOpener(),
+        tools: ToolRunning = ProcessToolRunner(),
         homeFolder: URL = URL.homeDirectory,
         makeScanner: @escaping (ScanConfiguration) -> DiskScanning = { FileSystemScanner(configuration: $0) }
     ) {
@@ -44,7 +49,10 @@ final class MainViewModel {
         self.revealer = revealer
         self.trash = trash
         self.settings = settings
+        self.apps = apps
         self.makeScanner = makeScanner
+        ruleEngine = RuleEngine(home: homeFolder)
+        simulators = SimulatorsModel(service: SimulatorService(runner: tools))
         trashLedger = TrashLedger(trash: trash)
         hasFullDiskAccess = access.hasFullDiskAccess()
         scanModels[.startupDisk] = makeScanModel(ScanLocation(url: URL(filePath: "/", directoryHint: .isDirectory), displayName: startupVolumeName, isWholeVolume: true))
@@ -95,8 +103,31 @@ final class MainViewModel {
     private func makeScanModel(_ location: ScanLocation) -> LocationScanModel {
         LocationScanModel(
             location: location, volumeInfo: volumeInfo, access: access, revealer: revealer,
-            trash: trash, ledger: trashLedger, makeScanner: makeScanner
+            trash: trash, ledger: trashLedger, ruleEngine: ruleEngine, makeScanner: makeScanner
         )
+    }
+
+    // MARK: - Developer insights
+
+    /// The scan the Developer view summarizes: the startup disk if it has results, otherwise Home.
+    var developerScan: LocationScanModel? {
+        [scanModels[.startupDisk], scanModels[.home]].compactMap { $0 }.first { $0.hasResult }
+    }
+
+    var isAndroidStudioInstalled: Bool { apps.isInstalled(WorkspaceAppOpener.androidStudio) }
+
+    func openAndroidStudio() {
+        apps.open(WorkspaceAppOpener.androidStudio)
+    }
+
+    func scanHome() {
+        selection = .home
+        scanModels[.home]?.startScan()
+    }
+
+    /// After simctl changed the disk, every finished scan's sizes are outdated until rescanned.
+    func simulatorsDidChangeDisk() {
+        scanModels.values.forEach { $0.markOutdated() }
     }
 
     // MARK: - Trash

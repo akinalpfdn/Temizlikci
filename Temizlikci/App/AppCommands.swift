@@ -26,6 +26,13 @@ struct AppCommands: Commands {
                 .disabled(scan?.hasResult != true)
         }
 
+        CommandGroup(after: .sidebar) {
+            Toggle(isOn: Binding(get: { scan?.isHighlightingReclaimable ?? false }, set: { scan?.isHighlightingReclaimable = $0 })) {
+                Text(L10n.Cleanup.highlight)
+            }
+            .disabled(scan?.canHighlightReclaimable != true)
+        }
+
         CommandGroup(after: .pasteboard) {
             Divider()
             Button { model.moveSelectionToTrash() } label: { Text(L10n.Trash.moveToTrash) }

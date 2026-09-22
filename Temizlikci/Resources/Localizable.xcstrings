@@ -61,6 +61,18 @@
         }
       }
     },
+    "alert.cancel": {
+      "comment": "Button that cancels an alert's action.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        }
+      }
+    },
     "alert.ok": {
       "comment": "Button that dismisses an informational alert.",
       "extractionState": "manual",
@@ -201,6 +213,474 @@
           "stringUnit": {
             "state": "translated",
             "value": "used of %@"
+          }
+        }
+      }
+    },
+    "cleanup.action.manageSimulators": {
+      "comment": "Button that jumps to the simulator section of the Developer view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Manage Simulators"
+          }
+        }
+      }
+    },
+    "cleanup.action.none": {
+      "comment": "Shown instead of an action for items to keep.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep"
+          }
+        }
+      }
+    },
+    "cleanup.action.openAndroidStudio": {
+      "comment": "Button that opens Android Studio to manage emulators or SDK packages.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Android Studio"
+          }
+        }
+      }
+    },
+    "cleanup.developer.scanFirst": {
+      "comment": "Developer view empty state.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan Home or your startup disk to find developer files."
+          }
+        }
+      }
+    },
+    "cleanup.developer.scanHome": {
+      "comment": "Button in the Developer view empty state.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan Home"
+          }
+        }
+      }
+    },
+    "cleanup.developer.source": {
+      "comment": "Which scan the Developer view uses.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "From the scan of %@"
+          }
+        }
+      }
+    },
+    "cleanup.developer.summary": {
+      "comment": "Title of the Developer view summary chart.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Developer Files"
+          }
+        }
+      }
+    },
+    "cleanup.ecosystem.android": {
+      "comment": "Group title in the Developer view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android"
+          }
+        }
+      }
+    },
+    "cleanup.ecosystem.appData": {
+      "comment": "Group title in the Developer view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Data"
+          }
+        }
+      }
+    },
+    "cleanup.ecosystem.flutter": {
+      "comment": "Group title in the Developer view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flutter & Dart"
+          }
+        }
+      }
+    },
+    "cleanup.ecosystem.go": {
+      "comment": "Group title in the Developer view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Go"
+          }
+        }
+      }
+    },
+    "cleanup.ecosystem.homebrew": {
+      "comment": "Group title in the Developer view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Homebrew"
+          }
+        }
+      }
+    },
+    "cleanup.ecosystem.node": {
+      "comment": "Group title in the Developer view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Node.js"
+          }
+        }
+      }
+    },
+    "cleanup.ecosystem.simulators": {
+      "comment": "Group title in the Developer view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simulators"
+          }
+        }
+      }
+    },
+    "cleanup.ecosystem.xcode": {
+      "comment": "Group title in the Developer view.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xcode"
+          }
+        }
+      }
+    },
+    "cleanup.group.reclaimable": {
+      "comment": "Size that can be removed in a group.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ reclaimable"
+          }
+        }
+      }
+    },
+    "cleanup.highlight": {
+      "comment": "Toolbar toggle and menu item that colors the chart by cleanup safety.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Highlight Reclaimable"
+          }
+        }
+      }
+    },
+    "cleanup.reason.androidEmulators": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android emulators. Remove them in Android Studio’s Device Manager."
+          }
+        }
+      }
+    },
+    "cleanup.reason.androidSystemImages": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android system images. Remove them in Android Studio’s SDK Manager."
+          }
+        }
+      }
+    },
+    "cleanup.reason.appData": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data that belongs to other apps, such as messages and documents. Clear it inside each app."
+          }
+        }
+      }
+    },
+    "cleanup.reason.archives": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Builds you archived for distribution. Their debug symbols are needed to read crash reports, so keep the ones you still support."
+          }
+        }
+      }
+    },
+    "cleanup.reason.dartTool": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dart tooling state. Running flutter pub get recreates it."
+          }
+        }
+      }
+    },
+    "cleanup.reason.derivedData": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Build products and indexes. Xcode rebuilds them on the next build."
+          }
+        }
+      }
+    },
+    "cleanup.reason.deviceSupport": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Debug symbols copied from your devices. Xcode copies them again the next time a device connects."
+          }
+        }
+      }
+    },
+    "cleanup.reason.documentationCache": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Downloaded documentation. Xcode downloads it again when needed."
+          }
+        }
+      }
+    },
+    "cleanup.reason.flutterBuild": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flutter build output. Building the project recreates it."
+          }
+        }
+      }
+    },
+    "cleanup.reason.goBuild": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Go’s build cache. Go rebuilds it as needed."
+          }
+        }
+      }
+    },
+    "cleanup.reason.gradleCaches": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gradle’s download and build caches. Gradle fetches them again on the next build."
+          }
+        }
+      }
+    },
+    "cleanup.reason.homebrewCache": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Homebrew downloads. Homebrew fetches them again when needed."
+          }
+        }
+      }
+    },
+    "cleanup.reason.nextBuild": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Next.js build cache. The next build recreates it."
+          }
+        }
+      }
+    },
+    "cleanup.reason.nodeModules": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installed npm packages. Running npm install restores them."
+          }
+        }
+      }
+    },
+    "cleanup.reason.npmCache": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "npm’s download cache. npm refills it as you install packages."
+          }
+        }
+      }
+    },
+    "cleanup.reason.previews": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SwiftUI preview builds. Xcode recreates them when you open a preview."
+          }
+        }
+      }
+    },
+    "cleanup.reason.pubCache": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Downloaded Dart and Flutter packages. Running flutter pub get downloads them again."
+          }
+        }
+      }
+    },
+    "cleanup.reason.simulatorDevices": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simulator devices and their data. Remove them with Xcode’s simulator tool so Xcode’s device list stays consistent."
+          }
+        }
+      }
+    },
+    "cleanup.reason.simulatorRuntimes": {
+      "comment": "Why an item has its cleanup label.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simulator runtimes. Remove them with Xcode’s simulator tool or in Xcode › Settings › Components."
+          }
+        }
+      }
+    },
+    "cleanup.safety.keep": {
+      "comment": "Label for items that hold personal data and shouldn't be deleted here.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep"
+          }
+        }
+      }
+    },
+    "cleanup.safety.safe": {
+      "comment": "Label for items that regenerate on their own.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Safe to Remove"
+          }
+        }
+      }
+    },
+    "cleanup.safety.tool": {
+      "comment": "Label for items that must be removed with their own tool.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove with Tool"
           }
         }
       }
@@ -957,6 +1437,222 @@
           "stringUnit": {
             "state": "translated",
             "value": "Locations"
+          }
+        }
+      }
+    },
+    "simulators.action.deleteRuntime": {
+      "comment": "Button that deletes a simulator runtime.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete Runtime…"
+          }
+        }
+      }
+    },
+    "simulators.action.deleteUnavailable": {
+      "comment": "Button that removes simulators whose runtime is gone.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete Unavailable Simulators…"
+          }
+        }
+      }
+    },
+    "simulators.alert.deleteRuntime.confirm": {
+      "comment": "Alert button that deletes a runtime.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete Runtime"
+          }
+        }
+      }
+    },
+    "simulators.alert.deleteRuntime.message": {
+      "comment": "Alert message.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This frees %@. Simulators that use it stop working until you download it again in Xcode › Settings › Components. This can’t be undone."
+          }
+        }
+      }
+    },
+    "simulators.alert.deleteRuntime.title": {
+      "comment": "Alert title before deleting a runtime.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete the %@ simulator runtime?"
+          }
+        }
+      }
+    },
+    "simulators.alert.deleteUnavailable.confirm": {
+      "comment": "Alert button that deletes unavailable simulators.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete Simulators"
+          }
+        }
+      }
+    },
+    "simulators.alert.deleteUnavailable.message": {
+      "comment": "Alert message.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This removes %@ simulators whose runtime is no longer installed, and their data (%@). This can’t be undone."
+          }
+        }
+      }
+    },
+    "simulators.alert.deleteUnavailable.title": {
+      "comment": "Alert title before deleting unavailable simulators.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete unavailable simulators?"
+          }
+        }
+      }
+    },
+    "simulators.error.failed": {
+      "comment": "Error when simctl fails.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The simulator tool reported an error."
+          }
+        }
+      }
+    },
+    "simulators.error.toolUnavailable": {
+      "comment": "Error when simctl can't run.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xcode’s simulator tool isn’t available."
+          }
+        }
+      }
+    },
+    "simulators.error.toolUnavailable.suggestion": {
+      "comment": "Recovery suggestion.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Install Xcode and open it once to finish setup, then try again."
+          }
+        }
+      }
+    },
+    "simulators.rescanHint": {
+      "comment": "Shown after a simulator tool action.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rescan to update sizes in the chart."
+          }
+        }
+      }
+    },
+    "simulators.runtime.lastUsed": {
+      "comment": "When a runtime was last used.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last used %@"
+          }
+        }
+      }
+    },
+    "simulators.runtime.name": {
+      "comment": "Runtime name. Arguments: platform (iOS, watchOS…), version.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ %@"
+          }
+        }
+      }
+    },
+    "simulators.runtimes.title": {
+      "comment": "Section title listing installed simulator runtimes.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Simulator Runtimes"
+          }
+        }
+      }
+    },
+    "simulators.unavailable.detail": {
+      "comment": "Count and size of unavailable simulators.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ devices · %@"
+          }
+        }
+      }
+    },
+    "simulators.unavailable.title": {
+      "comment": "Row title for simulator devices whose runtime is gone.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unavailable Simulators"
+          }
+        }
+      }
+    },
+    "simulators.working": {
+      "comment": "Shown while the simulator tool runs.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Working…"
           }
         }
       }

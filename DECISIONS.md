@@ -191,3 +191,30 @@ See `rules/common/decisions.md` for the logging format and rules. Append-only.
 **Why:** HIG Privacy: request only when needed, in context, with a clear reason. The first scan itself shows why access matters.
 **Trade-offs:** The URL form must be verified on each macOS release.
 **Revisit if:** The deep link stops opening the right pane.
+
+---
+
+## 2026-09-22 — Cleanup rules: a data catalog of strategies, matched after the scan
+**Chosen:** `CleanupRule.catalog` lists each artifact with an ecosystem, a safety level, a reason, an action, and a matcher: an exact path (`~`-relative or absolute), a child-of pattern (simulator runtime assets under `/System/Library/AssetsV2`), or a project folder beside a marker file (`build` + `pubspec.yaml`, `node_modules` + `package.json`). `RuleEngine` walks the finished tree off the main actor (`@concurrent`), stops at the first match on each branch (outermost `node_modules` only), and checks marker files on disk, because small files aren't nodes in the tree. Matches cover everything below them.
+**Alternatives:** Matching during the scan; name-only matching (every `build` folder).
+**Why:** Keeps the scanner rule-agnostic and fast. Marker files avoid calling unrelated `build` folders "safe". Measured on this Mac: runtime images live in `/System/Library/AssetsV2/com_apple_MobileAsset_*SimulatorRuntime`, not only in `/Library/Developer/CoreSimulator`.
+**Trade-offs:** Rule matching re-runs after every tree edit, which is a full directory walk (still cheaper than rescanning).
+**Revisit if:** Profiling shows the walk is noticeable, or users want custom rules.
+
+---
+
+## 2026-09-22 — Safety levels decide what the app offers
+**Chosen:** Safe to Remove → Move to Trash. Remove with Tool → only the owning tool (simctl sheet actions, or opening Android Studio); Move to Trash is disabled for these items and anything inside them. Keep → no delete action anywhere (inspector, list, Developer view, Edit menu). Highlight Reclaimable colors matched segments with the status colors (always paired with a symbol and a label) and fades everything else.
+**Alternatives:** Allow trashing tool-owned folders.
+**Why:** Deleting simulator folders behind simctl's back leaves Xcode's device list inconsistent; the DEVPLAN requires tool-owned removal.
+**Trade-offs:** Tool-owned items take more steps to remove.
+**Revisit if:** A tool offers no safe command-line or UI path.
+
+---
+
+## 2026-09-22 — Irreversible simctl actions: alert with a specific verb; Return confirms
+**Chosen:** Deleting unavailable simulators and deleting a runtime show an alert with a specific button ("Delete Simulators" or "Delete Runtime") and Cancel. The action button is the SwiftUI default (Return).
+**Alternatives:** No default button (the DEVPLAN's first intent).
+**Why:** SwiftUI alerts don't offer "no default button". HIG treats a deliberately chosen destructive action like Empty Trash as fine to confirm with Return, without destructive styling. The alert text states "This can't be undone" and the size.
+**Trade-offs:** A quick Return confirms.
+**Revisit if:** Moving the alert to AppKit (`NSAlert`) becomes worthwhile for control over the default button.
