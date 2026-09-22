@@ -2365,6 +2365,150 @@
         }
       }
     },
+    "space.breakdown.title": {
+      "comment": "Header over the breakdown of unattributed disk space.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What Fills This Space"
+          }
+        }
+      }
+    },
+    "space.part.image": {
+      "comment": "A mounted disk image, such as a simulator runtime.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@"
+          }
+        }
+      }
+    },
+    "space.part.image.detail": {
+      "comment": "Explains a mounted disk image.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A disk image stored on this disk and mounted inside it. Simulator runtimes are kept this way; remove them in the Developer view."
+          }
+        }
+      }
+    },
+    "space.part.purgeable": {
+      "comment": "Space macOS frees when it needs room.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Purgeable"
+          }
+        }
+      }
+    },
+    "space.part.purgeable.detail": {
+      "comment": "Explains purgeable space.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snapshots, caches and redownloadable files. macOS frees these when the disk fills up, so you don't have to."
+          }
+        }
+      }
+    },
+    "space.part.remainder": {
+      "comment": "Used space that the named parts don't explain.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not Attributed"
+          }
+        }
+      }
+    },
+    "space.part.remainder.detail": {
+      "comment": "Explains the leftover part.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Used space that nothing above explains. Some of it belongs to macOS itself."
+          }
+        }
+      }
+    },
+    "space.part.remainder.noAccess": {
+      "comment": "Added to the leftover explanation when access is missing.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Folders that need Full Disk Access are counted here too."
+          }
+        }
+      }
+    },
+    "space.part.volume": {
+      "comment": "Another volume on the same disk, such as VM or Preboot.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ volume"
+          }
+        }
+      }
+    },
+    "space.part.volume.detail": {
+      "comment": "Explains a system volume.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A separate volume on this disk that macOS manages: swap files, startup data and recovery. Temizlikci doesn't scan it and you shouldn't remove it."
+          }
+        }
+      }
+    },
+    "space.reading": {
+      "comment": "Shown while the breakdown is being read.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reading the disk's layout…"
+          }
+        }
+      }
+    },
+    "space.source": {
+      "comment": "Says where the breakdown numbers come from.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Figures come from macOS and from the disk's own layout, read at the end of the scan."
+          }
+        }
+      }
+    },
     "table.column.name": {
       "comment": "List column with item names.",
       "extractionState": "manual",

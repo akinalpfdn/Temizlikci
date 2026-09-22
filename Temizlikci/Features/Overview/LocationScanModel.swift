@@ -69,6 +69,10 @@ final class LocationScanModel {
     /// Project folders in the current tree, most reclaimable first.
     private(set) var projects: [DeveloperProject] = []
 
+    /// What makes up the unattributed space of a whole-volume scan; `nil` until it is read.
+    private(set) var spaceBreakdown: SpaceBreakdown?
+    private(set) var breakdownTask: Task<Void, Never>?
+
     /// What changed since the previous scan of this location; `nil` for a first scan.
     private(set) var growth: GrowthReport?
     /// True while `growth` comes from saved scans rather than the scan on screen.
@@ -85,6 +89,7 @@ final class LocationScanModel {
     private let ledger: TrashLedger
     private let ruleEngine: RuleEngine
     private let projectFinder: ProjectFinder
+    private let spaceBuilder: SpaceBreakdownBuilder
     private let snapshots: SnapshotStoring
     private(set) var scanTask: Task<Void, Never>?
 
@@ -100,11 +105,13 @@ final class LocationScanModel {
         ledger: TrashLedger,
         ruleEngine: RuleEngine,
         projectFinder: ProjectFinder = ProjectFinder(),
+        spaceBuilder: SpaceBreakdownBuilder = SpaceBreakdownBuilder(),
         snapshots: SnapshotStoring,
         makeScanner: @escaping (ScanConfiguration) -> DiskScanning
     ) {
         self.ruleEngine = ruleEngine
         self.projectFinder = projectFinder
+        self.spaceBuilder = spaceBuilder
         self.snapshots = snapshots
         self.location = location
         self.volumeInfo = volumeInfo
@@ -196,6 +203,7 @@ final class LocationScanModel {
             let unattributed = usage.unattributed(scannedSize: root.allocatedSize)
             if unattributed > 0 {
                 root = root.adding(.unattributed(on: location.url, allocatedSize: unattributed))
+                loadSpaceBreakdown(unattributed: unattributed, usage: usage)
             }
         }
         phase = .finished
@@ -273,6 +281,26 @@ final class LocationScanModel {
                 self.recordsHistoryAfterMatching = false
                 self.recordHistory(root: root, matchPaths: Set(found.map(\.node.path)))
             }
+        }
+    }
+
+    // MARK: - Other Used Space
+
+    /// Reads what fills the unattributed space. Everything it reads is public information about the
+    /// disk's own layout, so it never triggers a permission prompt.
+    private func loadSpaceBreakdown(unattributed: Int64, usage: VolumeUsage) {
+        let builder = spaceBuilder
+        let root = location.url.path(percentEncoded: false)
+        let hasUnreadable = !access.hasFullDiskAccess()
+        breakdownTask?.cancel()
+        spaceBreakdown = nil
+        breakdownTask = Task { [weak self] in
+            let breakdown = await builder.breakdown(
+                unattributed: unattributed, usage: usage, root: root, hasUnreadableFolders: hasUnreadable
+            )
+            guard let self, !Task.isCancelled else { return }
+            self.spaceBreakdown = breakdown
+            self.breakdownTask = nil
         }
     }
 

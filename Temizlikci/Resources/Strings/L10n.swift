@@ -383,4 +383,23 @@ nonisolated enum L10n {
         static let evidenceUnity = LocalizedStringResource("projects.evidence.unity", defaultValue: "Unity project", comment: "How a folder was identified as a project.")
         static let unknownActivity = LocalizedStringResource("projects.unknownActivity", defaultValue: "Last change unknown", comment: "Shown when the project's activity date can't be read.")
     }
+
+    enum Space {
+        static let breakdownTitle = LocalizedStringResource("space.breakdown.title", defaultValue: "What Fills This Space", comment: "Header over the breakdown of unattributed disk space.")
+        static let purgeable = LocalizedStringResource("space.part.purgeable", defaultValue: "Purgeable", comment: "Space macOS frees when it needs room.")
+        static let purgeableDetail = LocalizedStringResource("space.part.purgeable.detail", defaultValue: "Snapshots, caches and redownloadable files. macOS frees these when the disk fills up, so you don't have to.", comment: "Explains purgeable space.")
+        static let remainder = LocalizedStringResource("space.part.remainder", defaultValue: "Not Attributed", comment: "Used space that the named parts don't explain.")
+        static let remainderDetail = LocalizedStringResource("space.part.remainder.detail", defaultValue: "Used space that nothing above explains. Some of it belongs to macOS itself.", comment: "Explains the leftover part.")
+        static let remainderNoAccess = LocalizedStringResource("space.part.remainder.noAccess", defaultValue: "Folders that need Full Disk Access are counted here too.", comment: "Added to the leftover explanation when access is missing.")
+        static func systemVolume(_ name: String) -> LocalizedStringResource {
+            LocalizedStringResource("space.part.volume", defaultValue: "\(name) volume", comment: "Another volume on the same disk, such as VM or Preboot.")
+        }
+        static let systemVolumeDetail = LocalizedStringResource("space.part.volume.detail", defaultValue: "A separate volume on this disk that macOS manages: swap files, startup data and recovery. Temizlikci doesn't scan it and you shouldn't remove it.", comment: "Explains a system volume.")
+        static func mountedImage(_ name: String) -> LocalizedStringResource {
+            LocalizedStringResource("space.part.image", defaultValue: "\(name)", comment: "A mounted disk image, such as a simulator runtime.")
+        }
+        static let mountedImageDetail = LocalizedStringResource("space.part.image.detail", defaultValue: "A disk image stored on this disk and mounted inside it. Simulator runtimes are kept this way; remove them in the Developer view.", comment: "Explains a mounted disk image.")
+        static let source = LocalizedStringResource("space.source", defaultValue: "Figures come from macOS and from the disk's own layout, read at the end of the scan.", comment: "Says where the breakdown numbers come from.")
+        static let reading = LocalizedStringResource("space.reading", defaultValue: "Reading the disk's layout…", comment: "Shown while the breakdown is being read.")
+    }
 }

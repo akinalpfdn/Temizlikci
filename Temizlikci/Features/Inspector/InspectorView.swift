@@ -39,6 +39,9 @@ private struct NodeDetailsView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(.quaternary, in: RoundedRectangle(cornerRadius: CornerRadius.medium))
                 }
+                if node.kind == .unattributed, scan.location.isWholeVolume {
+                    SpaceBreakdownView(breakdown: scan.spaceBreakdown)
+                }
                 if let explanation {
                     Text(explanation)
                         .font(Typography.chartCaption)
