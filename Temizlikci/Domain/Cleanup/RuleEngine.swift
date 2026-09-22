@@ -52,7 +52,7 @@ nonisolated struct RuleEngine: Sendable {
         var found: [CleanupMatch] = []
         func visit(_ node: FileNode, idPath: [String], parentPath: String?) {
             guard node.kind == .directory || node.kind == .inaccessible else { return }
-            let path = ScanConfiguration.comparablePath(of: node.url)
+            let path = Self.trimmedPath(of: node.url)
             let rule = byPath[path]
                 ?? parentPath.flatMap { parent in
                     childRules.first { $0.parent == parent && node.name.hasPrefix($0.prefix) && node.name.contains($0.containing) }?.rule
@@ -68,6 +68,14 @@ nonisolated struct RuleEngine: Sendable {
         }
         visit(root, idPath: [root.id], parentPath: nil)
         return found
+    }
+
+    /// Scanner URLs are already standardized, so trimming the trailing slash is enough (and much cheaper
+    /// than standardizing every one of the tree's folders again).
+    private static func trimmedPath(of url: URL) -> String {
+        var path = url.path(percentEncoded: false)
+        if path.count > 1, path.hasSuffix("/") { path.removeLast() }
+        return path
     }
 
     private func expand(_ pattern: String) -> String {

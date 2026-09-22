@@ -270,6 +270,11 @@ final class LocationScanModel {
     func moveToTrash(_ match: CleanupMatch, undoManager: UndoManager?) {
         guard match.rule.safety == .safe else { return }
         moveToTrash(match.node, idPath: match.idPath, undoManager: undoManager)
+        // Drop the row right away; re-matching the whole tree takes a moment on a startup disk.
+        if lastTrashed?.node.id == match.node.id {
+            cleanupMatches.removeAll { $0.node.id == match.node.id }
+            matchesByID[match.node.id] = nil
+        }
     }
 
     private func moveToTrash(_ node: FileNode, idPath ids: [String], undoManager: UndoManager?) {

@@ -47,6 +47,8 @@ private struct DeveloperResults: View {
                 .padding(Spacing.large)
             }
         }
+        .overlay(alignment: .bottom) { TrashConfirmation(model: scan) }
+        .modifier(ActionErrorAlert(model: scan))
         .task { if !main.simulators.hasLoaded { await main.simulators.load() } }
         .onChange(of: main.simulators.didChangeDisk) { _, changed in
             if changed { main.simulatorsDidChangeDisk() }

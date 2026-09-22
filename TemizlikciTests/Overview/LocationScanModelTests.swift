@@ -370,6 +370,7 @@ struct LocationScanModelTests {
         let derived = try #require(model.cleanupMatches.first { $0.rule.safety == .safe })
 
         model.moveToTrash(derived, undoManager: nil)
+        #expect(!model.cleanupMatches.contains { $0.node.id == derived.node.id })
         await model.cleanupTask?.value
 
         #expect(trash.trashed == [derived.node.url])

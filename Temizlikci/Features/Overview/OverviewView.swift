@@ -21,13 +21,7 @@ struct OverviewView: View {
                 .onChange(of: main.searchFocusRequest) { isSearchFocused = true }
                 .quickLookPreview($model.previewURL)
                 .overlay(alignment: .bottom) { trashConfirmation }
-                .alert(item: $model.actionError) { error in
-                    Alert(
-                        title: Text(error.message),
-                        message: error.suggestion.map(Text.init),
-                        dismissButton: .default(Text(L10n.Alerts.ok))
-                    )
-                }
+                .modifier(ActionErrorAlert(model: model))
         }
     }
 
@@ -60,43 +54,37 @@ struct OverviewView: View {
             if model.hasResult && main.shouldShowAccessBanner(for: model) {
                 AccessBanner(skippedCount: model.result?.inaccessibleCount ?? 0, main: main)
             }
-            HStack(alignment: .top, spacing: Spacing.xLarge) {
-                VStack(spacing: Spacing.small) {
-                    SunburstView(model: model)
-                        .frame(minWidth: ChartMetrics.minimumSide, maxWidth: ChartMetrics.maximumSide,
-                               minHeight: ChartMetrics.minimumSide, maxHeight: ChartMetrics.maximumSide)
-                    Text(L10n.Scan.chartHint)
-                        .font(Typography.chartCaption)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
+            GeometryReader { proxy in
+                let side = Self.chartSide(for: proxy.size)
+                HStack(alignment: .top, spacing: Spacing.xLarge) {
+                    VStack(spacing: Spacing.small) {
+                        SunburstView(model: model)
+                            .frame(width: side, height: side)
+                        Text(L10n.Scan.chartHint)
+                            .font(Typography.chartCaption)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                            .frame(width: side)
+                    }
+                    ContentsTable(model: model)
+                        .frame(minWidth: ChartMetrics.listMinimumWidth)
                 }
-                .frame(maxWidth: ChartMetrics.maximumSide)
-                ContentsTable(model: model)
             }
             footer
         }
         .padding(Spacing.large)
     }
 
-    @ViewBuilder
+    /// The chart takes what's left after the list's minimum width, within its size limits and the height.
+    private static func chartSide(for size: CGSize) -> CGFloat {
+        let hintHeight: CGFloat = 32
+        let byWidth = size.width - ChartMetrics.listMinimumWidth - Spacing.xLarge
+        let bySpace = min(byWidth, size.height - hintHeight)
+        return min(ChartMetrics.maximumSide, max(ChartMetrics.minimumSide, bySpace))
+    }
+
     private var trashConfirmation: some View {
-        if let record = model.lastTrashed {
-            HStack(spacing: Spacing.medium) {
-                Text(L10n.Trash.moved(name: record.node.name, size: Formatting.bytes(record.node.allocatedSize)))
-                    .lineLimit(2)
-                Button { model.putBack(record) } label: { Text(L10n.Trash.undo) }
-            }
-            .padding(.horizontal, Spacing.large)
-            .padding(.vertical, Spacing.small)
-            .glassEffect(.regular, in: .capsule)
-            .padding(.bottom, Spacing.xLarge)
-            .transition(.move(edge: .bottom).combined(with: .opacity))
-            .task(id: record.id) {
-                // Sleep only fails on cancellation, when a newer confirmation replaces this one.
-                try? await Task.sleep(for: .seconds(8))
-                if model.lastTrashed?.id == record.id { model.dismissTrashConfirmation() }
-            }
-        }
+        TrashConfirmation(model: model)
     }
 
     @ViewBuilder
@@ -175,5 +163,45 @@ struct AccessBanner: View {
         .padding(Spacing.medium)
         .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: CornerRadius.medium))
         .accessibilityElement(children: .contain)
+    }
+}
+
+/// The transient "Moved to the Trash" confirmation with Undo, shared by the overview and the Developer view.
+struct TrashConfirmation: View {
+    let model: LocationScanModel
+
+    var body: some View {
+        if let record = model.lastTrashed {
+            HStack(spacing: Spacing.medium) {
+                Text(L10n.Trash.moved(name: record.node.name, size: Formatting.bytes(record.node.allocatedSize)))
+                    .lineLimit(2)
+                Button { model.putBack(record) } label: { Text(L10n.Trash.undo) }
+            }
+            .padding(.horizontal, Spacing.large)
+            .padding(.vertical, Spacing.small)
+            .glassEffect(.regular, in: .capsule)
+            .padding(.bottom, Spacing.xLarge)
+            .transition(.move(edge: .bottom).combined(with: .opacity))
+            .task(id: record.id) {
+                // Sleep only fails on cancellation, when a newer confirmation replaces this one.
+                try? await Task.sleep(for: .seconds(8))
+                if model.lastTrashed?.id == record.id { model.dismissTrashConfirmation() }
+            }
+        }
+    }
+}
+
+/// Shows a failed action's message and next step.
+struct ActionErrorAlert: ViewModifier {
+    @Bindable var model: LocationScanModel
+
+    func body(content: Content) -> some View {
+        content.alert(item: $model.actionError) { error in
+            Alert(
+                title: Text(error.message),
+                message: error.suggestion.map(Text.init),
+                dismissButton: .default(Text(L10n.Alerts.ok))
+            )
+        }
     }
 }
