@@ -197,6 +197,13 @@ final class MainViewModel {
 
     var isAndroidStudioInstalled: Bool { apps.isInstalled(WorkspaceAppOpener.androidStudio) }
 
+    /// Offered for projects only when Visual Studio Code is installed.
+    var isVisualStudioCodeInstalled: Bool { apps.isInstalled(WorkspaceAppOpener.visualStudioCode) }
+
+    func openInVisualStudioCode(_ project: DeveloperProject) {
+        apps.open(project.url, with: WorkspaceAppOpener.visualStudioCode)
+    }
+
     func openAndroidStudio() {
         apps.open(WorkspaceAppOpener.androidStudio)
     }

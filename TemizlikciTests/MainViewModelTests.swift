@@ -28,6 +28,7 @@ private struct StubFolderPicker: FolderPicking {
 @MainActor
 struct MainViewModelTests {
     private let settings = RecordingSettings()
+    private let apps = RecordingApps()
 
     private func makeModel(volumeName: String? = "Macintosh HD", pickedFolder: URL? = nil, accessGranted: Bool = true) -> MainViewModel {
         MainViewModel(
@@ -37,6 +38,7 @@ struct MainViewModelTests {
             revealer: FinderRevealer(),
             trash: StubTrash(),
             settings: settings,
+            apps: apps,
             snapshots: InMemorySnapshots(),
             scanCache: InMemoryScanCache()
         )
@@ -137,4 +139,34 @@ struct MainViewModelTests {
 
         #expect(model.inspected == nil)
     }
+
+    @Test("should open a project folder in Visual Studio Code, and offer it only when installed")
+    func openInVisualStudioCode() {
+        let model = makeModel()
+        let folder = URL(filePath: "/Users/dev/Work/app", directoryHint: .isDirectory)
+        let project = DeveloperProject(
+            node: .directory(url: folder, modificationDate: nil, children: []),
+            idPath: [], evidence: .git, artifacts: [], lastTouched: nil
+        )
+
+        #expect(!model.isVisualStudioCodeInstalled)
+        apps.installed.insert(WorkspaceAppOpener.visualStudioCode)
+        #expect(model.isVisualStudioCodeInstalled)
+
+        model.openInVisualStudioCode(project)
+
+        #expect(apps.opened.count == 1)
+        #expect(apps.opened.first?.folder == folder)
+        #expect(apps.opened.first?.bundleIdentifier == WorkspaceAppOpener.visualStudioCode)
+    }
+}
+
+/// Records what the app would open instead of launching anything.
+private final class RecordingApps: AppOpening {
+    var installed: Set<String> = []
+    var opened: [(folder: URL, bundleIdentifier: String)] = []
+
+    func isInstalled(_ bundleIdentifier: String) -> Bool { installed.contains(bundleIdentifier) }
+    func open(_ bundleIdentifier: String) {}
+    func open(_ folder: URL, with bundleIdentifier: String) { opened.append((folder, bundleIdentifier)) }
 }

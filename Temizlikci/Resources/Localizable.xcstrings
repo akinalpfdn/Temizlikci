@@ -2953,6 +2953,18 @@
         }
       }
     },
+    "projects.openInVSCode": {
+      "comment": "Button that opens the project folder in Visual Studio Code.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open in Visual Studio Code"
+          }
+        }
+      }
+    },
     "projects.period.halfYear": {
       "comment": "Staleness period.",
       "extractionState": "manual",

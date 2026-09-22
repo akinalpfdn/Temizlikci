@@ -10,7 +10,7 @@ struct InsightInspectorView: View {
             switch item {
             case .project(let id):
                 if let project = scan.project(withID: id) {
-                    ProjectInspectorView(project: project, scan: scan, git: main.gitStatus)
+                    ProjectInspectorView(project: project, scan: scan, main: main)
                 } else {
                     empty
                 }
@@ -40,7 +40,9 @@ struct InsightInspectorView: View {
 struct ProjectInspectorView: View {
     let project: DeveloperProject
     let scan: LocationScanModel
-    let git: GitStatusModel
+    let main: MainViewModel
+
+    private var git: GitStatusModel { main.gitStatus }
 
     var body: some View {
         ScrollView {
@@ -52,8 +54,15 @@ struct ProjectInspectorView: View {
                     .font(Typography.chartCaption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
-                Button { scan.reveal(project.node) } label: {
-                    Text(L10n.Details.revealInFinder).frame(maxWidth: .infinity)
+                VStack(spacing: Spacing.small) {
+                    Button { scan.reveal(project.node) } label: {
+                        Text(L10n.Details.revealInFinder).frame(maxWidth: .infinity)
+                    }
+                    if main.isVisualStudioCodeInstalled {
+                        Button { main.openInVisualStudioCode(project) } label: {
+                            Text(L10n.Projects.openInVSCode).frame(maxWidth: .infinity)
+                        }
+                    }
                 }
                 .controlSize(.large)
             }
