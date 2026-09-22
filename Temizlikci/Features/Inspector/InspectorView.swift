@@ -21,6 +21,7 @@ private struct NodeDetailsView: View {
     let scan: LocationScanModel
     let node: FileNode
     @Environment(\.undoManager) private var undoManager
+    private let explainer: FolderExplaining = OnDeviceFolderExplainer()
 
     var body: some View {
         ScrollView {
@@ -41,6 +42,9 @@ private struct NodeDetailsView: View {
                 }
                 if node.kind == .unattributed, scan.location.isWholeVolume {
                     SpaceBreakdownView(breakdown: scan.spaceBreakdown)
+                }
+                if node.kind == .directory || node.kind == .file {
+                    IdentityCard(node: node, identity: scan.identity(of: node), explainer: explainer)
                 }
                 if let explanation {
                     Text(explanation)

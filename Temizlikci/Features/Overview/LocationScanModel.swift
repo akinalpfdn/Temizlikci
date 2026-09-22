@@ -98,6 +98,7 @@ final class LocationScanModel {
     private let projectFinder: ProjectFinder
     private let spaceBuilder: SpaceBreakdownBuilder
     private let scanCache: ScanCaching
+    private let identifier = FolderIdentifier()
     private let snapshots: SnapshotStoring
     private(set) var scanTask: Task<Void, Never>?
 
@@ -399,6 +400,12 @@ final class LocationScanModel {
     nonisolated private static func compareSaved(store: SnapshotStoring, locationPath: String) async -> GrowthReport? {
         guard let saved = try? store.recent(forLocation: locationPath, limit: 2), saved.count == 2 else { return nil }
         return GrowthReport.compare(previous: saved[1], current: saved[0])
+    }
+
+    /// What this item is, when the Mac already knows: a folder macOS defines, an installed app's
+    /// data, or a file type. `nil` means nothing recognized it.
+    func identity(of node: FileNode) -> FolderIdentity? {
+        identifier.identity(of: node)
     }
 
     func growth(for node: FileNode) -> GrowthChange? {

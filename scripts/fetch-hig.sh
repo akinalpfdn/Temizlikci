@@ -9,7 +9,7 @@ PAGES=(design-principles designing-for-macos materials color dark-mode typograph
   sidebars split-views toolbars the-menu-bar keyboards windows search-fields lists-and-tables
   outline-views disclosure-controls charts charting-data accessibility voiceover motion
   alerts buttons progress-indicators privacy file-management onboarding writing
-  sf-symbols icons app-icons)
+  sf-symbols icons app-icons generative-ai machine-learning)
 mkdir -p "$OUT"
 for p in "${PAGES[@]}"; do
   if curl -fsS "$BASE/$p.json" -o "$OUT/.$p.json"; then

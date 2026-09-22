@@ -448,4 +448,54 @@ nonisolated enum L10n {
         static let refreshNever = LocalizedStringResource("settings.refresh.never", defaultValue: "Never", comment: "Refresh period meaning the app never scans by itself.")
         static let refreshExplanation = LocalizedStringResource("settings.refresh.explanation", defaultValue: "Temizlikci shows the last scan of a location as soon as you open it. When that scan is older than this, it reads the disk again in the background and replaces it when it's done.", comment: "Explains the automatic refresh setting.")
     }
+
+    enum Identity {
+        static let startupDisk = LocalizedStringResource("identity.startupDisk", defaultValue: "The disk macOS starts from. Everything on this Mac lives here.", comment: "What a well-known folder is.")
+        static let applications = LocalizedStringResource("identity.applications", defaultValue: "Apps installed for everyone on this Mac.", comment: "What a well-known folder is.")
+        static let libraryShared = LocalizedStringResource("identity.library.shared", defaultValue: "Support files shared by every account: fonts, printer drivers, and developer tools.", comment: "What a well-known folder is.")
+        static let system = LocalizedStringResource("identity.system", defaultValue: "macOS itself, on a read-only volume. It can't be changed or removed.", comment: "What a well-known folder is.")
+        static let dataVolume = LocalizedStringResource("identity.dataVolume", defaultValue: "Where everything that isn't macOS is stored, shown by the system as part of the startup disk.", comment: "What a well-known folder is.")
+        static let users = LocalizedStringResource("identity.users", defaultValue: "The home folder of every account on this Mac.", comment: "What a well-known folder is.")
+        static let volumes = LocalizedStringResource("identity.volumes", defaultValue: "Where other disks and disk images appear while they're connected.", comment: "What a well-known folder is.")
+        static let privateFolder = LocalizedStringResource("identity.private", defaultValue: "Working files macOS needs while it runs: logs, databases and temporary data.", comment: "What a well-known folder is.")
+        static let temporary = LocalizedStringResource("identity.temporary", defaultValue: "Temporary files. macOS clears them on its own.", comment: "What a well-known folder is.")
+        static let unixTools = LocalizedStringResource("identity.unixTools", defaultValue: "Command-line tools that come with macOS.", comment: "What a well-known folder is.")
+        static let optional = LocalizedStringResource("identity.optional", defaultValue: "Software installed outside of macOS, usually by Homebrew or a similar tool.", comment: "What a well-known folder is.")
+        static let cores = LocalizedStringResource("identity.cores", defaultValue: "Crash dumps written when a program stops unexpectedly.", comment: "What a well-known folder is.")
+        static let home = LocalizedStringResource("identity.home", defaultValue: "Your home folder: your documents, downloads and settings.", comment: "What a well-known folder is.")
+        static let library = LocalizedStringResource("identity.library", defaultValue: "Your account's support files: app data, caches, settings and logs.", comment: "What a well-known folder is.")
+        static let caches = LocalizedStringResource("identity.caches", defaultValue: "Files apps keep to work faster. Apps rebuild them when they're gone.", comment: "What a well-known folder is.")
+        static let applicationSupport = LocalizedStringResource("identity.applicationSupport", defaultValue: "Data apps store outside their own bundle, such as libraries, projects and downloaded content.", comment: "What a well-known folder is.")
+        static let containers = LocalizedStringResource("identity.containers", defaultValue: "The private folder of each sandboxed app, holding that app's own documents and data.", comment: "What a well-known folder is.")
+        static let groupContainers = LocalizedStringResource("identity.groupContainers", defaultValue: "Data shared between apps from the same developer.", comment: "What a well-known folder is.")
+        static let preferences = LocalizedStringResource("identity.preferences", defaultValue: "Settings files for your apps.", comment: "What a well-known folder is.")
+        static let logs = LocalizedStringResource("identity.logs", defaultValue: "Log files written by apps and by macOS.", comment: "What a well-known folder is.")
+        static let iCloudDrive = LocalizedStringResource("identity.iCloudDrive", defaultValue: "Your iCloud Drive. Files kept in the cloud only take space here while they're downloaded.", comment: "What a well-known folder is.")
+        static let developer = LocalizedStringResource("identity.developer", defaultValue: "Xcode's working files: build products, device support and simulators.", comment: "What a well-known folder is.")
+        static let desktop = LocalizedStringResource("identity.desktop", defaultValue: "What you see on your desktop.", comment: "What a well-known folder is.")
+        static let documents = LocalizedStringResource("identity.documents", defaultValue: "Your documents.", comment: "What a well-known folder is.")
+        static let downloads = LocalizedStringResource("identity.downloads", defaultValue: "Files you downloaded.", comment: "What a well-known folder is.")
+        static let movies = LocalizedStringResource("identity.movies", defaultValue: "Your videos, and libraries from apps like Final Cut Pro.", comment: "What a well-known folder is.")
+        static let music = LocalizedStringResource("identity.music", defaultValue: "Your music library and audio projects.", comment: "What a well-known folder is.")
+        static let pictures = LocalizedStringResource("identity.pictures", defaultValue: "Your photo libraries and images.", comment: "What a well-known folder is.")
+        static let publicFolder = LocalizedStringResource("identity.public", defaultValue: "Files you share with other accounts on this Mac.", comment: "What a well-known folder is.")
+        static let trash = LocalizedStringResource("identity.trash", defaultValue: "Your Trash. It keeps taking space until you empty it.", comment: "What a well-known folder is.")
+        static func application(_ name: String) -> LocalizedStringResource {
+            LocalizedStringResource("identity.application", defaultValue: "The \(name) app.", comment: "An application bundle. The argument is the app's name.")
+        }
+        static func appData(_ name: String) -> LocalizedStringResource {
+            LocalizedStringResource("identity.appData", defaultValue: "Data belonging to \(name).", comment: "A folder holding an app's data. The argument is the app's name.")
+        }
+        static let sectionTitle = LocalizedStringResource("identity.section.title", defaultValue: "What Is This?", comment: "Header of the inspector section that explains an item.")
+        static let explain = LocalizedStringResource("identity.explain", defaultValue: "Explain This Folder", comment: "Button that asks the on-device model about an unknown folder.")
+        static let explaining = LocalizedStringResource("identity.explaining", defaultValue: "Reading the folder's name and what's inside it…", comment: "Shown while the on-device model writes an explanation.")
+        static let generatedNote = LocalizedStringResource("identity.generated.note", defaultValue: "Written on this Mac by Apple Intelligence from the folder's name and the names inside it. It can be wrong, and it never changes what Temizlikci considers safe to remove.", comment: "Label under a generated explanation.")
+        static let retry = LocalizedStringResource("identity.retry", defaultValue: "Try Again", comment: "Button that asks the model once more.")
+        static func failed(_ reason: String) -> LocalizedStringResource {
+            LocalizedStringResource("identity.failed", defaultValue: "Couldn't write an explanation: \(reason)", comment: "Shown when the on-device model fails. The argument is the reason.")
+        }
+        static let unavailableNotEnabled = LocalizedStringResource("identity.unavailable.notEnabled", defaultValue: "Turn on Apple Intelligence in System Settings to have unknown folders explained on this Mac.", comment: "Shown when Apple Intelligence is off.")
+        static let unavailableDevice = LocalizedStringResource("identity.unavailable.device", defaultValue: "This Mac doesn't support Apple Intelligence, so unknown folders can't be explained.", comment: "Shown when the Mac can't run the model.")
+        static let unavailableNotReady = LocalizedStringResource("identity.unavailable.notReady", defaultValue: "Apple Intelligence is still downloading. Explanations work once it's ready.", comment: "Shown when the model isn't downloaded yet.")
+    }
 }

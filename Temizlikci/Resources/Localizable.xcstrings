@@ -1417,6 +1417,498 @@
         }
       }
     },
+    "identity.appData": {
+      "comment": "A folder holding an app's data. The argument is the app's name.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data belonging to %@."
+          }
+        }
+      }
+    },
+    "identity.application": {
+      "comment": "An application bundle. The argument is the app's name.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The %@ app."
+          }
+        }
+      }
+    },
+    "identity.applicationSupport": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data apps store outside their own bundle, such as libraries, projects and downloaded content."
+          }
+        }
+      }
+    },
+    "identity.applications": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apps installed for everyone on this Mac."
+          }
+        }
+      }
+    },
+    "identity.caches": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Files apps keep to work faster. Apps rebuild them when they're gone."
+          }
+        }
+      }
+    },
+    "identity.containers": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The private folder of each sandboxed app, holding that app's own documents and data."
+          }
+        }
+      }
+    },
+    "identity.cores": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Crash dumps written when a program stops unexpectedly."
+          }
+        }
+      }
+    },
+    "identity.dataVolume": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Where everything that isn't macOS is stored, shown by the system as part of the startup disk."
+          }
+        }
+      }
+    },
+    "identity.desktop": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What you see on your desktop."
+          }
+        }
+      }
+    },
+    "identity.developer": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xcode's working files: build products, device support and simulators."
+          }
+        }
+      }
+    },
+    "identity.documents": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your documents."
+          }
+        }
+      }
+    },
+    "identity.downloads": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Files you downloaded."
+          }
+        }
+      }
+    },
+    "identity.explain": {
+      "comment": "Button that asks the on-device model about an unknown folder.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Explain This Folder"
+          }
+        }
+      }
+    },
+    "identity.explaining": {
+      "comment": "Shown while the on-device model writes an explanation.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reading the folder's name and what's inside it…"
+          }
+        }
+      }
+    },
+    "identity.failed": {
+      "comment": "Shown when the on-device model fails. The argument is the reason.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't write an explanation: %@"
+          }
+        }
+      }
+    },
+    "identity.generated.note": {
+      "comment": "Label under a generated explanation.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Written on this Mac by Apple Intelligence from the folder's name and the names inside it. It can be wrong, and it never changes what Temizlikci considers safe to remove."
+          }
+        }
+      }
+    },
+    "identity.groupContainers": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data shared between apps from the same developer."
+          }
+        }
+      }
+    },
+    "identity.home": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your home folder: your documents, downloads and settings."
+          }
+        }
+      }
+    },
+    "identity.iCloudDrive": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your iCloud Drive. Files kept in the cloud only take space here while they're downloaded."
+          }
+        }
+      }
+    },
+    "identity.library": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your account's support files: app data, caches, settings and logs."
+          }
+        }
+      }
+    },
+    "identity.library.shared": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Support files shared by every account: fonts, printer drivers, and developer tools."
+          }
+        }
+      }
+    },
+    "identity.logs": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Log files written by apps and by macOS."
+          }
+        }
+      }
+    },
+    "identity.movies": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your videos, and libraries from apps like Final Cut Pro."
+          }
+        }
+      }
+    },
+    "identity.music": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your music library and audio projects."
+          }
+        }
+      }
+    },
+    "identity.optional": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Software installed outside of macOS, usually by Homebrew or a similar tool."
+          }
+        }
+      }
+    },
+    "identity.pictures": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your photo libraries and images."
+          }
+        }
+      }
+    },
+    "identity.preferences": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings files for your apps."
+          }
+        }
+      }
+    },
+    "identity.private": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Working files macOS needs while it runs: logs, databases and temporary data."
+          }
+        }
+      }
+    },
+    "identity.public": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Files you share with other accounts on this Mac."
+          }
+        }
+      }
+    },
+    "identity.retry": {
+      "comment": "Button that asks the model once more.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try Again"
+          }
+        }
+      }
+    },
+    "identity.section.title": {
+      "comment": "Header of the inspector section that explains an item.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What Is This?"
+          }
+        }
+      }
+    },
+    "identity.startupDisk": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The disk macOS starts from. Everything on this Mac lives here."
+          }
+        }
+      }
+    },
+    "identity.system": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "macOS itself, on a read-only volume. It can't be changed or removed."
+          }
+        }
+      }
+    },
+    "identity.temporary": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temporary files. macOS clears them on its own."
+          }
+        }
+      }
+    },
+    "identity.trash": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your Trash. It keeps taking space until you empty it."
+          }
+        }
+      }
+    },
+    "identity.unavailable.device": {
+      "comment": "Shown when the Mac can't run the model.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This Mac doesn't support Apple Intelligence, so unknown folders can't be explained."
+          }
+        }
+      }
+    },
+    "identity.unavailable.notEnabled": {
+      "comment": "Shown when Apple Intelligence is off.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn on Apple Intelligence in System Settings to have unknown folders explained on this Mac."
+          }
+        }
+      }
+    },
+    "identity.unavailable.notReady": {
+      "comment": "Shown when the model isn't downloaded yet.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Intelligence is still downloading. Explanations work once it's ready."
+          }
+        }
+      }
+    },
+    "identity.unixTools": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Command-line tools that come with macOS."
+          }
+        }
+      }
+    },
+    "identity.users": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The home folder of every account on this Mac."
+          }
+        }
+      }
+    },
+    "identity.volumes": {
+      "comment": "What a well-known folder is.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Where other disks and disk images appear while they're connected."
+          }
+        }
+      }
+    },
     "insights.empty.largeFiles": {
       "comment": "Empty state message of the Large Files view.",
       "extractionState": "manual",
