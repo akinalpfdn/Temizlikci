@@ -3,10 +3,17 @@ import Foundation
 
 /// Keeps scan snapshots per location.
 nonisolated protocol SnapshotStoring: Sendable {
-    func latest(forLocation path: String) throws -> ScanSnapshot?
+    /// The newest snapshots of a location, newest first.
+    func recent(forLocation path: String, limit: Int) throws -> [ScanSnapshot]
     func save(_ snapshot: ScanSnapshot) throws
     /// Deletes all but the newest `count` snapshots of a location.
     func prune(location path: String, keeping count: Int) throws
+}
+
+nonisolated extension SnapshotStoring {
+    func latest(forLocation path: String) throws -> ScanSnapshot? {
+        try recent(forLocation: path, limit: 1).first
+    }
 }
 
 /// Stores snapshots as compressed JSON in Application Support, one folder per location.
@@ -18,13 +25,14 @@ nonisolated struct FileSnapshotStore: SnapshotStoring {
         self.directory = directory
     }
 
-    func latest(forLocation path: String) throws -> ScanSnapshot? {
-        guard let newest = try files(forLocation: path).last else { return nil }
-        let compressed = try Data(contentsOf: newest)
-        let data = try (compressed as NSData).decompressed(using: .lzfse) as Data
+    func recent(forLocation path: String, limit: Int) throws -> [ScanSnapshot] {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
-        return try decoder.decode(ScanSnapshot.self, from: data)
+        return try files(forLocation: path).suffix(limit).reversed().map { url in
+            let compressed = try Data(contentsOf: url)
+            let data = try (compressed as NSData).decompressed(using: .lzfse) as Data
+            return try decoder.decode(ScanSnapshot.self, from: data)
+        }
     }
 
     func save(_ snapshot: ScanSnapshot) throws {

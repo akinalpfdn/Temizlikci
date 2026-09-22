@@ -50,6 +50,21 @@ enum ChartPalette {
     }
 }
 
+/// Size-change colors: warm for growth, cool for shrinking, so the two stay apart for every kind of
+/// color vision. Text ink, checked at 4.5:1 or better on the list background; never used alone
+/// (always with an arrow symbol, a section heading, and a bar whose length carries the same value).
+enum GrowthPalette {
+    static let upInk = Color.growthUpInk
+    static let downInk = Color.growthDownInk
+
+    static func ink(for kind: GrowthChange.Kind) -> Color {
+        switch kind {
+        case .grew, .appeared: upInk
+        case .shrank, .removed: downInk
+        }
+    }
+}
+
 /// Cleanup-safety colors. Always paired with a symbol and a label, never used alone.
 enum StatusPalette {
     static let safeFill = Color.statusSafe

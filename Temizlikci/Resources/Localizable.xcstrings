@@ -913,6 +913,18 @@
         }
       }
     },
+    "growth.fromSavedScans": {
+      "comment": "Note shown when the comparison comes from saved scans instead of a scan in this session.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "From the two saved scans, the most recent on %@. Scan again to compare with what is on disk now."
+          }
+        }
+      }
+    },
     "growth.header": {
       "comment": "Title of the What Grew view. Arguments: location, date of the previous scan.",
       "extractionState": "manual",
@@ -933,6 +945,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Change since %@"
+          }
+        }
+      }
+    },
+    "growth.net": {
+      "comment": "Sum of all changes since the previous scan.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Net change %@"
           }
         }
       }
@@ -981,6 +1005,30 @@
           "stringUnit": {
             "state": "translated",
             "value": "Removed"
+          }
+        }
+      }
+    },
+    "growth.section.grew": {
+      "comment": "Heading over the items that got bigger.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grew"
+          }
+        }
+      }
+    },
+    "growth.section.shrank": {
+      "comment": "Heading over the items that got smaller.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shrank"
           }
         }
       }

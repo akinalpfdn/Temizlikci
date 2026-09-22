@@ -68,6 +68,8 @@ final class LocationScanModel {
 
     /// What changed since the previous scan of this location; `nil` for a first scan.
     private(set) var growth: GrowthReport?
+    /// True while `growth` comes from saved scans rather than the scan on screen.
+    private(set) var growthIsFromSavedScans = false
     private(set) var historyTask: Task<Void, Never>?
     private var recordsHistoryAfterMatching = false
     var canHighlightReclaimable: Bool { hasResult && !cleanupMatches.isEmpty }
@@ -267,6 +269,27 @@ final class LocationScanModel {
 
     // MARK: - History
 
+    /// Compares the two newest saved scans of this location, so history survives quitting the app.
+    /// Only for a location that has not been scanned in this session; a scan replaces the report.
+    func loadSavedGrowth() {
+        guard !hasResult, growth == nil, historyTask == nil else { return }
+        let store = snapshots
+        let locationPath = location.url.path(percentEncoded: false)
+        historyTask = Task { [weak self] in
+            let report = await Self.compareSaved(store: store, locationPath: locationPath)
+            guard let self, !Task.isCancelled, !self.hasResult else { return }
+            self.growth = report
+            self.growthIsFromSavedScans = report != nil
+            self.historyTask = nil
+        }
+    }
+
+    @concurrent
+    nonisolated private static func compareSaved(store: SnapshotStoring, locationPath: String) async -> GrowthReport? {
+        guard let saved = try? store.recent(forLocation: locationPath, limit: 2), saved.count == 2 else { return nil }
+        return GrowthReport.compare(previous: saved[1], current: saved[0])
+    }
+
     func growth(for node: FileNode) -> GrowthChange? {
         growth?.change(forPath: node.path)
     }
@@ -280,6 +303,7 @@ final class LocationScanModel {
             let report = await Self.compareAndSave(store: store, root: root, locationPath: locationPath, date: date, matchPaths: matchPaths)
             guard let self, !Task.isCancelled, self.tree?.id == root.id else { return }
             self.growth = report
+            self.growthIsFromSavedScans = false
         }
     }
 

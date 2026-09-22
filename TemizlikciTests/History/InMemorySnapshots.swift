@@ -8,8 +8,8 @@ nonisolated final class InMemorySnapshots: SnapshotStoring {
 
     var all: [ScanSnapshot] { stored.withLock { $0 } }
 
-    func latest(forLocation path: String) throws -> ScanSnapshot? {
-        stored.withLock { $0.last { $0.locationPath == path } }
+    func recent(forLocation path: String, limit: Int) throws -> [ScanSnapshot] {
+        stored.withLock { Array($0.filter { $0.locationPath == path }.suffix(limit).reversed()) }
     }
 
     func save(_ snapshot: ScanSnapshot) throws {

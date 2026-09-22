@@ -25,6 +25,8 @@ struct ChartPaletteTests {
         "ChartHatch": ("#b9b8b2", "#5a5a56", "#8f8e88", "#7a7a75"),
         "StatusSafe": ("#0ca30c", "#0ca30c", "#0ca30c", "#0ca30c"),
         "StatusSafeInk": ("#006300", "#35c35a", "#004d00", "#5ee07c"),
+        "GrowthUpInk": ("#b8431a", "#ff9459", "#8f3210", "#ffb08a"),
+        "GrowthDownInk": ("#0a6c77", "#4ccbd8", "#05525b", "#86e3ec"),
         "StatusTool": ("#fab219", "#fab219", "#fab219", "#fab219"),
         "StatusToolInk": ("#8a5a00", "#fab219", "#6b4500", "#ffc94d"),
     ]

@@ -245,3 +245,21 @@ See `rules/common/decisions.md` for the logging format and rules. Append-only.
 **Why:** Full trees would be hundreds of MB per scan. Recording the previous snapshot's paths means "missing" really means removed, not "shrank below the threshold". Unread folders (no Full Disk Access) are excluded so they never look like they shrank. Folder paths never leave the Mac.
 **Trade-offs:** Items first seen above 100 MB show as "new or previously under 100 MB". Deep changes below 100 MB are invisible unless they're developer artifacts.
 **Revisit if:** Snapshots on the startup disk grow large (measure), or finer history is wanted.
+
+---
+
+## 2026-09-22 — Growth direction as a warm/cool pair, not green and red
+**Chosen:** Growth uses a warm ink (`GrowthUpInk`) and shrinking a cool one (`GrowthDownInk`), each with light, dark, and both increased-contrast variants at 5.4:1 or better on the list background. Direction is also carried by the arrow symbol, the +/− sign, the "Grew"/"Shrank" section heading, and a bar whose length is the change.
+**Alternatives:** Reuse the status colors (green/amber); red for growth and green for shrinking; stay monochrome.
+**Why:** Green already means "safe to remove" in the same lists, and red means an error elsewhere in the app; reusing them would make two different things look alike. A warm/cool pair stays distinguishable under every kind of color vision, and nothing depends on color alone (HIG "Charts", "Color").
+**Trade-offs:** Two more colors to keep validated.
+**Revisit if:** The palette is retuned, or growth needs a third state.
+
+---
+
+## 2026-09-22 — What Grew reads saved scans at launch
+**Chosen:** When a location hasn't been scanned in this session, What Grew compares the two newest saved snapshots and says so; "Show in Chart" is disabled until there's a live scan. A finished scan replaces that comparison.
+**Alternatives:** Show history only after a scan (the previous behavior); rescan automatically at launch.
+**Why:** History that disappears when the app quits is worthless — the developer said so directly. Snapshots were already on disk; only the comparison was tied to a scan. Scanning automatically at launch would spend minutes of disk I/O nobody asked for.
+**Trade-offs:** The numbers are as old as the last scan, so the view states its dates.
+**Revisit if:** Background or scheduled scanning is added.

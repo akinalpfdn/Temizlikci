@@ -120,7 +120,15 @@ final class MainViewModel {
 
     /// The scan the What Grew view compares: the first location, in sidebar order, with a previous scan to compare.
     var growthScan: LocationScanModel? {
-        locationDestinations.compactMap { scanModels[$0] }.first { $0.growth != nil }
+        let models = locationDestinations.compactMap { scanModels[$0] }
+        return models.first { $0.growth != nil && !$0.growthIsFromSavedScans } ?? models.first { $0.growth != nil }
+    }
+
+    /// Fills What Grew from saved scans when nothing has been scanned in this session.
+    func loadSavedGrowth() {
+        for destination in locationDestinations {
+            scanModels[destination]?.loadSavedGrowth()
+        }
     }
 
     /// Opens a changed item in its location's chart.

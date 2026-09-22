@@ -459,4 +459,32 @@ struct LocationScanModelTests {
         model.moveToTrash(archived, undoManager: nil)
         #expect(trash.trashed.isEmpty)
     }
+
+    @Test("should compare the two saved scans when nothing has been scanned in this session")
+    func savedGrowthWithoutScanning() async throws {
+        let path = TreeBuilder.root.path(percentEncoded: false)
+        let mb = Int64(1_000_000)
+        try snapshots.save(ScanSnapshot(version: ScanSnapshot.currentVersion, locationPath: path, date: Date(timeIntervalSince1970: 1), sizes: ["/Scan/Apps": 100 * mb], unreadPaths: []))
+        try snapshots.save(ScanSnapshot(version: ScanSnapshot.currentVersion, locationPath: path, date: Date(timeIntervalSince1970: 2), sizes: ["/Scan/Apps": 400 * mb], unreadPaths: []))
+        let model = makeModel()
+
+        model.loadSavedGrowth()
+        await model.historyTask?.value
+
+        #expect(model.growthIsFromSavedScans)
+        #expect(model.growth?.change(forPath: "/Scan/Apps")?.delta == 300 * mb)
+    }
+
+    @Test("should replace the saved-scan comparison once a scan finishes")
+    func scanReplacesSavedGrowth() async throws {
+        let model = makeModel()
+        model.loadSavedGrowth()
+        await model.historyTask?.value
+
+        _ = await scanned(model)
+        await model.cleanupTask?.value
+        await model.historyTask?.value
+
+        #expect(!model.growthIsFromSavedScans)
+    }
 }

@@ -329,6 +329,14 @@ nonisolated enum L10n {
         static func header(_ name: String, date: String) -> LocalizedStringResource {
             LocalizedStringResource("growth.header", defaultValue: "\(name) since \(date)", comment: "Title of the What Grew view. Arguments: location, date of the previous scan.")
         }
+        static let grewSection = LocalizedStringResource("growth.section.grew", defaultValue: "Grew", comment: "Heading over the items that got bigger.")
+        static let shrankSection = LocalizedStringResource("growth.section.shrank", defaultValue: "Shrank", comment: "Heading over the items that got smaller.")
+        static func net(_ size: String) -> LocalizedStringResource {
+            LocalizedStringResource("growth.net", defaultValue: "Net change \(size)", comment: "Sum of all changes since the previous scan.")
+        }
+        static func fromSavedScans(_ date: String) -> LocalizedStringResource {
+            LocalizedStringResource("growth.fromSavedScans", defaultValue: "From the two saved scans, the most recent on \(date). Scan again to compare with what is on disk now.", comment: "Note shown when the comparison comes from saved scans instead of a scan in this session.")
+        }
         static let showInChart = LocalizedStringResource("growth.showInChart", defaultValue: "Show in Chart", comment: "Button that opens a changed folder in the chart.")
         static func previous(_ size: String) -> LocalizedStringResource {
             LocalizedStringResource("growth.previous", defaultValue: "was \(size)", comment: "Previous size of a changed item.")

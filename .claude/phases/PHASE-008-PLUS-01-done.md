@@ -1,5 +1,5 @@
 # Phase 008 (PLUS-01) — What Grew
-Status: ACTIVE
+Status: DONE
 
 ## Goal
 People see what grew or shrank since their previous scan of the same location.
@@ -21,3 +21,7 @@ People see what grew or shrank since their previous scan of the same location.
 ## Decisions Made This Phase
 - Large Files reuses the scan tree: the scanner already keeps every file of 10 MB or more as its own node, so no extra disk pass is needed.
 - Tests: 91 (90 pass, 1 opt-in). Snapshot size on the startup disk and the two-scan flow still to be checked live.
+- Growth direction is a warm/cool color pair, never color alone (DECISIONS 2026-09-22).
+- What Grew reads the two newest saved snapshots at launch, so history survives quitting (DECISIONS 2026-09-22).
+- Live check with the developer (2026-09-22): both scans compared correctly, Large Files listed and acted on, snapshot size 61 KB per scan of the startup disk (128 KB for two), well under any concern.
+- Tests: 95 (94 pass, 1 opt-in).

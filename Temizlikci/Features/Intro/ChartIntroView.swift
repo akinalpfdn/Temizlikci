@@ -130,7 +130,7 @@ private struct SampleTrash: Trashing {
 
 /// The example keeps no history.
 nonisolated private struct SampleSnapshots: SnapshotStoring {
-    func latest(forLocation path: String) throws -> ScanSnapshot? { nil }
+    func recent(forLocation path: String, limit: Int) throws -> [ScanSnapshot] { [] }
     func save(_ snapshot: ScanSnapshot) throws {}
     func prune(location path: String, keeping count: Int) throws {}
 }

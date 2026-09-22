@@ -5,6 +5,11 @@ struct WhatGrewView: View {
     let main: MainViewModel
 
     var body: some View {
+        content.task { main.loadSavedGrowth() }
+    }
+
+    @ViewBuilder
+    private var content: some View {
         if let scan = main.growthScan, let report = scan.growth {
             let changes = report.biggestChanges()
             if changes.isEmpty {
@@ -36,31 +41,72 @@ private struct GrowthList: View {
     let report: GrowthReport
     let changes: [GrowthChange]
 
+    private var grew: [GrowthChange] { changes.filter { $0.delta >= 0 } }
+    private var shrank: [GrowthChange] { changes.filter { $0.delta < 0 } }
+    private var largest: Int64 { changes.map { abs($0.delta) }.max() ?? 0 }
+    private var net: Int64 { changes.reduce(0) { $0 + $1.delta } }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: Spacing.medium) {
+        VStack(alignment: .leading, spacing: Spacing.small) {
             Text(L10n.Growth.header(scan.location.displayName, date: WhatGrewView.date(report.previousDate)))
                 .font(.title2.weight(.semibold))
-            List(changes) { change in
-                HStack(spacing: Spacing.medium) {
-                    VStack(alignment: .leading, spacing: Spacing.xxSmall) {
-                        Text((change.path as NSString).lastPathComponent)
-                        Text(change.path)
-                            .font(Typography.chartCaption)
-                            .foregroundStyle(.secondary)
-                            .lineLimit(1)
-                            .truncationMode(.middle)
-                    }
-                    Spacer(minLength: Spacing.medium)
-                    detail(for: change)
-                    GrowthLabel(change: change)
-                        .frame(minWidth: 96, alignment: .trailing)
-                    Button { main.show(change, in: scan) } label: { Text(L10n.Growth.showInChart) }
-                        .disabled(change.kind == .removed)
-                }
-                .padding(.vertical, Spacing.xxSmall)
+            Text(L10n.Growth.net(signed(net)))
+                .foregroundStyle(.secondary)
+            if scan.growthIsFromSavedScans {
+                Text(L10n.Growth.fromSavedScans(WhatGrewView.date(report.currentDate)))
+                    .font(Typography.chartCaption)
+                    .foregroundStyle(.secondary)
+            }
+            List {
+                section(L10n.Growth.grewSection, symbol: "arrow.up.right", ink: GrowthPalette.upInk, items: grew)
+                section(L10n.Growth.shrankSection, symbol: "arrow.down.right", ink: GrowthPalette.downInk, items: shrank)
             }
         }
         .padding(Spacing.large)
+    }
+
+    @ViewBuilder
+    private func section(_ title: LocalizedStringResource, symbol: String, ink: Color, items: [GrowthChange]) -> some View {
+        if !items.isEmpty {
+            Section {
+                ForEach(items) { change in row(change) }
+            } header: {
+                HStack(spacing: Spacing.xSmall) {
+                    Image(systemName: symbol)
+                    Text(title)
+                    Spacer()
+                    Text(signed(items.reduce(0) { $0 + $1.delta })).monospacedDigit()
+                }
+                .font(Typography.badge)
+                .foregroundStyle(ink)
+            }
+        }
+    }
+
+    private func row(_ change: GrowthChange) -> some View {
+        HStack(spacing: Spacing.medium) {
+            VStack(alignment: .leading, spacing: Spacing.xxSmall) {
+                Text((change.path as NSString).lastPathComponent)
+                Text(change.path)
+                    .font(Typography.chartCaption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+                GrowthBar(change: change, largest: largest)
+                    .padding(.top, Spacing.xxSmall)
+            }
+            Spacer(minLength: Spacing.medium)
+            detail(for: change)
+            GrowthLabel(change: change)
+                .frame(minWidth: 108, alignment: .trailing)
+            Button { main.show(change, in: scan) } label: { Text(L10n.Growth.showInChart) }
+                .disabled(change.kind == .removed || !scan.hasResult)
+        }
+        .padding(.vertical, Spacing.xxSmall)
+    }
+
+    private func signed(_ bytes: Int64) -> String {
+        (bytes >= 0 ? "+" : "−") + Formatting.bytes(abs(bytes))
     }
 
     @ViewBuilder
