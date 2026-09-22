@@ -136,7 +136,7 @@ nonisolated enum L10n {
         static let unattributedExplanation = LocalizedStringResource("details.explain.unattributed", defaultValue: "Space macOS reports as used that no scanned folder accounts for: folders Temizlikci can’t read without Full Disk Access, items in the Trash, the system volume’s hidden parts, APFS snapshots, and purgeable files.", comment: "Inspector explanation for unattributed space.")
         static let inaccessibleExplanation = LocalizedStringResource("details.explain.inaccessible", defaultValue: "Temizlikci can’t read this folder without Full Disk Access, so its size isn’t included.", comment: "Inspector explanation for a protected folder.")
         static let smallerFilesExplanation = LocalizedStringResource("details.explain.smallerFiles", defaultValue: "Files under 10 MB in this folder, added together.", comment: "Inspector explanation for grouped small files.")
-        static let pendingExplanation = LocalizedStringResource("details.explain.pending", defaultValue: "This part of the disk hasn’t been measured yet.", comment: "Inspector explanation for space not scanned yet.")
+        static let pendingExplanation = LocalizedStringResource("details.explain.pending", defaultValue: "Used space the scan hasn’t reached yet. It shrinks as folders are measured and is gone when the scan finishes; anything still unexplained then becomes Other Used Space.", comment: "Inspector explanation for space not scanned yet.")
     }
 
     enum Table {
@@ -213,6 +213,7 @@ nonisolated enum L10n {
         static let tool = LocalizedStringResource("cleanup.safety.tool", defaultValue: "Remove with Tool", comment: "Label for items that must be removed with their own tool.")
         static let keep = LocalizedStringResource("cleanup.safety.keep", defaultValue: "Keep", comment: "Label for items that hold personal data and shouldn't be deleted here.")
         static let highlight = LocalizedStringResource("cleanup.highlight", defaultValue: "Highlight Reclaimable", comment: "Toolbar toggle and menu item that colors the chart by cleanup safety.")
+        static let highlightUnavailable = LocalizedStringResource("cleanup.highlight.unavailable", defaultValue: "Nothing here is a developer cache or build folder, so there's nothing to highlight.", comment: "Help for the highlight button when the location has no developer artifacts.")
         static let reasonDerivedData = LocalizedStringResource("cleanup.reason.derivedData", defaultValue: "Build products and indexes. Xcode rebuilds them on the next build.", comment: "Why an item has its cleanup label.")
         static let reasonDeviceSupport = LocalizedStringResource("cleanup.reason.deviceSupport", defaultValue: "Debug symbols copied from your devices. Xcode copies them again the next time a device connects.", comment: "Why an item has its cleanup label.")
         static let reasonPreviews = LocalizedStringResource("cleanup.reason.previews", defaultValue: "SwiftUI preview builds. Xcode recreates them when you open a preview.", comment: "Why an item has its cleanup label.")

@@ -20,7 +20,7 @@ struct ChartIntroView: View {
                     tip("circle.circle", L10n.Intro.rings)
                     tip("chart.pie", L10n.Intro.size)
                     tip("cursorarrow.click.2", L10n.Intro.interaction)
-                    tip("highlighter", L10n.Intro.highlight)
+                    tip("wand.and.rays", L10n.Intro.highlight)
                 }
                 .frame(width: 280, alignment: .leading)
             }

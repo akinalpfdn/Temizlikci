@@ -95,10 +95,12 @@ private struct MainToolbar: ToolbarContent {
         }
         ToolbarItem {
             Toggle(isOn: Binding(get: { scan?.isHighlightingReclaimable ?? false }, set: { scan?.isHighlightingReclaimable = $0 })) {
-                Label { Text(L10n.Cleanup.highlight) } icon: { Image(systemName: "highlighter") }
+                Label { Text(L10n.Cleanup.highlight) } icon: { Image(systemName: "wand.and.rays") }
             }
             .toggleStyle(.button)
-            .help(Text(L10n.Cleanup.highlight))
+            // A disabled button says why, instead of leaving people to guess (Downloads, for example,
+            // holds no developer caches, so there's nothing to highlight).
+            .help(Text(scan?.canHighlightReclaimable == true ? L10n.Cleanup.highlight : L10n.Cleanup.highlightUnavailable))
             .disabled(!(scan?.canHighlightReclaimable ?? false))
         }
         ToolbarItem {

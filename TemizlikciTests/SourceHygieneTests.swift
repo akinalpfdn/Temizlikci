@@ -28,4 +28,35 @@ struct SourceHygieneTests {
             }
         }
     }
+
+    /// Models that persist anything default to the real Application Support folder. A test that
+    /// builds one without in-memory stores writes into the developer's own data — and a stub scan of
+    /// `/` would overwrite the real startup-disk cache.
+    @Test("should give every model a test builds in-memory stores, never the real Application Support folder")
+    func testsUseInMemoryStores() throws {
+        let tests = SourceTree.appSources.deletingLastPathComponent().appending(path: "TemizlikciTests", directoryHint: .isDirectory)
+        let enumerator = try #require(FileManager.default.enumerator(at: tests, includingPropertiesForKeys: nil))
+        let files = enumerator.compactMap { $0 as? URL }.filter { $0.pathExtension == "swift" }
+
+        for file in files where file.lastPathComponent != "SourceHygieneTests.swift" {
+            let source = try String(contentsOf: file, encoding: .utf8)
+            for constructor in ["LocationScanModel(", "MainViewModel("] {
+                var rest = source[...]
+                while let range = rest.range(of: constructor) {
+                    // The arguments of this call: up to the matching closing parenthesis.
+                    var depth = 1
+                    var end = range.upperBound
+                    while depth > 0, end < rest.endIndex {
+                        if rest[end] == "(" { depth += 1 } else if rest[end] == ")" { depth -= 1 }
+                        end = rest.index(after: end)
+                    }
+                    let arguments = rest[range.upperBound..<end]
+                    for store in ["scanCache:", "snapshots:"] where !arguments.contains(store) {
+                        Issue.record("\(file.lastPathComponent): \(constructor) without \(store) writes to the real Application Support folder")
+                    }
+                    rest = rest[end...]
+                }
+            }
+        }
+    }
 }

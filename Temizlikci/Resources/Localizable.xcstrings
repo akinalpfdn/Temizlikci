@@ -505,6 +505,18 @@
         }
       }
     },
+    "cleanup.highlight.unavailable": {
+      "comment": "Help for the highlight button when the location has no developer artifacts.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing here is a developer cache or build folder, so there's nothing to highlight."
+          }
+        }
+      }
+    },
     "cleanup.reason.androidEmulators": {
       "comment": "Why an item has its cleanup label.",
       "extractionState": "manual",
@@ -1064,7 +1076,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "This part of the disk hasn’t been measured yet."
+            "value": "Used space the scan hasn’t reached yet. It shrinks as folders are measured and is gone when the scan finishes; anything still unexplained then becomes Other Used Space."
           }
         }
       }

@@ -338,6 +338,7 @@ struct LocationScanModelTests {
             volumeInfo: FixedVolume(usage: VolumeUsage(totalCapacity: 0, availableCapacity: 0, availableForImportantUsage: nil)),
             access: GrantedAccess(), revealer: revealer, trash: trash, ledger: ledger,
             ruleEngine: RuleEngine(home: URL(filePath: "/Users/dev", directoryHint: .isDirectory), markers: NoMarkers()),
+            scanCache: scanCache,
             snapshots: snapshots,
             makeScanner: { _ in StubScanner(events: [.finished(ScanResult(root: root, duration: .seconds(1), fileCount: 2, directoryCount: 6, inaccessibleCount: 0))]) }
         )
@@ -390,7 +391,7 @@ struct LocationScanModelTests {
             location: ScanLocation(url: TreeBuilder.root, displayName: "Scan Place", isWholeVolume: false),
             volumeInfo: FixedVolume(usage: VolumeUsage(totalCapacity: 0, availableCapacity: 0, availableForImportantUsage: nil)),
             access: GrantedAccess(), revealer: revealer, trash: trash, ledger: ledger,
-            ruleEngine: RuleEngine(rules: []), snapshots: snapshots,
+            ruleEngine: RuleEngine(rules: []), scanCache: scanCache, snapshots: snapshots,
             makeScanner: { _ in StubScanner(events: events) }
         )
     }

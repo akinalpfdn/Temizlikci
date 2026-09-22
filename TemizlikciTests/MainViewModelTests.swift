@@ -37,7 +37,8 @@ struct MainViewModelTests {
             revealer: FinderRevealer(),
             trash: StubTrash(),
             settings: settings,
-            snapshots: InMemorySnapshots()
+            snapshots: InMemorySnapshots(),
+            scanCache: InMemoryScanCache()
         )
     }
 

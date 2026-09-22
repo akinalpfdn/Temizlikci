@@ -34,6 +34,7 @@ final class MainViewModel {
     private let ruleEngine: RuleEngine
     private let projectFinder: ProjectFinder
     private let snapshots: SnapshotStoring
+    private let scanCache: ScanCaching
     private let makeScanner: (ScanConfiguration) -> DiskScanning
 
     init(
@@ -46,6 +47,7 @@ final class MainViewModel {
         apps: AppOpening = WorkspaceAppOpener(),
         tools: ToolRunning = ProcessToolRunner(),
         snapshots: SnapshotStoring = FileSnapshotStore(),
+        scanCache: ScanCaching = FileScanCache(),
         homeFolder: URL = URL.homeDirectory,
         makeScanner: @escaping (ScanConfiguration) -> DiskScanning = { FileSystemScanner(configuration: $0) }
     ) {
@@ -58,6 +60,7 @@ final class MainViewModel {
         self.settings = settings
         self.apps = apps
         self.snapshots = snapshots
+        self.scanCache = scanCache
         self.makeScanner = makeScanner
         ruleEngine = RuleEngine(home: homeFolder)
         projectFinder = ProjectFinder(home: homeFolder)
@@ -115,7 +118,7 @@ final class MainViewModel {
         LocationScanModel(
             location: location, volumeInfo: volumeInfo, access: access, revealer: revealer,
             trash: trash, ledger: trashLedger, ruleEngine: ruleEngine, projectFinder: projectFinder,
-            snapshots: snapshots, makeScanner: makeScanner
+            scanCache: scanCache, snapshots: snapshots, makeScanner: makeScanner
         )
     }
 
