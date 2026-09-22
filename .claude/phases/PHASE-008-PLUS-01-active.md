@@ -1,5 +1,5 @@
 # Phase 008 (PLUS-01) — What Grew
-Status: PENDING
+Status: ACTIVE
 
 ## Goal
 People see what grew or shrank since their previous scan of the same location.
