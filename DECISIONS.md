@@ -335,3 +335,12 @@ See `rules/common/decisions.md` for the logging format and rules. Append-only.
 **Why:** Developer decision: a download button is enough for a Mac app and simpler than an installer. No account, no appcast to host, no install privileges. One unauthenticated request a day is far below GitHub's 60-per-hour limit per IP, and sends nothing about the Mac or its files.
 **Trade-offs:** Updating means replacing the app by hand. The check only works while the repository is public (a private repository answers 404, which reads as "no release").
 **Revisit if:** Releases become frequent enough that installing by hand is a chore.
+
+---
+
+## 2026-09-23 — Apple silicon only
+**Chosen:** The app is built for arm64 only (`ARCHS = arm64` at the project level).
+**Alternatives:** A universal binary that also runs on Intel Macs with macOS 26.
+**Why:** Developer decision. There is no Intel Mac to test on, and folder explanations (Apple Intelligence) need Apple silicon anyway; shipping only what has been run keeps the README's requirement true.
+**Trade-offs:** Intel Macs on macOS 26 — the last macOS for Intel — can't run the app.
+**Revisit if:** Someone asks for Intel support and can test it.

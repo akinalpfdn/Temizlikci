@@ -76,7 +76,7 @@ Temizlikci shows where the space went and labels every developer file it recogni
 
 Temizlikci tells you when a new version is out. It never installs anything by itself; you download the new version and replace the app.
 
-**Requirements:** macOS 26 or later, Apple silicon.
+**Requirements:** macOS 26 or later on a Mac with Apple silicon.
 
 ## Build from source
 
