@@ -70,7 +70,7 @@ Temizlikci shows where the space went and labels every developer file it recogni
 
 ## Install
 
-1. Download the latest `.dmg` from [Releases](https://github.com/akinalpfdn/Temizlikci/releases).
+1. [Download Temizlikci.dmg](https://github.com/akinalpfdn/Temizlikci/releases/latest/download/Temizlikci.dmg) — always the latest version. Older versions and release notes are on the [Releases](https://github.com/akinalpfdn/Temizlikci/releases) page.
 2. Drag Temizlikci to Applications and open it.
 3. Optional: give it **Full Disk Access** in System Settings › Privacy & Security to measure every folder.
 
