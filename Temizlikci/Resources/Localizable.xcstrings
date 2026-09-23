@@ -3289,6 +3289,30 @@
         }
       }
     },
+    "settings.checkUpdates": {
+      "comment": "Settings toggle for the daily update check.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check for new versions automatically"
+          }
+        }
+      }
+    },
+    "settings.checkUpdates.explanation": {
+      "comment": "Explains what the update check does and sends.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Once a day at most, Temizlikci asks GitHub whether a newer version is published. Nothing about this Mac or its files is sent, and nothing is downloaded or installed unless you choose Download."
+          }
+        }
+      }
+    },
     "settings.refresh.day": {
       "comment": "Refresh period.",
       "extractionState": "manual",
@@ -4065,6 +4089,138 @@
           "stringUnit": {
             "state": "translated",
             "value": "Moved “%@” to the Trash. Its %@ is freed when you empty the Trash."
+          }
+        }
+      }
+    },
+    "updates.available": {
+      "comment": "Banner and alert title when a newer version is published.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlikci %@ is available"
+          }
+        }
+      }
+    },
+    "updates.checkNow": {
+      "comment": "App menu item.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check for Updates…"
+          }
+        }
+      }
+    },
+    "updates.current": {
+      "comment": "Banner detail with the installed version.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You have %@. Download the new version and replace the app in Applications."
+          }
+        }
+      }
+    },
+    "updates.download": {
+      "comment": "Button that opens the new version's disk image.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Download"
+          }
+        }
+      }
+    },
+    "updates.failed.message": {
+      "comment": "Alert message when the update check fails.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitHub didn’t answer. Check your internet connection and try again."
+          }
+        }
+      }
+    },
+    "updates.failed.title": {
+      "comment": "Alert title when GitHub can't be reached.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn’t Check for Updates"
+          }
+        }
+      }
+    },
+    "updates.newerMessage": {
+      "comment": "Alert message when a check finds a newer version.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You have %@. Download opens the disk image in your browser."
+          }
+        }
+      }
+    },
+    "updates.notNow": {
+      "comment": "Button that hides the update notice for this version.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not Now"
+          }
+        }
+      }
+    },
+    "updates.releaseNotes": {
+      "comment": "Button that opens the release page.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Release Notes"
+          }
+        }
+      }
+    },
+    "updates.upToDate.message": {
+      "comment": "Alert message with the installed version.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ is the newest version."
+          }
+        }
+      }
+    },
+    "updates.upToDate.title": {
+      "comment": "Alert title when no newer version exists.",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Temizlikci Is Up to Date"
           }
         }
       }

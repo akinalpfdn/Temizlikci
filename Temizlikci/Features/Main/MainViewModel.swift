@@ -18,6 +18,8 @@ final class MainViewModel {
     private(set) var inspected: InspectedItem?
     /// Git state of the projects listed in the Developer view, read on demand.
     let gitStatus = GitStatusModel()
+    /// Whether a newer version is published; checked at launch at most once a day.
+    let updates: UpdateModel
     var isInspectorPresented = true
     /// The window's undo manager, so menu commands can register Undo for Move to Trash.
     weak var undoManager: UndoManager?
@@ -63,6 +65,7 @@ final class MainViewModel {
         snapshots: SnapshotStoring = FileSnapshotStore(),
         scanCache: ScanCaching = FileScanCache(),
         markers: MarkerChecking = FileSystemMarkerChecker(),
+        updates: UpdateModel = UpdateModel(),
         homeFolder: URL = URL.homeDirectory,
         makeScanner: @escaping (ScanConfiguration) -> DiskScanning = { FileSystemScanner(configuration: $0) }
     ) {
@@ -77,6 +80,7 @@ final class MainViewModel {
         self.snapshots = snapshots
         self.scanCache = scanCache
         self.markers = markers
+        self.updates = updates
         self.makeScanner = makeScanner
         ruleEngine = RuleEngine(home: homeFolder)
         projectFinder = ProjectFinder(home: homeFolder)

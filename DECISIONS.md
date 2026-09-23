@@ -326,3 +326,12 @@ See `rules/common/decisions.md` for the logging format and rules. Append-only.
 **Why:** The developer's case: a project left for six months with its last commits never pushed — deleting the folder would lose them. `git rev-list --count --branches --not --remotes` counts exactly the commits that exist nowhere else, across all branches. A plain `git status` rewrites `.git/index`, and the stale-project date is read from that file, so looking at a project would make it look worked on today; `--no-optional-locks` prevents the write (a test checks the index's date is unchanged). `/usr/bin/git` is a shim that opens an install dialog when the developer tools are missing; `xcode-select -p` never does.
 **Trade-offs:** Needs the developer tools. Branches without an upstream are counted individually, capped at 12. Temizlikci still never removes a project itself — the information is for the person deciding.
 **Revisit if:** Repositories are large enough that `git status` is slow in practice, or submodules need their own check.
+
+---
+
+## 2026-09-23 — Updates: tell, don't install
+**Chosen:** At launch, at most once a day, the app asks GitHub's public API for the latest release (`/repos/akinalpfdn/Temizlikci/releases/latest`, which already excludes drafts and pre-releases). A newer version shows a banner above the content with Download (opens the attached DMG in the browser), Release Notes and Not Now (hides that version only). "Check for Updates…" in the app menu always answers; automatic checks stay silent when offline or when nothing is new. Settings can turn the automatic check off.
+**Alternatives:** Sparkle with automatic installation; no update check at all.
+**Why:** Developer decision: a download button is enough for a Mac app and simpler than an installer. No account, no appcast to host, no install privileges. One unauthenticated request a day is far below GitHub's 60-per-hour limit per IP, and sends nothing about the Mac or its files.
+**Trade-offs:** Updating means replacing the app by hand. The check only works while the repository is public (a private repository answers 404, which reads as "no release").
+**Revisit if:** Releases become frequent enough that installing by hand is a chore.

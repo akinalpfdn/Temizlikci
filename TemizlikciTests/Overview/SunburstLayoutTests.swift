@@ -8,7 +8,10 @@ struct SunburstLayoutTests {
         let segments = SunburstLayout.segments(for: TreeBuilder.sample())
         let ring = segments.filter { $0.depth == 1 }
 
-        #expect(abs(ring.map(\.sweep).reduce(0, +) - 2 * .pi) < 1e-9)
+        // Typed in steps: as one expression it exceeds the type checker's time limit.
+        let total: Double = ring.map(\.sweep).reduce(0, +)
+        let error: Double = abs(total - 2 * Double.pi)
+        #expect(error < 1e-9)
         #expect(ring.map(\.name) == ["Apps", "Docs", "movie.mov"])
         #expect(abs(ring[0].sweep - 2 * .pi * 0.6) < 1e-9)
     }

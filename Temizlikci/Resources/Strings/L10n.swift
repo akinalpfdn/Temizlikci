@@ -454,6 +454,8 @@ nonisolated enum L10n {
         static let refreshThreeDays = LocalizedStringResource("settings.refresh.threeDays", defaultValue: "3 days", comment: "Refresh period.")
         static let refreshWeek = LocalizedStringResource("settings.refresh.week", defaultValue: "1 week", comment: "Refresh period.")
         static let refreshNever = LocalizedStringResource("settings.refresh.never", defaultValue: "Never", comment: "Refresh period meaning the app never scans by itself.")
+        static let checkUpdates = LocalizedStringResource("settings.checkUpdates", defaultValue: "Check for new versions automatically", comment: "Settings toggle for the daily update check.")
+        static let checkUpdatesExplanation = LocalizedStringResource("settings.checkUpdates.explanation", defaultValue: "Once a day at most, Temizlikci asks GitHub whether a newer version is published. Nothing about this Mac or its files is sent, and nothing is downloaded or installed unless you choose Download.", comment: "Explains what the update check does and sends.")
         static let refreshExplanation = LocalizedStringResource("settings.refresh.explanation", defaultValue: "Temizlikci shows the last scan of a location as soon as you open it. When that scan is older than this, it reads the disk again in the background and replaces it when it's done.", comment: "Explains the automatic refresh setting.")
     }
 
@@ -531,5 +533,27 @@ nonisolated enum L10n {
     enum Accessibility {
         static let expanded = LocalizedStringResource("accessibility.expanded", defaultValue: "Expanded", comment: "Spoken state of an open section.")
         static let collapsed = LocalizedStringResource("accessibility.collapsed", defaultValue: "Collapsed", comment: "Spoken state of a closed section.")
+    }
+
+    enum Updates {
+        static func available(_ version: String) -> LocalizedStringResource {
+            LocalizedStringResource("updates.available", defaultValue: "Temizlikci \(version) is available", comment: "Banner and alert title when a newer version is published.")
+        }
+        static func current(_ version: String) -> LocalizedStringResource {
+            LocalizedStringResource("updates.current", defaultValue: "You have \(version). Download the new version and replace the app in Applications.", comment: "Banner detail with the installed version.")
+        }
+        static func newerMessage(_ version: String) -> LocalizedStringResource {
+            LocalizedStringResource("updates.newerMessage", defaultValue: "You have \(version). Download opens the disk image in your browser.", comment: "Alert message when a check finds a newer version.")
+        }
+        static let download = LocalizedStringResource("updates.download", defaultValue: "Download", comment: "Button that opens the new version's disk image.")
+        static let releaseNotes = LocalizedStringResource("updates.releaseNotes", defaultValue: "Release Notes", comment: "Button that opens the release page.")
+        static let notNow = LocalizedStringResource("updates.notNow", defaultValue: "Not Now", comment: "Button that hides the update notice for this version.")
+        static let checkNow = LocalizedStringResource("updates.checkNow", defaultValue: "Check for Updates…", comment: "App menu item.")
+        static let upToDateTitle = LocalizedStringResource("updates.upToDate.title", defaultValue: "Temizlikci Is Up to Date", comment: "Alert title when no newer version exists.")
+        static func upToDateMessage(_ version: String) -> LocalizedStringResource {
+            LocalizedStringResource("updates.upToDate.message", defaultValue: "\(version) is the newest version.", comment: "Alert message with the installed version.")
+        }
+        static let failedTitle = LocalizedStringResource("updates.failed.title", defaultValue: "Couldn’t Check for Updates", comment: "Alert title when GitHub can't be reached.")
+        static let failedMessage = LocalizedStringResource("updates.failed.message", defaultValue: "GitHub didn’t answer. Check your internet connection and try again.", comment: "Alert message when the update check fails.")
     }
 }

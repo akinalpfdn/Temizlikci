@@ -7,6 +7,11 @@ struct AppCommands: Commands {
     private var scan: LocationScanModel? { model.currentScan }
 
     var body: some Commands {
+        CommandGroup(after: .appInfo) {
+            Button { Task { await model.updates.checkNow() } } label: { Text(L10n.Updates.checkNow) }
+                .disabled(model.updates.isChecking)
+        }
+
         CommandGroup(replacing: .newItem) {
             Button { Task { await model.chooseFolder() } } label: { Text(L10n.Menu.chooseFolder) }
                 .keyboardShortcut("o")

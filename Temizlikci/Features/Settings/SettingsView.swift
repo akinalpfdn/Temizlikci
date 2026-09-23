@@ -3,6 +3,7 @@ import SwiftUI
 /// The app's only settings: how old a saved scan may get before it refreshes itself.
 struct SettingsView: View {
     @AppStorage("refreshPeriod") private var refreshPeriod = RefreshPeriod.threeDays.rawValue
+    @AppStorage(DefaultsUpdatePreferences.automaticKey) private var checksForUpdates = true
 
     var body: some View {
         Form {
@@ -14,6 +15,11 @@ struct SettingsView: View {
                 Text(L10n.Settings.refreshLabel)
             }
             Text(L10n.Settings.refreshExplanation)
+                .font(Typography.chartCaption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            Toggle(isOn: $checksForUpdates) { Text(L10n.Settings.checkUpdates) }
+            Text(L10n.Settings.checkUpdatesExplanation)
                 .font(Typography.chartCaption)
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)

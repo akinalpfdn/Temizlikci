@@ -16,10 +16,13 @@ struct MainView: View {
                 )
         } detail: {
             DetailView(model: model)
+                .safeAreaInset(edge: .top, spacing: 0) { UpdateBanner(updates: model.updates) }
                 .navigationTitle(model.windowTitle)
                 .navigationSubtitle(subtitle)
                 .toolbar { MainToolbar(model: model, scan: model.currentScan) }
         }
+        .task { await model.updates.checkIfDue() }
+        .modifier(UpdateResultAlert(updates: model.updates))
         // Coming back from Finder is when the Trash may have been emptied.
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
             Task { await model.appDidBecomeActive() }
