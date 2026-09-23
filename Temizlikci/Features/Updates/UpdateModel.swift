@@ -46,6 +46,12 @@ final class UpdateModel {
         self.checker = checker
         self.preferences = preferences
         self.openURL = openURL
+        #if DEBUG
+        // Preview only: `open Temizlikci.app --args -previewUpdateBanner` shows the banner at once.
+        if ProcessInfo.processInfo.arguments.contains("-previewUpdateBanner"), let page = URL(string: "https://github.com/akinalpfdn/Temizlikci/releases") {
+            available = Release(version: AppVersion("0.2.0")!, pageURL: page, downloadURL: page)
+        }
+        #endif
     }
 
     var checksAutomatically: Bool {
