@@ -52,5 +52,5 @@ See `.claude/phases/` — always check the active phase file before starting wor
 - Default actor isolation is MainActor. Off-main services (scanner, tool runner) must be explicitly `nonisolated` or actors.
 - Toolchain is Xcode 26.6 on macOS 26.6.2 (developer's Mac). When the developer upgrades to macOS 27, Xcode 27 becomes mandatory — plan a migration session (Swift 6.4, `@State` macro change).
 - Lore: project 17 "Temizlikci", sprint TEMIZLIK-SPRINT-1 (MVP). Phases are work items TEMIZLIK-0001…0007.
-- Open source vs private: undecided; treat as private.
+- Open source (user decision, 2026-09-23). Repo: github.com/akinalpfdn/Temizlikci — still private until the developer makes it public; the update check needs it public. Before publishing, audit the repo for personal paths and third-party text (claudedocs/hig holds copies of Apple's HIG).
 - Motivation and real-world numbers (what regrows on a developer Mac): see DEVPLAN.md Overview and Constraints.
