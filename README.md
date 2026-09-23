@@ -21,7 +21,7 @@ A developer's Mac fills itself up. On the author's 460 GB MacBook, a full cleanu
 
 General disk tools show you *that* a folder is big. They can't tell you whether it's a cache Xcode will rebuild, a simulator you should remove with `simctl`, or your archived builds that you need to read crash reports. So you either leave the space alone or delete things and hope.
 
-Temizlikci shows where the space went, labels every developer file it recognizes, and never deletes anything it can't put back.
+Temizlikci shows where the space went and labels every developer file it recognizes. Files only ever go to the Trash, where you can put them back; simulators are removed through Xcode's own tool, after you confirm.
 
 ## What it does
 
@@ -100,7 +100,7 @@ SwiftUI and Swift 6 with strict concurrency, and no third-party dependencies; th
 | Path | Contents |
 |---|---|
 | `Temizlikci/App` | App entry point, scenes, menu commands |
-| `Temizlikci/Domain` | The scan tree, cleanup rules, history, projects, Git state — plain Swift, fully tested |
+| `Temizlikci/Domain` | The scan tree, cleanup rules, history, projects, Git state — plain Swift with tests |
 | `Temizlikci/Services` | Scanner, Trash, `simctl`, `diskutil`, Git, update check — each behind a protocol |
 | `Temizlikci/Features` | Screens: a SwiftUI view plus an `@Observable` model each |
 | `Temizlikci/Theme` | Chart palette, status colors, spacing and type tokens |
