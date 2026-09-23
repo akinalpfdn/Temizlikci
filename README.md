@@ -6,12 +6,22 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/akinalpfdn/Temizlikci/releases/latest/download/Temizlikci.dmg">
+    <img alt="Download for macOS" src="https://img.shields.io/badge/Download_for_macOS-0A84FF?style=for-the-badge&logo=apple&logoColor=white" height="44">
+  </a>
+  <br>
+  <sub>Free and open source · macOS 26 or later · Apple silicon · Signed and notarized</sub>
+</p>
+
+<p align="center">
   <img alt="macOS 26+" src="https://img.shields.io/badge/macOS-26%2B-black">
   <img alt="Swift 6" src="https://img.shields.io/badge/Swift-6-orange">
   <img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue">
 </p>
 
-<!-- GIF: the sunburst on the startup disk, clicking into Users → Library → Developer. Suggested path: docs/media/overview.gif -->
+<p align="center">
+  <img alt="Temizlikci showing the startup disk as a sunburst chart next to a sortable list, with the inspector explaining the selected folder" src="assets/images/overview.png">
+</p>
 
 ---
 
@@ -31,7 +41,14 @@ Temizlikci shows where the space went and labels every developer file it recogni
 - **What Grew.** Every scan leaves a small summary (about 60 KB). The next scan tells you what grew and what shrank, and the list shows the change next to every folder.
 - **Large Files.** The biggest individual files on the disk, one click from the chart or Finder.
 
-<!-- GIF: What Grew with the Grew / Shrank sections. Suggested path: docs/media/what-grew.gif -->
+<p align="center">
+  <img alt="The home folder with the Change column showing what grew and shrank since the last scan" src="assets/images/home-folder.png">
+</p>
+
+<p align="center">
+  <img alt="What Grew listing the biggest changes since the previous scan" src="assets/images/what-grew.png" width="49%">
+  <img alt="Large Files listing the biggest individual files on the disk" src="assets/images/large-files.png" width="49%">
+</p>
 
 ### Clean up without guessing
 - **49 rules for developer files** — Xcode, simulators, Swift Package Manager, CocoaPods, Android and Gradle, Flutter and Dart, Node (npm, Yarn, pnpm, Bun), Rust, Go, Python (pip, uv), .NET, Java and Maven, Docker, Unity, JetBrains IDEs, Homebrew.
@@ -47,14 +64,18 @@ Temizlikci shows where the space went and labels every developer file it recogni
 - **Nothing is deleted.** Items go to the Trash, with Undo and Put Back. Anything labelled *Keep* or *Remove with Tool* — and anything inside it — can't be moved from Temizlikci at all. There is no "clean everything" button, on purpose.
 - **Simulators managed properly.** Unavailable devices and old runtimes are removed through Xcode's own `simctl`, so Xcode's device list stays consistent.
 
-<!-- GIF: Highlight Reclaimable, then moving DerivedData to the Trash and pressing Undo. Suggested path: docs/media/cleanup.gif -->
+<p align="center">
+  <img alt="Developer Files: totals by safety label, and Xcode items labelled Safe to Remove or Keep with the reason for each" src="assets/images/developer.png">
+</p>
 
 ### Made for developers
 - **Stale projects.** Projects nobody has touched for 30 days to a year, with the build output they still hold. "Last worked on" comes from Git, not from folder dates, which don't change when you edit a file.
 - **Unpushed work warnings.** Before you delete an old project, Temizlikci tells you what exists only on this Mac: uncommitted and untracked files, stashes, a missing remote, and commits no remote has — on every branch. It reads Git without writing anything, so looking at a project never changes its date.
 - **Open in your editor.** Xcode (the workspace, the project or the package), Android Studio, or Visual Studio Code, straight from the project.
 
-<!-- GIF: Stale Projects with an "Unpushed Work" badge and the Git details in the inspector. Suggested path: docs/media/stale-projects.gif -->
+<p align="center">
+  <img alt="Stale Projects with an Unpushed Work badge, and the inspector listing the Git work that exists only on this Mac" src="assets/images/stale-projects.png">
+</p>
 
 ### And it's quick about it
 - **Opens instantly.** The last scan is saved and shown at launch — about 1.3 seconds for 1.8 million files, instead of a 34-second rescan — then refreshed in the background once it's older than you choose.
