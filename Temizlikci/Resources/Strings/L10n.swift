@@ -448,7 +448,6 @@ nonisolated enum L10n {
     }
 
     enum Settings {
-        static let title = LocalizedStringResource("settings.title", defaultValue: "General", comment: "Title of the settings pane.")
         static let refreshLabel = LocalizedStringResource("settings.refresh.label", defaultValue: "Refresh a saved scan when it is older than", comment: "Label of the automatic refresh control.")
         static let refreshDay = LocalizedStringResource("settings.refresh.day", defaultValue: "1 day", comment: "Refresh period.")
         static let refreshThreeDays = LocalizedStringResource("settings.refresh.threeDays", defaultValue: "3 days", comment: "Refresh period.")

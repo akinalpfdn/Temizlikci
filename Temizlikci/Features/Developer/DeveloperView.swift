@@ -185,6 +185,12 @@ private struct DeveloperResults: View {
         .background(main.inspected == .node(match.node.id) ? AnyShapeStyle(.selection.opacity(0.35)) : AnyShapeStyle(.clear))
         .contentShape(.rect)
         .onTapGesture { main.inspect(.node(match.node.id)) }
+        // Full Keyboard Access: Tab reaches the row, Return or Space shows it in the inspector.
+        .focusable()
+        .onKeyPress(keys: [.return, .space]) { _ in
+            main.inspect(.node(match.node.id))
+            return .handled
+        }
         .accessibilityAddTraits(main.inspected == .node(match.node.id) ? .isSelected : [])
     }
 

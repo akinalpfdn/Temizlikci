@@ -26,7 +26,7 @@ struct SettingsView: View {
         }
         .formStyle(.grouped)
         .frame(width: 460)
-        .navigationTitle(Text(L10n.Settings.title))
+        // One pane, so the window keeps the system title "Temizlikci Settings" (HIG "Settings").
     }
 }
 

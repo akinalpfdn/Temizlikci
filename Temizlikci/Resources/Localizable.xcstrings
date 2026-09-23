@@ -3385,18 +3385,6 @@
         }
       }
     },
-    "settings.title": {
-      "comment": "Title of the settings pane.",
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "General"
-          }
-        }
-      }
-    },
     "sidebar.action.chooseFolder": {
       "comment": "Sidebar row that opens a panel to pick a folder to scan.",
       "extractionState": "manual",

@@ -115,6 +115,12 @@ struct StaleProjectsSection: View {
             }
             .contentShape(.rect)
             .onTapGesture { toggle(project) }
+            // Full Keyboard Access: Tab reaches the row, Return or Space opens it.
+            .focusable()
+            .onKeyPress(keys: [.return, .space]) { _ in
+                toggle(project)
+                return .handled
+            }
             .accessibilityElement(children: .combine)
             .accessibilityAddTraits(.isButton)
             .accessibilityAction { toggle(project) }

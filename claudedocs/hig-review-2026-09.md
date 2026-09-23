@@ -22,3 +22,29 @@ Status: ✅ meets the guideline · 🔧 fixed during this review · ⏳ needs a 
 
 ## Open items
 None. All items were verified live with the developer on 2026-09-22.
+
+---
+
+# Re-review for Phases 008–014 (release)
+
+Reviewed 2026-09-23 against the raw pages in `claudedocs/hig/` (fetched 2026-09-21; Settings, Drag and drop, Panels, Generative AI and Machine learning added 2026-09-22/23).
+
+| Feature | HIG page | Guideline | Status | Evidence |
+|---|---|---|---|---|
+| What Grew colors | Color, Charts | Don't rely on color alone | ✅ | Warm/cool ink plus arrow symbol, +/− sign, section heading and bar length; four validated variants (DECISIONS 2026-09-22). |
+| Growth badge | Layout | Content must not break in narrow columns | ✅ 🔧 | Badge wrapped letter by letter in the inspector; now one line with its own row (2026-09-23). |
+| Developer sections | Disclosure controls, Accessibility | Progressive disclosure; controls at least 20×20 pt on macOS | ✅ 🔧 | Ten open sections replaced by disclosure groups; the whole header (min 28 pt) toggles, not only the 13 pt triangle; VoiceOver reads Expanded/Collapsed. |
+| Developer and Stale Projects rows | Accessibility (mobility, Full Keyboard Access) | Every action reachable without a pointer | ✅ 🔧 | Rows were click-only; now focusable, Return/Space select or open them. |
+| Inspector for insight views | Panels, Split views | The inspector reflects the current selection | ✅ 🔧 | Developer and Large Files selections now show in the inspector; the selection clears when the sidebar destination changes. |
+| Git warning | Color, Writing | Warnings pair color with a symbol and text; clear next step | ✅ | Orange ink with `exclamationmark.triangle.fill` and "Push or back it up before deleting this project". |
+| Drag to Trash | Drag and drop | Menu alternative, undo, feedback on failure | ✅ | Move to Trash ⌘⌫ in the menu; same Undo path; refused drops return to the source. Multi-item drags aren't supported (the list is single-selection). |
+| Highlight Reclaimable icon | SF Symbols, Generative AI | Don't imply AI where there is none | ✅ 🔧 | `sparkles` (read as Apple Intelligence) replaced by `wand.and.rays`; disabled state explains why. |
+| "What is this?" | Generative AI | On request, labelled, retryable, on-device, no destructive actions, works without AI | ✅ | See DECISIONS 2026-09-22. |
+| Update banner | Alerts, Writing | No alert for non-critical news; specific button titles | ✅ | Inline banner, not an alert; Download / Release Notes / Not Now; the manual check answers with an alert because the person asked. |
+| Check for Updates… | The menu bar | App menu, after About | ✅ | `CommandGroup(after: .appInfo)`. |
+| Settings window | Settings | App menu item and ⌘,; single pane titled "App Name Settings" | ✅ 🔧 | The pane set its title to "General"; removed so the system title "Temizlikci Settings" shows. |
+| Scanning progress | Progress indicators, Charts | Show progress that reflects real work | ✅ 🔧 | The chart now grows with each top-level folder's measured size; a late update could replace the finished result, closed by three guards (2026-09-23). |
+| About panel | — | Copyright shown in About | ✅ 🔧 | The project set it to an empty string; now "© 2026 Akinalp Fidan. MIT License." |
+
+## Open items
+- Live check with the developer: Tab through the Developer view with Full Keyboard Access on, and the Settings window title.
